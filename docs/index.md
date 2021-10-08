@@ -2,7 +2,7 @@
 organization: Turbot
 category: ["public cloud"]
 icon_url: "/images/plugins/turbot/scaleway.svg"
-brand_color: "#466BB0"
+brand_color: "#4F0599"
 display_name: "Scaleway"
 short_name: "scaleway"
 description: "Steampipe plugin to query servers, networks, databases and more from Scaleway account."
