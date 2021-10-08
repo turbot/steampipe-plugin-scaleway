@@ -139,6 +139,7 @@ func listRDBDatabases(ctx context.Context, d *plugin.QueryData, h *plugin.Hydrat
 	req := &rdb.ListDatabasesRequest{
 		Region:     parseRegionData,
 		InstanceID: instanceData.ID,
+		Page:       scw.Int32Ptr(1),
 	}
 	// Additional filters
 	if quals["name"] != nil {
@@ -200,9 +201,9 @@ func listRDBDatabases(ctx context.Context, d *plugin.QueryData, h *plugin.Hydrat
 
 		if resp.TotalCount == uint32(count) {
 			break
-		} else if count == int(maxResult) {
-			req.Page = scw.Int32Ptr(*req.Page + 1)
 		}
+		req.Page = scw.Int32Ptr(*req.Page + 1)
+
 	}
 
 	return nil, nil

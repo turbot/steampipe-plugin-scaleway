@@ -3,7 +3,7 @@ package scaleway
 import (
 	"context"
 
-	"github.com/scaleway/scaleway-sdk-go/api/vpc/v1"
+	"github.com/scaleway/scaleway-sdk-go/api/instance/v1"
 
 	"github.com/scaleway/scaleway-sdk-go/scw"
 	"github.com/turbot/steampipe-plugin-sdk/grpc/proto"
@@ -13,13 +13,13 @@ import (
 
 //// TABLE DEFINITION
 
-func tableScalewayVPCPrivateNetwork(_ context.Context) *plugin.Table {
+func tableScalewayInstanceSnapshot(_ context.Context) *plugin.Table {
 	return &plugin.Table{
-		Name:          "scaleway_vpc_private_network",
-		Description:   "A VPC private network allows interconnecting your instances in an isolated and private network.",
+		Name:          "scaleway_instance_snapshot",
+		Description:   "Snapshots contain the data of a specific volume at a particular point in time.",
 		GetMatrixItem: BuildZoneList,
 		List: &plugin.ListConfig{
-			Hydrate: listVPCPrivateNetworks,
+			Hydrate: listInstanceSnapshots,
 			KeyColumns: []*plugin.KeyColumn{
 				{
 					Name:    "name",
@@ -32,55 +32,71 @@ func tableScalewayVPCPrivateNetwork(_ context.Context) *plugin.Table {
 			},
 		},
 		Get: &plugin.GetConfig{
-			Hydrate:    getVPCPrivateNetwork,
+			Hydrate:    getInstanceSnapshot,
 			KeyColumns: plugin.AllColumns([]string{"id", "zone"}),
 		},
 		Columns: []*plugin.Column{
 			{
 				Name:        "name",
-				Description: "The user-defined name of the private network.",
+				Description: "The user-defined name of the snapshot.",
 				Type:        proto.ColumnType_STRING,
 			},
 			{
 				Name:        "id",
-				Description: "An unique identifier of the private network.",
+				Description: "An unique identifier of the snapshot.",
 				Type:        proto.ColumnType_STRING,
 				Transform:   transform.FromField("ID"),
 			},
 			{
-				Name:        "created_at",
-				Description: "The time when the private network was created.",
+				Name:        "state",
+				Description: "The current state of the snapshot.",
+				Type:        proto.ColumnType_STRING,
+				Transform:   transform.FromField("State").Transform(transform.ToString),
+			},
+			{
+				Name:        "size",
+				Description: "The size of the snapshot (in bytes).",
+				Type:        proto.ColumnType_INT,
+				Transform:   transform.FromField("Size").Transform(transform.ToInt),
+			},
+			{
+				Name:        "volume_type",
+				Description: "Specifies the snapshot volume type .",
+				Type:        proto.ColumnType_STRING,
+				Transform:   transform.FromField("VolumeType").Transform(transform.ToString),
+			},
+			{
+				Name:        "creation_date",
+				Description: "The time when the snapshot was created.",
 				Type:        proto.ColumnType_TIMESTAMP,
 			},
 			{
-				Name:        "updated_at",
-				Description: "The time when the private network was last updated.",
+				Name:        "modification_date",
+				Description: "The time when the snapshot was last modified.",
 				Type:        proto.ColumnType_TIMESTAMP,
 			},
 			{
-				Name:        "tags",
-				Description: "A list of tags associated with the private network.",
+				Name:        "snapshot_base_volume",
+				Description: "Specifies the volume on which the snapshot is based on.",
 				Type:        proto.ColumnType_JSON,
 			},
 
 			// Scaleway standard columns
 			{
 				Name:        "zone",
-				Description: "Specifies the zone where the private network resides.",
+				Description: "Specifies the zone where the snapshot resides.",
 				Type:        proto.ColumnType_STRING,
 				Transform:   transform.FromField("Zone").Transform(transform.ToString),
 			},
 			{
 				Name:        "project",
-				Description: "The ID of the project where the private network resides.",
+				Description: "The ID of the project where the snapshot resides.",
 				Type:        proto.ColumnType_STRING,
-				Transform:   transform.FromField("ProjectID"),
 			},
 			{
 				Name:        "organization",
-				Description: "The ID of the organization where the private network resides.",
+				Description: "The ID of the organization where the snapshot resides.",
 				Type:        proto.ColumnType_STRING,
-				Transform:   transform.FromField("OrganizationID"),
 			},
 
 			// Steampipe standard columns
@@ -96,12 +112,12 @@ func tableScalewayVPCPrivateNetwork(_ context.Context) *plugin.Table {
 
 //// LIST FUNCTION
 
-func listVPCPrivateNetworks(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
+func listInstanceSnapshots(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 	zone := plugin.GetMatrixItem(ctx)["zone"].(string)
 
 	parseZoneData, err := scw.ParseZone(zone)
 	if err != nil {
-		plugin.Logger(ctx).Error("scaleway_vpc_private_network.listVPCPrivateNetworks", "zone_parsing_error", err)
+		plugin.Logger(ctx).Error("scaleway_instance_snapshot.listInstanceSnapshots", "zone_parsing_error", err)
 		return nil, err
 	}
 
@@ -113,14 +129,14 @@ func listVPCPrivateNetworks(ctx context.Context, d *plugin.QueryData, _ *plugin.
 	// Create client
 	client, err := getSessionConfig(ctx, d)
 	if err != nil {
-		plugin.Logger(ctx).Error("scaleway_vpc_private_network.listVPCPrivateNetworks", "connection_error", err)
+		plugin.Logger(ctx).Error("scaleway_instance_snapshot.listInstanceSnapshots", "connection_error", err)
 		return nil, err
 	}
 
-	// Create SDK objects for Scaleway VPC product
-	vpcApi := vpc.NewAPI(client)
+	// Create SDK objects for Scaleway Instance product
+	instanceApi := instance.NewAPI(client)
 
-	req := &vpc.ListPrivateNetworksRequest{
+	req := &instance.ListSnapshotsRequest{
 		Zone: parseZoneData,
 		Page: scw.Int32Ptr(1),
 	}
@@ -129,7 +145,7 @@ func listVPCPrivateNetworks(ctx context.Context, d *plugin.QueryData, _ *plugin.
 		req.Name = scw.StringPtr(quals["name"].GetStringValue())
 	}
 
-	// Retrieve the list of private networks
+	// Retrieve the list of snapshots
 	maxResult := int64(100)
 
 	// Reduce the basic request limit down if the user has only requested a small number of rows
@@ -139,19 +155,19 @@ func listVPCPrivateNetworks(ctx context.Context, d *plugin.QueryData, _ *plugin.
 			maxResult = *limit
 		}
 	}
-	req.PageSize = scw.Uint32Ptr(uint32(maxResult))
+	req.PerPage = scw.Uint32Ptr(uint32(maxResult))
 
 	var count int
 
 	for {
-		resp, err := vpcApi.ListPrivateNetworks(req)
+		resp, err := instanceApi.ListSnapshots(req)
 		if err != nil {
-			plugin.Logger(ctx).Error("scaleway_vpc_private_network.listVPCPrivateNetworks", "query_error", err)
+			plugin.Logger(ctx).Error("scaleway_instance_snapshot.listInstanceSnapshots", "query_error", err)
 			return nil, err
 		}
 
-		for _, network := range resp.PrivateNetworks {
-			d.StreamListItem(ctx, network)
+		for _, snapshot := range resp.Snapshots {
+			d.StreamListItem(ctx, snapshot)
 
 			// Increase the resource count by 1
 			count++
@@ -174,12 +190,12 @@ func listVPCPrivateNetworks(ctx context.Context, d *plugin.QueryData, _ *plugin.
 
 //// HYDRATE FUNCTIONS
 
-func getVPCPrivateNetwork(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
+func getInstanceSnapshot(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 	zone := plugin.GetMatrixItem(ctx)["zone"].(string)
 
 	parseZoneData, err := scw.ParseZone(zone)
 	if err != nil {
-		plugin.Logger(ctx).Error("scaleway_vpc_private_network.getVPCPrivateNetwork", "zone_parsing_error", err)
+		plugin.Logger(ctx).Error("scaleway_instance_snapshot.getInstanceSnapshot", "zone_parsing_error", err)
 		return nil, err
 	}
 
@@ -190,32 +206,32 @@ func getVPCPrivateNetwork(ctx context.Context, d *plugin.QueryData, h *plugin.Hy
 	// Create client
 	client, err := getSessionConfig(ctx, d)
 	if err != nil {
-		plugin.Logger(ctx).Error("scaleway_vpc_private_network.listVPCPrivateNetworks", "connection_error", err)
+		plugin.Logger(ctx).Error("scaleway_instance_snapshot.getInstanceSnapshot", "connection_error", err)
 		return nil, err
 	}
 
-	// Create SDK objects for Scaleway VPC product
-	vpcApi := vpc.NewAPI(client)
+	// Create SDK objects for Scaleway Instance product
+	instanceApi := instance.NewAPI(client)
 
 	id := d.KeyColumnQuals["id"].GetStringValue()
-	instanceZone := d.KeyColumnQuals["zone"].GetStringValue()
+	snapshotZone := d.KeyColumnQuals["zone"].GetStringValue()
 
 	// No inputs
-	if id == "" && instanceZone == "" {
+	if id == "" && snapshotZone == "" {
 		return nil, nil
 	}
 
-	data, err := vpcApi.GetPrivateNetwork(&vpc.GetPrivateNetworkRequest{
-		PrivateNetworkID: id,
-		Zone:             parseZoneData,
+	data, err := instanceApi.GetSnapshot(&instance.GetSnapshotRequest{
+		SnapshotID: id,
+		Zone:       parseZoneData,
 	})
 	if err != nil {
-		plugin.Logger(ctx).Error("scaleway_vpc_private_network.getVPCPrivateNetwork", "query_error", err)
+		plugin.Logger(ctx).Error("scaleway_instance_snapshot.getInstanceSnapshot", "query_error", err)
 		if is404Error(err) {
 			return nil, nil
 		}
 		return nil, err
 	}
 
-	return data, nil
+	return data.Snapshot, nil
 }

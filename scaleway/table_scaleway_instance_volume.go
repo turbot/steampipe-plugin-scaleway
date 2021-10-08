@@ -144,6 +144,7 @@ func listInstanceVolumes(ctx context.Context, d *plugin.QueryData, _ *plugin.Hyd
 
 	req := &instance.ListVolumesRequest{
 		Zone: parseZoneData,
+		Page: scw.Int32Ptr(1),
 	}
 	// Additional filters
 	if quals["name"] != nil {
@@ -185,9 +186,9 @@ func listInstanceVolumes(ctx context.Context, d *plugin.QueryData, _ *plugin.Hyd
 
 		if resp.TotalCount == uint32(count) {
 			break
-		} else if count == int(maxResult) {
-			req.Page = scw.Int32Ptr(*req.Page + 1)
 		}
+		req.Page = scw.Int32Ptr(*req.Page + 1)
+
 	}
 
 	return nil, nil

@@ -21,9 +21,11 @@ func Plugin(ctx context.Context) *plugin.Plugin {
 		},
 		TableMap: map[string]*plugin.Table{
 			"scaleway_account_ssh_key":         tableScalewayAccountSSHKey(ctx),
+			"scaleway_instance_image":          tableScalewayInstanceImage(ctx),
 			"scaleway_instance_ip":             tableScalewayInstanceIP(ctx),
 			"scaleway_instance_security_group": tableScalewayInstanceSecurityGroup(ctx),
 			"scaleway_instance_server":         tableScalewayInstanceServer(ctx),
+			"scaleway_instance_snapshot":       tableScalewayInstanceSnapshot(ctx),
 			"scaleway_instance_volume":         tableScalewayInstanceVolume(ctx),
 			"scaleway_object_bucket":           tableScalewayObjectBucket(ctx),
 			"scaleway_rdb_database":            tableScalewayRDBDatabase(ctx),

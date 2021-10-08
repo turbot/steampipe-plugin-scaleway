@@ -13,13 +13,13 @@ import (
 
 //// TABLE DEFINITION
 
-func tableScalewayInstanceSecurityGroup(_ context.Context) *plugin.Table {
+func tableScalewayInstanceImage(_ context.Context) *plugin.Table {
 	return &plugin.Table{
-		Name:          "scaleway_instance_security_group",
-		Description:   "A security group is a set of firewall rules on a set of instances.",
+		Name:          "scaleway_instance_image",
+		Description:   "Images are backups of your instances.",
 		GetMatrixItem: BuildZoneList,
 		List: &plugin.ListConfig{
-			Hydrate: listInstanceSecurityGroups,
+			Hydrate: listInstanceImages,
 			KeyColumns: []*plugin.KeyColumn{
 				{
 					Name:    "name",
@@ -32,89 +32,81 @@ func tableScalewayInstanceSecurityGroup(_ context.Context) *plugin.Table {
 			},
 		},
 		Get: &plugin.GetConfig{
-			Hydrate:    getInstanceSecurityGroup,
+			Hydrate:    getInstanceImage,
 			KeyColumns: plugin.AllColumns([]string{"id", "zone"}),
 		},
 		Columns: []*plugin.Column{
 			{
 				Name:        "name",
-				Description: "The user-defined name of the security group.",
+				Description: "The user-defined name of the image.",
 				Type:        proto.ColumnType_STRING,
 			},
 			{
 				Name:        "id",
-				Description: "An unique identifier of the security group.",
+				Description: "An unique identifier of the image.",
 				Type:        proto.ColumnType_STRING,
 				Transform:   transform.FromField("ID"),
 			},
 			{
-				Name:        "description",
-				Description: "The security group's description.",
+				Name:        "state",
+				Description: "The current state of the image.",
 				Type:        proto.ColumnType_STRING,
+				Transform:   transform.FromField("State").Transform(transform.ToString),
 			},
 			{
-				Name:        "project_default",
-				Description: "Indicates whether it is default security group for this project ID, or not.",
-				Type:        proto.ColumnType_BOOL,
-			},
-			{
-				Name:        "organization_default",
-				Description: "Indicates whether it is default security group for this organization ID, or not.",
+				Name:        "public",
+				Description: "Indicates whether the image is public, or not.",
 				Type:        proto.ColumnType_BOOL,
 			},
 			{
 				Name:        "creation_date",
-				Description: "The time when the security group was created.",
+				Description: "The time when the image was created.",
 				Type:        proto.ColumnType_TIMESTAMP,
 			},
 			{
-				Name:        "enable_default_security",
-				Description: "Indicates whether SMTP is blocked on IPv4 and IPv6, or not.",
-				Type:        proto.ColumnType_BOOL,
-			},
-			{
-				Name:        "inbound_default_policy",
-				Description: "Specifies the default inbound policy.",
+				Name:        "arch",
+				Description: "The architecture the image is compatible with. Possible values are 'x86_64' and 'arm'.",
 				Type:        proto.ColumnType_STRING,
-				Transform:   transform.FromField("InboundDefaultPolicy").Transform(transform.ToString),
+				Transform:   transform.FromField("Arch").Transform(transform.ToString),
 			},
 			{
-				Name:        "outbound_default_policy",
-				Description: "Specifies the default outbound policy.",
+				Name:        "from_server",
+				Description: "The ID of the server the image if based from.",
 				Type:        proto.ColumnType_STRING,
-				Transform:   transform.FromField("OutboundDefaultPolicy").Transform(transform.ToString),
 			},
 			{
-				Name:        "modification_date",
-				Description: "The time when the security group was last modified.",
-				Type:        proto.ColumnType_TIMESTAMP,
+				Name:        "default_boot_script",
+				Description: "Describes the default bootscript for this image.",
+				Type:        proto.ColumnType_JSON,
+				Transform:   transform.FromField("DefaultBootscript"),
 			},
 			{
-				Name:        "stateful",
-				Description: "Indicates whether the security group is stateful, or not.",
-				Type:        proto.ColumnType_BOOL,
+				Name:        "extra_volumes",
+				Description: "Describes the extra volumes for this image.",
+				Type:        proto.ColumnType_JSON,
+				Transform:   transform.FromField("DefaultBootscript"),
 			},
 			{
-				Name:        "servers",
-				Description: "A list of tags associated with the security group.",
+				Name:        "root_volume",
+				Description: "Describes the root volume in this image.",
 				Type:        proto.ColumnType_JSON,
 			},
 
 			// Scaleway standard columns
 			{
 				Name:        "zone",
-				Description: "Specifies the zone where the security group resides.",
+				Description: "Specifies the zone where the image resides.",
 				Type:        proto.ColumnType_STRING,
 				Transform:   transform.FromField("Zone").Transform(transform.ToString),
 			},
 			{
 				Name:        "project",
-				Description: "The ID of the project where the security group resides.",
+				Description: "The ID of the project where the image resides.",
 				Type:        proto.ColumnType_STRING,
 			},
 			{
 				Name:        "organization",
-				Description: "The ID of the organization where the security group resides.",
+				Description: "The ID of the organization where the image resides.",
 				Type:        proto.ColumnType_STRING,
 			},
 
@@ -131,12 +123,12 @@ func tableScalewayInstanceSecurityGroup(_ context.Context) *plugin.Table {
 
 //// LIST FUNCTION
 
-func listInstanceSecurityGroups(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
+func listInstanceImages(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 	zone := plugin.GetMatrixItem(ctx)["zone"].(string)
 
 	parseZoneData, err := scw.ParseZone(zone)
 	if err != nil {
-		plugin.Logger(ctx).Error("scaleway_instance_security_group.listInstanceSecurityGroups", "zone_parsing_error", err)
+		plugin.Logger(ctx).Error("scaleway_instance_image.listInstanceImages", "zone_parsing_error", err)
 		return nil, err
 	}
 
@@ -148,14 +140,14 @@ func listInstanceSecurityGroups(ctx context.Context, d *plugin.QueryData, _ *plu
 	// Create client
 	client, err := getSessionConfig(ctx, d)
 	if err != nil {
-		plugin.Logger(ctx).Error("scaleway_instance_security_group.listInstanceSecurityGroups", "connection_error", err)
+		plugin.Logger(ctx).Error("scaleway_instance_image.listInstanceImages", "connection_error", err)
 		return nil, err
 	}
 
 	// Create SDK objects for Scaleway Instance product
 	instanceApi := instance.NewAPI(client)
 
-	req := &instance.ListSecurityGroupsRequest{
+	req := &instance.ListImagesRequest{
 		Zone: parseZoneData,
 		Page: scw.Int32Ptr(1),
 	}
@@ -164,7 +156,7 @@ func listInstanceSecurityGroups(ctx context.Context, d *plugin.QueryData, _ *plu
 		req.Name = scw.StringPtr(quals["name"].GetStringValue())
 	}
 
-	// Retrieve the list of security groups
+	// Retrieve the list of images
 	maxResult := int64(100)
 
 	// Reduce the basic request limit down if the user has only requested a small number of rows
@@ -179,14 +171,14 @@ func listInstanceSecurityGroups(ctx context.Context, d *plugin.QueryData, _ *plu
 	var count int
 
 	for {
-		resp, err := instanceApi.ListSecurityGroups(req)
+		resp, err := instanceApi.ListImages(req)
 		if err != nil {
-			plugin.Logger(ctx).Error("scaleway_instance_security_group.listInstanceSecurityGroups", "query_error", err)
+			plugin.Logger(ctx).Error("scaleway_instance_image.listInstanceImages", "query_error", err)
 			return nil, err
 		}
 
-		for _, securityGroup := range resp.SecurityGroups {
-			d.StreamListItem(ctx, securityGroup)
+		for _, image := range resp.Images {
+			d.StreamListItem(ctx, image)
 
 			// Increase the resource count by 1
 			count++
@@ -208,12 +200,12 @@ func listInstanceSecurityGroups(ctx context.Context, d *plugin.QueryData, _ *plu
 
 //// HYDRATE FUNCTIONS
 
-func getInstanceSecurityGroup(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
+func getInstanceImage(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 	zone := plugin.GetMatrixItem(ctx)["zone"].(string)
 
 	parseZoneData, err := scw.ParseZone(zone)
 	if err != nil {
-		plugin.Logger(ctx).Error("scaleway_instance_security_group.getInstanceSecurityGroup", "zone_parsing_error", err)
+		plugin.Logger(ctx).Error("scaleway_instance_image.getInstanceImage", "zone_parsing_error", err)
 		return nil, err
 	}
 
@@ -224,7 +216,7 @@ func getInstanceSecurityGroup(ctx context.Context, d *plugin.QueryData, h *plugi
 	// Create client
 	client, err := getSessionConfig(ctx, d)
 	if err != nil {
-		plugin.Logger(ctx).Error("scaleway_instance_security_group.getInstanceSecurityGroup", "connection_error", err)
+		plugin.Logger(ctx).Error("scaleway_instance_image.getInstanceImage", "connection_error", err)
 		return nil, err
 	}
 
@@ -232,24 +224,24 @@ func getInstanceSecurityGroup(ctx context.Context, d *plugin.QueryData, h *plugi
 	instanceApi := instance.NewAPI(client)
 
 	id := d.KeyColumnQuals["id"].GetStringValue()
-	instanceZone := d.KeyColumnQuals["zone"].GetStringValue()
+	imageZone := d.KeyColumnQuals["zone"].GetStringValue()
 
 	// No inputs
-	if id == "" && instanceZone == "" {
+	if id == "" && imageZone == "" {
 		return nil, nil
 	}
 
-	data, err := instanceApi.GetSecurityGroup(&instance.GetSecurityGroupRequest{
-		SecurityGroupID: id,
-		Zone:            parseZoneData,
+	data, err := instanceApi.GetImage(&instance.GetImageRequest{
+		ImageID: id,
+		Zone:    parseZoneData,
 	})
 	if err != nil {
-		plugin.Logger(ctx).Error("scaleway_instance_security_group.getInstanceSecurityGroup", "query_error", err)
+		plugin.Logger(ctx).Error("scaleway_instance_image.getInstanceImage", "query_error", err)
 		if is404Error(err) {
 			return nil, nil
 		}
 		return nil, err
 	}
 
-	return data.SecurityGroup, nil
+	return data.Image, nil
 }

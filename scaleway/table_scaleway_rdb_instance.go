@@ -168,6 +168,7 @@ func listRDBInstances(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydrat
 
 	req := &rdb.ListInstancesRequest{
 		Region: parseRegionData,
+		Page:   scw.Int32Ptr(1),
 	}
 	// Additional filters
 	if quals["name"] != nil {
@@ -209,9 +210,9 @@ func listRDBInstances(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydrat
 
 		if resp.TotalCount == uint32(count) {
 			break
-		} else if count == int(maxResult) {
-			req.Page = scw.Int32Ptr(*req.Page + 1)
 		}
+		req.Page = scw.Int32Ptr(*req.Page + 1)
+
 	}
 
 	return nil, nil

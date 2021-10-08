@@ -117,6 +117,7 @@ func listInstanceIPs(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydrate
 
 	req := &instance.ListIPsRequest{
 		Zone: parseZoneData,
+		Page: scw.Int32Ptr(1),
 	}
 
 	// Retrieve the list of IPs
@@ -154,9 +155,8 @@ func listInstanceIPs(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydrate
 
 		if resp.TotalCount == uint32(count) {
 			break
-		} else if count == int(maxResult) {
-			req.Page = scw.Int32Ptr(*req.Page + 1)
 		}
+		req.Page = scw.Int32Ptr(*req.Page + 1)
 	}
 
 	return nil, nil

@@ -106,7 +106,9 @@ func listAccountSSHKeys(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydr
 	// Create SDK objects for Scaleway Instance product
 	accountApi := account.NewAPI(client)
 
-	req := &account.ListSSHKeysRequest{}
+	req := &account.ListSSHKeysRequest{
+		Page: scw.Int32Ptr(1),
+	}
 
 	// Additional filter
 	if d.KeyColumnQuals["name"] != nil {
@@ -147,9 +149,9 @@ func listAccountSSHKeys(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydr
 
 		if resp.TotalCount == uint32(count) {
 			break
-		} else if count == int(maxResult) {
-			req.Page = scw.Int32Ptr(*req.Page + 1)
 		}
+		req.Page = scw.Int32Ptr(*req.Page + 1)
+
 	}
 
 	return nil, nil
