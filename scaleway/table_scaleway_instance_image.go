@@ -26,6 +26,11 @@ func tableScalewayInstanceImage(_ context.Context) *plugin.Table {
 					Require: plugin.Optional,
 				},
 				{
+					Name:      "public",
+					Require:   plugin.Optional,
+					Operators: []string{"<>", "="},
+				},
+				{
 					Name:    "zone",
 					Require: plugin.Optional,
 				},
@@ -154,6 +159,23 @@ func listInstanceImages(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydr
 	// Additional filters
 	if quals["name"] != nil {
 		req.Name = scw.StringPtr(quals["name"].GetStringValue())
+	}
+
+	if d.KeyColumnQuals["public"] != nil {
+		req.Public = scw.BoolPtr(d.KeyColumnQuals["public"].GetBoolValue())
+	}
+
+	// Non-Equals Qual Map handling
+	if d.Quals["public"] != nil {
+		for _, q := range d.Quals["public"].Quals {
+			value := q.Value.GetBoolValue()
+			if q.Operator == "<>" {
+				req.Public = scw.BoolPtr(false)
+				if !value {
+					req.Public = scw.BoolPtr(true)
+				}
+			}
+		}
 	}
 
 	// Retrieve the list of images
