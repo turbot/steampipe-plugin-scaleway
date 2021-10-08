@@ -6,8 +6,9 @@ import (
 )
 
 type scalewayConfig struct {
-	AccessKey *string `cty:"access_key"`
-	SecretKey *string `cty:"secret_key"`
+	AccessKey *string  `cty:"access_key"`
+	SecretKey *string  `cty:"secret_key"`
+	Regions   []string `cty:"regions"`
 }
 
 var ConfigSchema = map[string]*schema.Attribute{
@@ -16,6 +17,10 @@ var ConfigSchema = map[string]*schema.Attribute{
 	},
 	"secret_key": {
 		Type: schema.TypeString,
+	},
+	"regions": {
+		Type: schema.TypeList,
+		Elem: &schema.Attribute{Type: schema.TypeString},
 	},
 }
 

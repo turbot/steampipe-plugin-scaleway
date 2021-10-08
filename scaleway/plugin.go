@@ -25,6 +25,7 @@ func Plugin(ctx context.Context) *plugin.Plugin {
 			"scaleway_instance_security_group": tableScalewayInstanceSecurityGroup(ctx),
 			"scaleway_instance_server":         tableScalewayInstanceServer(ctx),
 			"scaleway_instance_volume":         tableScalewayInstanceVolume(ctx),
+			"scaleway_object_bucket":           tableScalewayObjectBucket(ctx),
 			"scaleway_rdb_database":            tableScalewayRDBDatabase(ctx),
 			"scaleway_rdb_instance":            tableScalewayRDBInstance(ctx),
 			"scaleway_vpc_private_network":     tableScalewayVPCPrivateNetwork(ctx),

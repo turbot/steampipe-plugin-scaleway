@@ -1,5 +1,10 @@
 connection "scaleway" {
-  plugin = "scaleway"
+  plugin  = "scaleway"
+
+  # You may connect to one or more regions. If `regions` is not specified,
+  # Steampipe will use a single default region using:
+  # The `SCW_DEFAULT_REGION` environment variable
+  # regions     = ["fr-par", "nl-ams"]
 
   # Set the static credential with the `access_key` and `secret_key` arguments
   # Alternatively, if no creds passed in config, you may set the environment variables using
