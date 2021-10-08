@@ -220,10 +220,10 @@ func getInstanceVolume(ctx context.Context, d *plugin.QueryData, h *plugin.Hydra
 	instanceApi := instance.NewAPI(client)
 
 	id := d.KeyColumnQuals["id"].GetStringValue()
-	instanceZone := d.KeyColumnQuals["zone"].GetStringValue()
+	volumeZone := d.KeyColumnQuals["zone"].GetStringValue()
 
 	// No inputs
-	if id == "" && instanceZone == "" {
+	if id == "" && volumeZone == "" {
 		return nil, nil
 	}
 

@@ -188,10 +188,10 @@ func getInstanceIP(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateDa
 	instanceApi := instance.NewAPI(client)
 
 	id := d.KeyColumnQuals["id"].GetStringValue()
-	instanceZone := d.KeyColumnQuals["zone"].GetStringValue()
+	ipZone := d.KeyColumnQuals["zone"].GetStringValue()
 
 	// No inputs
-	if id == "" && instanceZone == "" {
+	if id == "" && ipZone == "" {
 		return nil, nil
 	}
 

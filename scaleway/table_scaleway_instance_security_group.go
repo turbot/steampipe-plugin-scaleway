@@ -232,10 +232,10 @@ func getInstanceSecurityGroup(ctx context.Context, d *plugin.QueryData, h *plugi
 	instanceApi := instance.NewAPI(client)
 
 	id := d.KeyColumnQuals["id"].GetStringValue()
-	instanceZone := d.KeyColumnQuals["zone"].GetStringValue()
+	sgZone := d.KeyColumnQuals["zone"].GetStringValue()
 
 	// No inputs
-	if id == "" && instanceZone == "" {
+	if id == "" && sgZone == "" {
 		return nil, nil
 	}
 

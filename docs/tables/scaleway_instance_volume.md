@@ -74,5 +74,6 @@ select
 from
   scaleway_instance_volume as v,
   scaleway_instance_server as s
-where s.id = v.server ->> 'id';
+where
+  s.id = v.server ->> 'id';
 ```

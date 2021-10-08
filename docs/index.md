@@ -58,7 +58,7 @@ steampipe plugin install scaleway
 | Credentials | [Get your credentials](https://console.scaleway.com/project/credentials) from [Scaleway console](https://console.scaleway.com). |
 | Radius | Each connection represents a single Scaleway project. |
 | Resolution | 1. Credentials explicitly set in a steampipe config file (`~/.steampipe/config/scaleway.spc`).<br />2. Credentials specified in environment variables e.g. `SCW_ACCESS_KEY` and `SCW_SECRET_KEY`. |
-| Region Resolution | 1. Regions set for the connection via the regions argument in the config file (~/.steampipe/config/scaleway.spc).<br />2. The region specified in the `SCW_DEFAULT_REGION` environment variable.|
+| Region Resolution | 1. Regions set for the connection via the regions argument in the config file (~/.steampipe/config/scaleway.spc).<br />2. The region specified in the `SCW_DEFAULT_REGION` environment variable. |
 
 ### Configuration
 
@@ -121,7 +121,7 @@ connection "scaleway_01" {
 }
 
 connection "scaleway_02" {
-  plugin      = "scaleway" 
+  plugin      = "scaleway"
   regions     = ["pl-waw"]
 }
 ```
@@ -138,11 +138,11 @@ Alternatively, can use an unqualified name and it will be resolved according to 
 select * from scaleway_vpc_private_network;
 ```
 
-You can multi-project connections by using an [**aggregator** connection](https://steampipe.io/docs/using-steampipe/managing-connections#using-aggregators).  Aggregators allow you to query data from multiple connections for a plugin as if they are a single connection:
+You can multi-project connections by using an [**aggregator** connection](https://steampipe.io/docs/using-steampipe/managing-connections#using-aggregators).Aggregators allow you to query data from multiple connections for a plugin as if they are a single connection:
 
 ```hcl
 connection "scaleway_all" {
-  plugin      = "scaleway" 
+  plugin      = "scaleway"
   type        = "aggregator"
   connections = ["scaleway_01", "scaleway_02"]
 }
@@ -159,15 +159,15 @@ Steampipe supports the `*` wildcard in the connection names. For example, to agg
 ```hcl
 connection "scaleway_all" {
   type        = "aggregator"
-  plugin      = "scaleway"  
+  plugin      = "scaleway"
   connections = ["scaleway_*"]
 }
 ```
 
-Aggregators are powerful, but they are not infinitely scalable. Like any other steampipe connection, they query APIs and are subject to API limits and throttling.  Consider as an example and aggregator that includes 3 Scaleway connections, where each connection queries 3 regions. This means you essentially run the same list API calls 9 times! When using aggregators, it is especially important to:
+Aggregators are powerful, but they are not infinitely scalable. Like any other steampipe connection, they query APIs and are subject to API limits and throttling.Consider as an example and aggregator that includes 3 Scaleway connections, where each connection queries 3 regions. This means you essentially run the same list API calls 9 times! When using aggregators, it is especially important to:
 
 - Query only what you need! `select * from scaleway_object_bucket` must make a list API call in each connection, and then 9 API calls *for each bucket*, where `select name, versioning_enabled from scaleway_object_bucket` would only require a single API call per bucket.
-- Consider extending the [cache TTL](https://steampipe.io/docs/reference/config-files#connection-options). The default is currently 300 seconds (5 minutes). Obviously, anytime steampipe can pull from the cache, its is faster and less impactful to the APIs. If you don't need the most up-to-date results, increase the cache TTL!
+- Consider extending the [cache TTL](https://steampipe.io/docs/reference/config-files#connection-options). The default is currently 300 seconds (5 minutes).Obviously, anytime steampipe can pull from the cache, its is faster and less impactful to the APIs. If you don't need the most up-to-date results, increase the cache TTL!
 
 ## Configuring Scaleway Credentials
 

@@ -198,10 +198,10 @@ func getVPCPrivateNetwork(ctx context.Context, d *plugin.QueryData, h *plugin.Hy
 	vpcApi := vpc.NewAPI(client)
 
 	id := d.KeyColumnQuals["id"].GetStringValue()
-	instanceZone := d.KeyColumnQuals["zone"].GetStringValue()
+	vpcZone := d.KeyColumnQuals["zone"].GetStringValue()
 
 	// No inputs
-	if id == "" && instanceZone == "" {
+	if id == "" && vpcZone == "" {
 		return nil, nil
 	}
 
