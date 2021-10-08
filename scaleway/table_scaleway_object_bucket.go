@@ -17,7 +17,7 @@ import (
 func tableScalewayObjectBucket(_ context.Context) *plugin.Table {
 	return &plugin.Table{
 		Name:          "scaleway_object_bucket",
-		Description:   "Scaleway Object Bucket",
+		Description:   "A Scaleway Object bucket is a public cloud storage resource available in Scaleway, an object storage offering.",
 		GetMatrixItem: BuildRegionList,
 		List: &plugin.ListConfig{
 			Hydrate: listObjectBuckets,

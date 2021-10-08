@@ -16,7 +16,7 @@ import (
 func tableScalewayAccountSSHKey(_ context.Context) *plugin.Table {
 	return &plugin.Table{
 		Name:        "scaleway_account_ssh_key",
-		Description: "Scaleway Account SSH Key",
+		Description: "SSH keys to access servers provisioned on Scaleway.",
 		List: &plugin.ListConfig{
 			Hydrate: listAccountSSHKeys,
 			KeyColumns: []*plugin.KeyColumn{

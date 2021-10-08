@@ -16,7 +16,7 @@ import (
 func tableScalewayInstanceIP(_ context.Context) *plugin.Table {
 	return &plugin.Table{
 		Name:          "scaleway_instance_ip",
-		Description:   "Scaleway Instance IP",
+		Description:   "A flexible IP address is an IP address which you hold independently of any server.",
 		GetMatrixItem: BuildZoneList,
 		List: &plugin.ListConfig{
 			Hydrate: listInstanceIPs,

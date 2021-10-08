@@ -16,7 +16,7 @@ import (
 func tableScalewayInstanceVolume(_ context.Context) *plugin.Table {
 	return &plugin.Table{
 		Name:          "scaleway_instance_volume",
-		Description:   "Scaleway Instance Volume",
+		Description:   "A volume is where you store your data inside your instance.",
 		GetMatrixItem: BuildZoneList,
 		List: &plugin.ListConfig{
 			Hydrate: listInstanceVolumes,
