@@ -5,7 +5,7 @@ icon_url: "/images/plugins/turbot/scaleway.svg"
 brand_color: "#4F0599"
 display_name: "Scaleway"
 short_name: "scaleway"
-description: "Steampipe plugin to query servers, networks, databases and more from Scaleway account."
+description: "Steampipe plugin to query servers, networks, databases and more from your Scaleway project."
 og_description: "Query Scaleway with SQL! Open source CLI. No DB required."
 og_image: "/images/plugins/turbot/scaleway-social-graphic.png"
 ---
@@ -16,7 +16,7 @@ og_image: "/images/plugins/turbot/scaleway-social-graphic.png"
 
 [Steampipe](https://steampipe.io) is an open source CLI to instantly query cloud APIs using SQL.
 
-List VPC Private Networks in your Scaleway project:
+List VPC private networks in your Scaleway project:
 
 ```sql
 select
@@ -68,16 +68,16 @@ Installing the latest scaleway plugin will create a config file (`~/.steampipe/c
 connection "scaleway" {
   plugin  = "scaleway"
 
-  # You may connect to one or more regions. If `regions` is not specified,
-  # Steampipe will use a single default region using:
-  # The `SCW_DEFAULT_REGION` environment variable
-  # regions     = ["fr-par", "nl-ams"]
-
-  # Set the static credential with the `access_key` and `secret_key` arguments
-  # Alternatively, if no creds passed in config, you may set the environment variables using
-  # `SCW_ACCESS_KEY` and `SCW_SECRET_KEY` arguments
+  # Set the static credential with the `access_key` and `secret_key` arguments.
+  # Alternatively, if no creds passed in config, you may set the environment
+  # variables using the `SCW_ACCESS_KEY` and `SCW_SECRET_KEY` arguments.
   access_key = "YOUR_ACCESS_KEY"
   secret_key = "YOUR_SECRET_ACCESS_KEY"
+
+  # You may connect to one or more regions. If `regions` is not specified,
+  # Steampipe will use a single default region using the `SCW_DEFAULT_REGION`
+  # environment variable.
+  # regions = ["fr-par", "nl-ams"]
 }
 ```
 
@@ -116,13 +116,13 @@ You may create multiple scaleway connections:
 
 ```hcl
 connection "scaleway_01" {
-  plugin      = "scaleway" 
-  regions     = ["fr-par", "nl-ams"]
+  plugin  = "scaleway"
+  regions = ["fr-par", "nl-ams"]
 }
 
 connection "scaleway_02" {
-  plugin      = "scaleway"
-  regions     = ["pl-waw"]
+  plugin  = "scaleway"
+  regions = ["pl-waw"]
 }
 ```
 

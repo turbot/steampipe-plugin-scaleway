@@ -19,7 +19,7 @@ from
   scaleway_instance_image;
 ```
 
-### List of custom (user-defined) images defined
+### List custom (user-defined) images
 
 ```sql
 select

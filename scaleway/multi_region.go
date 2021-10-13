@@ -163,7 +163,7 @@ func GetDefaultScalewayRegion(d *plugin.QueryData) string {
 		allRegions = append(allRegions, i.String())
 	}
 
-	// get ibm config info
+	// get config info
 	scalewayConfig := GetConfig(d.Connection)
 
 	var regions []string

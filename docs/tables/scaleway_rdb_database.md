@@ -1,6 +1,6 @@
 # Table: scaleway_rdb_database
 
-A RDB database is a logical databases on your instance.
+An RDB database is a fully managed database that supports high availability, automatic backups, and more.
 
 ## Examples
 

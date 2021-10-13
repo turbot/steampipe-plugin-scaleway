@@ -1,6 +1,6 @@
 # Table: scaleway_instance_server
 
-A Compute Instance server is a virtual server in Scaleway.
+An instance, either virtual or physical, provides resources to run your applications on.
 
 ## Examples
 
@@ -35,7 +35,7 @@ where
   state = 'stopped';
 ```
 
-### List old instance servers
+### List instance servers older than 90 days
 
 ```sql
 select

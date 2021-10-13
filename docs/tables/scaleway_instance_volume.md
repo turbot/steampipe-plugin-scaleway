@@ -31,7 +31,7 @@ group by
   volume_type;
 ```
 
-### List of unattached volumes
+### List unattached volumes
 
 ```sql
 select
@@ -43,7 +43,7 @@ where
   server is null;
 ```
 
-### List volumes with size more than 100000000000 B (or 100 GB)
+### List volumes with size more than 10 GB (10000000000 Bytes)
 
 ```sql
 select
@@ -57,7 +57,7 @@ select
 from
   scaleway_instance_volume
 where
-  size > 100000000000;
+  size > 10000000000;
 ```
 
 ### Find volumes attached to stopped instance servers

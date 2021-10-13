@@ -18,7 +18,7 @@ from
   scaleway_instance_security_group;
 ```
 
-### List default security group in a project
+### List default security groups
 
 ```sql
 select

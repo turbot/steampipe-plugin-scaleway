@@ -35,7 +35,7 @@ where
   extract(day from current_timestamp - creation_date) > 90;
 ```
 
-### List large snapshots (> 100GB or 100000000000B)
+### List large snapshots (> 100GB or 100000000000 Bytes)
 
 ```sql
 select

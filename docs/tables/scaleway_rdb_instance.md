@@ -1,6 +1,6 @@
 # Table: scaleway_rdb_instance
 
-A Database Instance is composed of one or more Nodes, depending of the is_ha_cluster setting.
+A database instance is composed of one or more nodes, depending on the high-availability cluster setting.
 
 ## Examples
 
@@ -18,7 +18,7 @@ from
   scaleway_rdb_instance;
 ```
 
-### count instances by engine type
+### Count instances by engine type
 
 ```sql
 select

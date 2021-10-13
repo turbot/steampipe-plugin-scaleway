@@ -1,6 +1,6 @@
 # Table: scaleway_account_ssh_key
 
-Manages user SSH keys to access servers provisioned on Scaleway.
+SSH keys allow you to securely connect to your compute instances without using a password.
 
 ## Examples
 
