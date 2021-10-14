@@ -1,3 +1,9 @@
+## v0.0.2 [2021-10-13]
+
+_Bug fixes_
+
+- Fixed: Typo in `scaleway_instance_snapshot` table document filename
+
 ## v0.0.1 [2021-10-12]
 
 _What's new?_
