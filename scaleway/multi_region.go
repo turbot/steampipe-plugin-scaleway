@@ -7,8 +7,8 @@ import (
 
 	"github.com/scaleway/scaleway-sdk-go/scw"
 	"github.com/turbot/go-kit/helpers"
-	"github.com/turbot/steampipe-plugin-sdk/connection"
-	"github.com/turbot/steampipe-plugin-sdk/plugin"
+	"github.com/turbot/steampipe-plugin-sdk/v3/connection"
+	"github.com/turbot/steampipe-plugin-sdk/v3/plugin"
 )
 
 // Regions is the current known list of valid regions

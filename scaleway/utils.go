@@ -5,7 +5,7 @@ import (
 
 	"github.com/aws/aws-sdk-go/service/s3"
 	"github.com/turbot/go-kit/types"
-	"github.com/turbot/steampipe-plugin-sdk/plugin/transform"
+	"github.com/turbot/steampipe-plugin-sdk/v3/plugin/transform"
 )
 
 func handleNilString(_ context.Context, d *transform.TransformData) (interface{}, error) {
