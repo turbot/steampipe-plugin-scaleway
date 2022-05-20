@@ -6,7 +6,7 @@ Use SQL to query infrastructure servers, networks, databases and more from your 
 
 - **[Get started →](https://hub.steampipe.io/plugins/turbot/scaleway)**
 - Documentation: [Table definitions & examples](https://hub.steampipe.io/plugins/turbot/scaleway/tables)
-- Community: [Slack Channel](https://join.slack.com/t/steampipe/shared_invite/zt-oij778tv-lYyRTWOTMQYBVAbtPSWs3g)
+- Community: [Slack Channel](https://steampipe.io/community/join)
 - Get involved: [Issues](https://github.com/turbot/steampipe-plugin-scaleway/issues)
 
 ## Quick start
