@@ -17,7 +17,7 @@ func tableScalewayRDBDatabase(_ context.Context) *plugin.Table {
 	return &plugin.Table{
 		Name:          "scaleway_rdb_database",
 		Description:   "A RDB database is a logical databases on your instance.",
-		GetMatrixItem: BuildRegionList,
+		GetMatrixItemFunc: BuildRegionList,
 		List: &plugin.ListConfig{
 			Hydrate:       listRDBDatabases,
 			ParentHydrate: listRDBInstances,

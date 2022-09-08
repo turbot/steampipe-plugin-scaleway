@@ -17,7 +17,7 @@ func tableScalewayVPCPrivateNetwork(_ context.Context) *plugin.Table {
 	return &plugin.Table{
 		Name:          "scaleway_vpc_private_network",
 		Description:   "A VPC private network allows interconnecting your instances in an isolated and private network.",
-		GetMatrixItem: BuildZoneList,
+		GetMatrixItemFunc: BuildZoneList,
 		List: &plugin.ListConfig{
 			Hydrate: listVPCPrivateNetworks,
 			KeyColumns: []*plugin.KeyColumn{

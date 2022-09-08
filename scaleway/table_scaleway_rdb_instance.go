@@ -17,7 +17,7 @@ func tableScalewayRDBInstance(_ context.Context) *plugin.Table {
 	return &plugin.Table{
 		Name:          "scaleway_rdb_instance",
 		Description:   "A Database Instance is composed of one or more Nodes, depending of the is_ha_cluster setting.",
-		GetMatrixItem: BuildRegionList,
+		GetMatrixItemFunc: BuildRegionList,
 		List: &plugin.ListConfig{
 			Hydrate: listRDBInstances,
 			KeyColumns: []*plugin.KeyColumn{

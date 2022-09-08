@@ -17,7 +17,7 @@ func tableScalewayInstanceServer(_ context.Context) *plugin.Table {
 	return &plugin.Table{
 		Name:          "scaleway_instance_server",
 		Description:   "A Compute Instance server is a virtual server in Scaleway.",
-		GetMatrixItem: BuildZoneList,
+		GetMatrixItemFunc: BuildZoneList,
 		List: &plugin.ListConfig{
 			Hydrate: listInstanceServers,
 			KeyColumns: []*plugin.KeyColumn{

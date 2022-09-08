@@ -17,7 +17,7 @@ func tableScalewayInstanceVolume(_ context.Context) *plugin.Table {
 	return &plugin.Table{
 		Name:          "scaleway_instance_volume",
 		Description:   "A volume is where you store your data inside your instance.",
-		GetMatrixItem: BuildZoneList,
+		GetMatrixItemFunc: BuildZoneList,
 		List: &plugin.ListConfig{
 			Hydrate: listInstanceVolumes,
 			KeyColumns: []*plugin.KeyColumn{

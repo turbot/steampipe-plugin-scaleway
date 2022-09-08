@@ -17,7 +17,7 @@ func tableScalewayInstanceSecurityGroup(_ context.Context) *plugin.Table {
 	return &plugin.Table{
 		Name:          "scaleway_instance_security_group",
 		Description:   "A security group is a set of firewall rules on a set of instances.",
-		GetMatrixItem: BuildZoneList,
+		GetMatrixItemFunc: BuildZoneList,
 		List: &plugin.ListConfig{
 			Hydrate: listInstanceSecurityGroups,
 			KeyColumns: []*plugin.KeyColumn{

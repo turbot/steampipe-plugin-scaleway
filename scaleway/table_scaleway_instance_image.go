@@ -17,7 +17,7 @@ func tableScalewayInstanceImage(_ context.Context) *plugin.Table {
 	return &plugin.Table{
 		Name:          "scaleway_instance_image",
 		Description:   "Images are backups of your instances.",
-		GetMatrixItem: BuildZoneList,
+		GetMatrixItemFunc: BuildZoneList,
 		List: &plugin.ListConfig{
 			Hydrate: listInstanceImages,
 			KeyColumns: []*plugin.KeyColumn{

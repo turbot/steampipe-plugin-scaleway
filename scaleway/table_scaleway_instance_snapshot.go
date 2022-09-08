@@ -17,7 +17,7 @@ func tableScalewayInstanceSnapshot(_ context.Context) *plugin.Table {
 	return &plugin.Table{
 		Name:          "scaleway_instance_snapshot",
 		Description:   "Snapshots contain the data of a specific volume at a particular point in time.",
-		GetMatrixItem: BuildZoneList,
+		GetMatrixItemFunc: BuildZoneList,
 		List: &plugin.ListConfig{
 			Hydrate: listInstanceSnapshots,
 			KeyColumns: []*plugin.KeyColumn{
