@@ -7,8 +7,7 @@ import (
 
 	"github.com/scaleway/scaleway-sdk-go/scw"
 	"github.com/turbot/go-kit/helpers"
-	"github.com/turbot/steampipe-plugin-sdk/v3/connection"
-	"github.com/turbot/steampipe-plugin-sdk/v3/plugin"
+	"github.com/turbot/steampipe-plugin-sdk/v4/plugin"
 )
 
 // Regions is the current known list of valid regions
@@ -20,28 +19,20 @@ func Zones() []scw.Zone {
 	return scw.AllZones
 }
 
-var pluginQueryData *plugin.QueryData
-
-func init() {
-	pluginQueryData = &plugin.QueryData{
-		ConnectionManager: connection.NewManager(),
-	}
-}
 
 // BuildRegionList :: return a list of matrix items, one per region
-func BuildRegionList(_ context.Context, connection *plugin.Connection) []map[string]interface{} {
-	pluginQueryData.Connection = connection
+func BuildRegionList(_ context.Context, d *plugin.QueryData) []map[string]interface{} {
 
 	// cache matrix
 	cacheKey := "RegionListMatrix"
-	if cachedData, ok := pluginQueryData.ConnectionManager.Cache.Get(cacheKey); ok {
+	if cachedData, ok := d.ConnectionManager.Cache.Get(cacheKey); ok {
 		return cachedData.([]map[string]interface{})
 	}
 
 	var allRegions []string
 
 	// retrieve regions from connection config
-	scalewayConfig := GetConfig(connection)
+	scalewayConfig := GetConfig(d.Connection)
 	if scalewayConfig.Regions != nil {
 		regions := Regions()
 		for _, pattern := range scalewayConfig.Regions {
@@ -68,37 +59,36 @@ func BuildRegionList(_ context.Context, connection *plugin.Connection) []map[str
 		}
 
 		// set cache
-		pluginQueryData.ConnectionManager.Cache.Set(cacheKey, matrix)
+		d.ConnectionManager.Cache.Set(cacheKey, matrix)
 
 		return matrix
 	}
 
 	// Search for region configured using env, or use default region (i.e. fr-par)
-	defaultScalewayRegion := GetDefaultScalewayRegion(pluginQueryData)
+	defaultScalewayRegion := GetDefaultScalewayRegion(d)
 	matrix := []map[string]interface{}{
 		{"region": defaultScalewayRegion},
 	}
 
 	// set cache
-	pluginQueryData.ConnectionManager.Cache.Set(cacheKey, matrix)
+	d.ConnectionManager.Cache.Set(cacheKey, matrix)
 
 	return matrix
 }
 
 // BuildZoneList :: return a list of matrix items, one per zone
-func BuildZoneList(_ context.Context, connection *plugin.Connection) []map[string]interface{} {
-	pluginQueryData.Connection = connection
+func BuildZoneList(_ context.Context, d *plugin.QueryData) []map[string]interface{} {
 
 	// cache matrix
 	cacheKey := "ZoneListMatrix"
-	if cachedData, ok := pluginQueryData.ConnectionManager.Cache.Get(cacheKey); ok {
+	if cachedData, ok := d.ConnectionManager.Cache.Get(cacheKey); ok {
 		return cachedData.([]map[string]interface{})
 	}
 
 	var allRegions []string
 
 	// retrieve regions from connection config
-	scalewayConfig := GetConfig(connection)
+	scalewayConfig := GetConfig(d.Connection)
 	if scalewayConfig.Regions != nil {
 		regions := Regions()
 		for _, pattern := range scalewayConfig.Regions {
@@ -111,7 +101,7 @@ func BuildZoneList(_ context.Context, connection *plugin.Connection) []map[strin
 	}
 
 	// Get default region
-	defaultRegion := GetDefaultScalewayRegion(pluginQueryData)
+	defaultRegion := GetDefaultScalewayRegion(d)
 	allRegions = append(allRegions, defaultRegion)
 
 	// Build regions matrix using config regions
@@ -135,7 +125,7 @@ func BuildZoneList(_ context.Context, connection *plugin.Connection) []map[strin
 		}
 
 		// set cache
-		pluginQueryData.ConnectionManager.Cache.Set(cacheKey, matrix)
+		d.ConnectionManager.Cache.Set(cacheKey, matrix)
 
 		return matrix
 	}
@@ -146,7 +136,7 @@ func BuildZoneList(_ context.Context, connection *plugin.Connection) []map[strin
 	}
 
 	// set cache
-	pluginQueryData.ConnectionManager.Cache.Set(cacheKey, matrix)
+	d.ConnectionManager.Cache.Set(cacheKey, matrix)
 
 	return matrix
 }

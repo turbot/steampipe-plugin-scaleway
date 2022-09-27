@@ -7,18 +7,18 @@ import (
 	"github.com/aws/aws-sdk-go/aws/awserr"
 	"github.com/aws/aws-sdk-go/service/s3"
 
-	"github.com/turbot/steampipe-plugin-sdk/v3/grpc/proto"
-	"github.com/turbot/steampipe-plugin-sdk/v3/plugin"
-	"github.com/turbot/steampipe-plugin-sdk/v3/plugin/transform"
+	"github.com/turbot/steampipe-plugin-sdk/v4/grpc/proto"
+	"github.com/turbot/steampipe-plugin-sdk/v4/plugin"
+	"github.com/turbot/steampipe-plugin-sdk/v4/plugin/transform"
 )
 
 //// TABLE DEFINITION
 
 func tableScalewayObjectBucket(_ context.Context) *plugin.Table {
 	return &plugin.Table{
-		Name:          "scaleway_object_bucket",
-		Description:   "A Scaleway Object bucket is a public cloud storage resource available in Scaleway, an object storage offering.",
-		GetMatrixItem: BuildRegionList,
+		Name:              "scaleway_object_bucket",
+		Description:       "A Scaleway Object bucket is a public cloud storage resource available in Scaleway, an object storage offering.",
+		GetMatrixItemFunc: BuildRegionList,
 		List: &plugin.ListConfig{
 			Hydrate: listObjectBuckets,
 		},

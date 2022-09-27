@@ -6,9 +6,9 @@ import (
 	"github.com/scaleway/scaleway-sdk-go/api/instance/v1"
 
 	"github.com/scaleway/scaleway-sdk-go/scw"
-	"github.com/turbot/steampipe-plugin-sdk/v3/grpc/proto"
-	"github.com/turbot/steampipe-plugin-sdk/v3/plugin"
-	"github.com/turbot/steampipe-plugin-sdk/v3/plugin/transform"
+	"github.com/turbot/steampipe-plugin-sdk/v4/grpc/proto"
+	"github.com/turbot/steampipe-plugin-sdk/v4/plugin"
+	"github.com/turbot/steampipe-plugin-sdk/v4/plugin/transform"
 )
 
 //// TABLE DEFINITION
@@ -17,7 +17,7 @@ func tableScalewayInstanceSnapshot(_ context.Context) *plugin.Table {
 	return &plugin.Table{
 		Name:          "scaleway_instance_snapshot",
 		Description:   "Snapshots contain the data of a specific volume at a particular point in time.",
-		GetMatrixItem: BuildZoneList,
+		GetMatrixItemFunc: BuildZoneList,
 		List: &plugin.ListConfig{
 			Hydrate: listInstanceSnapshots,
 			KeyColumns: []*plugin.KeyColumn{
