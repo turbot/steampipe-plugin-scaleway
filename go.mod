@@ -6,7 +6,7 @@ require (
 	github.com/aws/aws-sdk-go v1.40.58
 	github.com/scaleway/scaleway-sdk-go v1.0.0-beta.7
 	github.com/turbot/go-kit v0.4.0
-	github.com/turbot/steampipe-plugin-sdk/v4 v4.1.7
+	github.com/turbot/steampipe-plugin-sdk/v4 v4.1.8
 	golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1
 )
 
