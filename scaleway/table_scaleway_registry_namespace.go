@@ -93,7 +93,7 @@ func tableScalewayRegistryNamespace(_ context.Context) *plugin.Table {
 			},
 			{
 				Name:        "region",
-				Description: "Specifies the region where the namespace.",
+				Description: "Specifies the region where the namespace is located.",
 				Type:        proto.ColumnType_STRING,
 				Transform:   transform.FromField("Region").Transform(transform.ToString),
 			},
