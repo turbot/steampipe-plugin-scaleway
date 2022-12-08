@@ -78,8 +78,8 @@ func tableScalewayRegistryNamespace(_ context.Context) *plugin.Table {
 			{
 				Name:        "size",
 				Description: "Total size of the namespace, calculated as the sum of the size of all images in the namespace.",
-				Type:        proto.ColumnType_STRING,
-				Transform:   transform.FromField("Size").Transform(transform.ToString),
+				Type:        proto.ColumnType_INT,
+				Transform:   transform.FromField("Size").Transform(transform.ToInt),
 			},
 			{
 				Name:        "created_at",
