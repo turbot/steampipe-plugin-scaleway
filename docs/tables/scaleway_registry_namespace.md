@@ -11,7 +11,7 @@ select
   name,
   id,
   status,
-  created_date,
+  created_at,
   region,
   project,
   organization
@@ -26,12 +26,12 @@ select
   name,
   id,
   status,
-  created_date,
+  created_at,
   region,
   project,
   organization
 from
-  scaleway_registry_namespace;
+  scaleway_registry_namespace
 where
   is_public = true;
 ```
