@@ -30,7 +30,7 @@ func Plugin(ctx context.Context) *plugin.Plugin {
 			"scaleway_object_bucket":           tableScalewayObjectBucket(ctx),
 			"scaleway_rdb_database":            tableScalewayRDBDatabase(ctx),
 			"scaleway_rdb_instance":            tableScalewayRDBInstance(ctx),
-			"scaleway_registry_namespace":	tableScalewayRegistryNamespace(ctx),
+			"scaleway_registry_namespace":      tableScalewayRegistryNamespace(ctx),
 			"scaleway_vpc_private_network":     tableScalewayVPCPrivateNetwork(ctx),
 		},
 	}

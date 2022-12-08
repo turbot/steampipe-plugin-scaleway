@@ -47,6 +47,12 @@ func tableScalewayRegistryNamespace(_ context.Context) *plugin.Table {
 				Type:        proto.ColumnType_STRING,
 			},
 			{
+				Name:        "id",
+				Description: "An unique identifier of the instance.",
+				Type:        proto.ColumnType_STRING,
+				Transform:   transform.FromField("ID"),
+			},
+			{
 				Name:        "status",
 				Description: "The current status of the namespace.",
 				Type:        proto.ColumnType_STRING,
