@@ -19,7 +19,7 @@ func tableScalewayRegistryNamespace(_ context.Context) *plugin.Table {
 		Description:       "Registry Namespaces allow you to manage your Container Registry in Scaleway.",
 		GetMatrixItemFunc: BuildRegionList,
 		List: &plugin.ListConfig{
-			Hydrate: listRegistryNamespace,
+			Hydrate: listRegistryNamespaces,
 			KeyColumns: []*plugin.KeyColumn{
 				{
 					Name:    "name",
@@ -32,7 +32,7 @@ func tableScalewayRegistryNamespace(_ context.Context) *plugin.Table {
 			},
 		},
 		Get: &plugin.GetConfig{
-			Hydrate:    getRegsitryNamespace,
+			Hydrate:    getRegistryNamespace,
 			KeyColumns: plugin.AllColumns([]string{"id", "region"}),
 		},
 		Columns: []*plugin.Column{
@@ -129,12 +129,12 @@ func tableScalewayRegistryNamespace(_ context.Context) *plugin.Table {
 
 //// LIST FUNCTION
 
-func listRegistryNamespace(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
+func listRegistryNamespaces(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 	region := plugin.GetMatrixItem(ctx)["region"].(string)
 
 	parseRegionData, err := scw.ParseRegion(region)
 	if err != nil {
-		plugin.Logger(ctx).Error("scaleway_regsitry_namespace.listRegsitryNamespace", "region_parsing_error", err)
+		plugin.Logger(ctx).Error("scaleway_registry_namespace.listRegistryNamespaces", "region_parsing_error", err)
 		return nil, err
 	}
 
@@ -146,7 +146,7 @@ func listRegistryNamespace(ctx context.Context, d *plugin.QueryData, _ *plugin.H
 	// Create client
 	client, err := getSessionConfig(ctx, d)
 	if err != nil {
-		plugin.Logger(ctx).Error("scaleway_regsitry_namespace.listRegsitryNamespace", "connection_error", err)
+		plugin.Logger(ctx).Error("scaleway_registry_namespace.listRegistryNamespaces", "connection_error", err)
 		return nil, err
 	}
 
@@ -179,7 +179,7 @@ func listRegistryNamespace(ctx context.Context, d *plugin.QueryData, _ *plugin.H
 	for {
 		resp, err := registryApi.ListNamespaces(req)
 		if err != nil {
-			plugin.Logger(ctx).Error("scaleway_regsitry_namespace.listRegsitryNamespace", "query_error", err)
+			plugin.Logger(ctx).Error("scaleway_registry_namespace.listRegistryNamespaces", "query_error", err)
 			return nil, err
 		}
 
@@ -206,12 +206,12 @@ func listRegistryNamespace(ctx context.Context, d *plugin.QueryData, _ *plugin.H
 
 //// HYDRATE FUNCTIONS
 
-func getRegsitryNamespace(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
+func getRegistryNamespace(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 	region := plugin.GetMatrixItem(ctx)["region"].(string)
 
 	parseRegionData, err := scw.ParseRegion(region)
 	if err != nil {
-		plugin.Logger(ctx).Error("scaleway_regsitry_namespace.getRegsitryNamespace", "region_parsing_error", err)
+		plugin.Logger(ctx).Error("scaleway_registry_namespace.getRegistryNamespace", "region_parsing_error", err)
 		return nil, err
 	}
 
@@ -222,7 +222,7 @@ func getRegsitryNamespace(ctx context.Context, d *plugin.QueryData, h *plugin.Hy
 	// Create client
 	client, err := getSessionConfig(ctx, d)
 	if err != nil {
-		plugin.Logger(ctx).Error("scaleway_regsitry_namespace.getRegsitryNamespace", "connection_error", err)
+		plugin.Logger(ctx).Error("scaleway_registry_namespace.getRegistryNamespace", "connection_error", err)
 		return nil, err
 	}
 
@@ -242,7 +242,7 @@ func getRegsitryNamespace(ctx context.Context, d *plugin.QueryData, h *plugin.Hy
 		Region:      parseRegionData,
 	})
 	if err != nil {
-		plugin.Logger(ctx).Error("scaleway_regsitry_namespace.getRegsitryNamespace", "query_error", err)
+		plugin.Logger(ctx).Error("scaleway_registry_namespace.getRegistryNamespace", "query_error", err)
 		if is404Error(err) {
 			return nil, nil
 		}
