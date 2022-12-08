@@ -19,7 +19,7 @@ from
   scaleway_registry_namespace;
 ```
 
-### List public registry namespace
+### List public registry namespaces
 
 ```sql
 select
