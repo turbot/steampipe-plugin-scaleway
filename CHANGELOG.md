@@ -1,3 +1,14 @@
+## v0.4.0 [2022-12-08]
+
+_What's new?_
+
+- New tables added
+  - [scaleway_registry_namespace](https://hub.steampipe.io/plugins/turbot/scaleway/tables/scaleway_registry_namespace) ([#19](https://github.com/turbot/steampipe-plugin-scaleway/pull/19)) (Thanks to [@jplanckeel](https://github.com/jplanckeel) for the contribution!)
+
+_Enhancements_
+
+- Recompiled plugin with [steampipe-plugin-sdk v4.1.8](https://github.com/turbot/steampipe-plugin-sdk/blob/main/CHANGELOG.md#v418-2022-09-08) which increases the default open file limit. ([#18](https://github.com/turbot/steampipe-plugin-scaleway/pull/18))
+
 ## v0.3.0 [2022-09-27]
 
 _Dependencies_
