@@ -125,7 +125,7 @@ func listRegistryImages(ctx context.Context, d *plugin.QueryData, h *plugin.Hydr
 
 	parseRegionData, err := scw.ParseRegion(region)
 	if err != nil {
-		plugin.Logger(ctx).Error("scaleway_registry_Image.listRegistryImages", "region_parsing_error", err)
+		plugin.Logger(ctx).Error("scaleway_registry_image.listRegistryImages", "region_parsing_error", err)
 		return nil, err
 	}
 
@@ -137,7 +137,7 @@ func listRegistryImages(ctx context.Context, d *plugin.QueryData, h *plugin.Hydr
 	// Create client
 	client, err := getSessionConfig(ctx, d)
 	if err != nil {
-		plugin.Logger(ctx).Error("scaleway_registry_Image.listRegistryImages", "connection_error", err)
+		plugin.Logger(ctx).Error("scaleway_registry_image.listRegistryImages", "connection_error", err)
 		return nil, err
 	}
 
@@ -171,7 +171,7 @@ func listRegistryImages(ctx context.Context, d *plugin.QueryData, h *plugin.Hydr
 	for {
 		resp, err := registryApi.ListImages(req)
 		if err != nil {
-			plugin.Logger(ctx).Error("scaleway_registry_Image.listRegistryImages", "query_error", err)
+			plugin.Logger(ctx).Error("scaleway_registry_image.listRegistryImages", "query_error", err)
 			return nil, err
 		}
 
@@ -214,7 +214,7 @@ func getRegistryImage(ctx context.Context, d *plugin.QueryData, h *plugin.Hydrat
 	// Create client
 	client, err := getSessionConfig(ctx, d)
 	if err != nil {
-		plugin.Logger(ctx).Error("scaleway_registry_Image.getRegistryImage", "connection_error", err)
+		plugin.Logger(ctx).Error("scaleway_registry_image.getRegistryImage", "connection_error", err)
 		return nil, err
 	}
 
@@ -234,7 +234,7 @@ func getRegistryImage(ctx context.Context, d *plugin.QueryData, h *plugin.Hydrat
 		Region:  parseRegionData,
 	})
 	if err != nil {
-		plugin.Logger(ctx).Error("scaleway_registry_Image.getRegistryImage", "query_error", err)
+		plugin.Logger(ctx).Error("scaleway_registry_image.getRegistryImage", "query_error", err)
 		if is404Error(err) {
 			return nil, nil
 		}
