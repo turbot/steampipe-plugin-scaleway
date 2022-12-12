@@ -222,10 +222,10 @@ func getRegistryImage(ctx context.Context, d *plugin.QueryData, h *plugin.Hydrat
 	registryApi := registry.NewAPI(client)
 
 	id := d.KeyColumnQuals["id"].GetStringValue()
-	RegistryRegion := d.KeyColumnQuals["region"].GetStringValue()
+	registryRegion := d.KeyColumnQuals["region"].GetStringValue()
 
 	// No inputs
-	if id == "" && RegistryRegion == "" {
+	if id == "" && registryRegion == "" {
 		return nil, nil
 	}
 
