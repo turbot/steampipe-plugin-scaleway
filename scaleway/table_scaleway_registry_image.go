@@ -57,19 +57,16 @@ func tableScalewayRegistryImage(_ context.Context) *plugin.Table {
 				Name:        "status",
 				Description: "The current status of the Image.",
 				Type:        proto.ColumnType_STRING,
-				Transform:   transform.FromField("Status").Transform(transform.ToString),
 			},
 			{
 				Name:        "visibility",
 				Description: "A `public` image is pullable from internet without authentication, opposed to a `private` image. `inherit` will use the namespace `is_public` parameter.",
 				Type:        proto.ColumnType_STRING,
-				Transform:   transform.FromField("Visibility").Transform(transform.ToString),
 			},
 			{
 				Name:        "size",
 				Description: "Image size in bytes, calculated from the size of image layers. One layer used in two tags of the same image is counted once but one layer used in two images is counted twice.",
 				Type:        proto.ColumnType_INT,
-				Transform:   transform.FromField("Size").Transform(transform.ToInt),
 			},
 			{
 				Name:        "created_at",
@@ -205,10 +202,6 @@ func getRegistryImage(ctx context.Context, d *plugin.QueryData, h *plugin.Hydrat
 	if err != nil {
 		plugin.Logger(ctx).Error("scaleway_registry_Image.getRegistryImage", "region_parsing_error", err)
 		return nil, err
-	}
-
-	if d.KeyColumnQuals["region"].GetStringValue() != region {
-		return nil, nil
 	}
 
 	// Create client
