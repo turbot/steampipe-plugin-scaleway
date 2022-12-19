@@ -25,7 +25,8 @@ func tableScalewayRegistryImage(_ context.Context) *plugin.Table {
 				{
 					Name:    "name",
 					Require: plugin.Optional,
-				}, {
+				}, 
+				{
 					Name:    "namespace_id",
 					Require: plugin.Optional,
 				},
