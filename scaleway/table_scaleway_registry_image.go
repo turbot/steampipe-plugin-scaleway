@@ -38,12 +38,12 @@ func tableScalewayRegistryImage(_ context.Context) *plugin.Table {
 		Columns: []*plugin.Column{
 			{
 				Name:        "name",
-				Description: "The Image name, unique in a namespace",
+				Description: "The image name, unique in a namespace",
 				Type:        proto.ColumnType_STRING,
 			},
 			{
 				Name:        "namespace_id",
-				Description: "The unique ID of the Namespace the image belongs to",
+				Description: "The unique ID of the namespace the image belongs to.",
 				Type:        proto.ColumnType_STRING,
 				Transform:   transform.FromField("NamespaceID"),
 			},
@@ -70,12 +70,12 @@ func tableScalewayRegistryImage(_ context.Context) *plugin.Table {
 			},
 			{
 				Name:        "created_at",
-				Description: "The time when the Image was created.",
+				Description: "The time when the image was created.",
 				Type:        proto.ColumnType_TIMESTAMP,
 			},
 			{
 				Name:        "updated_at",
-				Description: "The time when the Image was updated.",
+				Description: "The time when the image was updated.",
 				Type:        proto.ColumnType_TIMESTAMP,
 			},
 			{
@@ -200,7 +200,7 @@ func getRegistryImage(ctx context.Context, d *plugin.QueryData, h *plugin.Hydrat
 
 	parseRegionData, err := scw.ParseRegion(region)
 	if err != nil {
-		plugin.Logger(ctx).Error("scaleway_registry_Image.getRegistryImage", "region_parsing_error", err)
+		plugin.Logger(ctx).Error("scaleway_registry_image.getRegistryImage", "region_parsing_error", err)
 		return nil, err
 	}
 
