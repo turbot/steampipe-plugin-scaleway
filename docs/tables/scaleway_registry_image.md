@@ -34,3 +34,21 @@ from
 where
   updated_at >= now() - interval '10' day
 ```
+
+
+### List images with a public visibility
+
+```sql
+select
+  name,
+  id,
+  status,
+  created_at,
+  updated_at
+  tags,
+  visibility
+from
+  scaleway_registry_image
+where
+  visibility = 'public'
+```
