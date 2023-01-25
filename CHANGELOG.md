@@ -1,3 +1,14 @@
+## v0.5.0 [2023-01-25]
+
+_What's new?_
+
+- New tables added
+  - [scaleway_registry_image](https://hub.steampipe.io/plugins/turbot/scaleway/tables/scaleway_registry_image) ([#20](https://github.com/turbot/steampipe-plugin-scaleway/pull/20)) (Thanks to [@jplanckeel](https://github.com/jplanckeel) for the contribution!)
+
+_Dependencies_
+
+- Recompiled plugin with [steampipe-plugin-sdk v4.1.11](https://github.com/turbot/steampipe-plugin-sdk/blob/main/CHANGELOG.md#v4111-2023-01-24) which fixes the issue of non-caching of all the columns of the queried table. ([#21](https://github.com/turbot/steampipe-plugin-scaleway/pull/21))
+
 ## v0.4.0 [2022-12-08]
 
 _What's new?_
