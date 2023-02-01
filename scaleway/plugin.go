@@ -27,6 +27,7 @@ func Plugin(ctx context.Context) *plugin.Plugin {
 			"scaleway_instance_server":         tableScalewayInstanceServer(ctx),
 			"scaleway_instance_snapshot":       tableScalewayInstanceSnapshot(ctx),
 			"scaleway_instance_volume":         tableScalewayInstanceVolume(ctx),
+			"scaleway_kubernetes_cluster":      tableScalewayKubernetesCluster(ctx),
 			"scaleway_object_bucket":           tableScalewayObjectBucket(ctx),
 			"scaleway_rdb_database":            tableScalewayRDBDatabase(ctx),
 			"scaleway_rdb_instance":            tableScalewayRDBInstance(ctx),
