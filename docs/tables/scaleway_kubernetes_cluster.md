@@ -19,7 +19,7 @@ from
   scaleway_kubernetes_cluster;
 ```
 
-### List Kapsule cluster
+### List Kapsule clusters
 
 ```sql
 select
