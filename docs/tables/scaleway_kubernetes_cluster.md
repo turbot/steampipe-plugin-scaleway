@@ -68,7 +68,7 @@ where
 
 ```
 
-### List clusters with upgrade available
+### List clusters with upgrades available
 
 ```sql
 select
