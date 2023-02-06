@@ -51,7 +51,7 @@ where
   type = 'multicloud';
 ```
 
-### List clusters with Kubernetes version is inferior to 1.24
+### List clusters with Kubernetes version inferior to 1.24
 
 ```sql
 select
