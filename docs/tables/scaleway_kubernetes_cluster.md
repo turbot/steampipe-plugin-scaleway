@@ -85,7 +85,7 @@ where
 
 ```
 
-### List clusters with auto upgrade enable
+### List clusters with auto-upgrade enabled
 
 ```sql
 select
