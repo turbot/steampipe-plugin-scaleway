@@ -65,7 +65,6 @@ from
   scaleway_kubernetes_cluster
 where
   version < '1.24';
-
 ```
 
 ### List clusters with upgrades available
@@ -82,7 +81,6 @@ from
   scaleway_kubernetes_cluster
 where
   upgrade_available is true;
-
 ```
 
 ### List clusters with auto-upgrade enabled
@@ -99,5 +97,4 @@ from
   scaleway_kubernetes_cluster
 where
   auto_upgrade @> '{"enabled":true}';
-
 ```

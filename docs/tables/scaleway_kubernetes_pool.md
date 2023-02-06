@@ -67,5 +67,4 @@ from
   scaleway_kubernetes_pool
 where
   version < '1.24';
-
 ```
