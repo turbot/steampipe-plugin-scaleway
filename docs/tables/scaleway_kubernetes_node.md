@@ -33,7 +33,7 @@ where
   status <> 'ready';
 ```
 
-### List kubernetes node with ipv6 public
+### List kubernetes nodes with ipv6 public
 
 ```sql
 select
