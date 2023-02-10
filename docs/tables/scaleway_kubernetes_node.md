@@ -49,7 +49,7 @@ where
   public_ip_v6 != '<nil>';
 ```
 
-### List kubernetes node createad more than 90 days ago
+### List kubernetes nodes created more than 90 days ago
 
 ```sql
 select
