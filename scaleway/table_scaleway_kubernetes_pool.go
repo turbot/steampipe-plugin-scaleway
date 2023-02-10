@@ -55,7 +55,7 @@ func tableScalewayKubernetesPool(_ context.Context) *plugin.Table {
 			},
 			{
 				Name:        "node_type",
-				Description: "The type of the pool.",
+				Description: "The type of the node.",
 				Type:        proto.ColumnType_STRING,
 				Transform:   transform.FromField("NodeType").Transform(transform.ToString),
 			},
