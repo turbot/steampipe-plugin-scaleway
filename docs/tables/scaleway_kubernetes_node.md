@@ -17,7 +17,7 @@ from
   scaleway_kubernetes_node;
 ```
 
-### List kubernetes node with status is not ready
+### List kubernetes nodes where status is not ready
 
 ```sql
 select
