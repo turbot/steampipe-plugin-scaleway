@@ -1,4 +1,4 @@
-# Table: scaleway_kubernetes_pool
+# Table: scaleway_kubernetes_node
 
 A Scaleway Kubernetes is a public cloud managed kubernetes available in Scaleway.
 
