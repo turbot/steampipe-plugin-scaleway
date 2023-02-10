@@ -1,6 +1,6 @@
 # Table: scaleway_kubernetes_pool
 
-A Scaleway Kubernetes is a public cloud mamanged kubernetes available in Scaleway.
+A Scaleway Kubernetes pool is a group of Scaleway Instances, organized by type. It represents the computing power of the cluster and contains the Kubernetes nodes, on which the containers run.
 
 ## Examples
 

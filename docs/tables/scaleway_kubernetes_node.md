@@ -1,6 +1,6 @@
 # Table: scaleway_kubernetes_node
 
-A Scaleway Kubernetes is a public cloud managed kubernetes available in Scaleway.
+A Scaleway Kubernetes node may be a virtual or physical machine, depending on the cluster. Each node is managed by the control plane and contains the services necessary to run Pods.
 
 ## Examples
 
