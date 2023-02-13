@@ -254,10 +254,9 @@ func getKubernetesNode(ctx context.Context, d *plugin.QueryData, h *plugin.Hydra
 	kubernetesApi := k8s.NewAPI(client)
 
 	id := d.KeyColumnQuals["id"].GetStringValue()
-	KubernetesRegion := d.KeyColumnQuals["region"].GetStringValue()
 
 	// No inputs
-	if id == "" && KubernetesRegion == "" {
+	if id == "" {
 		return nil, nil
 	}
 
