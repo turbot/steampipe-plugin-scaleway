@@ -79,7 +79,7 @@ func tableScalewayKubernetesNode(_ context.Context) *plugin.Table {
 			},
 			{
 				Name:        "conditions",
-				Description: "These conditions contains the Node Problem Detector conditionse.",
+				Description: "These conditions contain the Node Problem Detector condition.",
 				Type:        proto.ColumnType_JSON,
 				Transform:   transform.FromField("Conditions"),
 			},
