@@ -283,10 +283,9 @@ func getKubernetesCluster(ctx context.Context, d *plugin.QueryData, h *plugin.Hy
 	kubernetesApi := k8s.NewAPI(client)
 
 	id := d.KeyColumnQuals["id"].GetStringValue()
-	KubernetesRegion := d.KeyColumnQuals["region"].GetStringValue()
 
-	// No inputs
-	if id == "" && KubernetesRegion == "" {
+	// No input id has been passed
+	if id == "" {
 		return nil, nil
 	}
 
