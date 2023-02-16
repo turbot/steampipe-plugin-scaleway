@@ -19,7 +19,7 @@ from
   scaleway_kubernetes_pool;
 ```
 
-### List kubernetes pool with specific node type
+### List kubernetes pools with a specific node type
 
 ```sql
 select
@@ -36,7 +36,7 @@ where
   node_type = 'play2_nano';
 ```
 
-### List kubernetes pool with autoscaling false
+### List kubernetes pools with auto-scaling disabled
 
 ```sql
 select
@@ -53,7 +53,7 @@ where
   autoscaling is false;
 ```
 
-### List kubernetes pool with Kubernetes version is inferior to 1.24
+### List kubernetes pools with Kubernetes version inferior to 1.24
 
 ```sql
 select

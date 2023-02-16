@@ -62,5 +62,5 @@ select
 from
   scaleway_kubernetes_node
 where
-  created_at <= now() - interval '90' day
+  created_at <= now() - interval '90' day;
 ```

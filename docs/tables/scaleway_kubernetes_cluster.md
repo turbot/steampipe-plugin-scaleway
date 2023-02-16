@@ -1,6 +1,6 @@
 # Table: scaleway_kubernetes_cluster
 
-A Scaleway Kubernetes is a public cloud managed kubernetes available in Scaleway.
+A Scaleway Kubernetes is a public cloud managed Kubernetes available in Scaleway.
 
 ## Examples
 
@@ -35,7 +35,7 @@ where
   type = 'kapsule';
 ```
 
-### List Kosmos cluster
+### List Kosmos clusters
 
 ```sql
 select
