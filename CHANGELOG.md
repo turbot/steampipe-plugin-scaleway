@@ -1,3 +1,12 @@
+## v0.6.0 [2023-02-16]
+
+_What's new?_
+
+- New tables added
+  - [scaleway_kubernetes_cluster](https://hub.steampipe.io/plugins/turbot/scaleway/tables/scaleway_kubernetes_cluster) ([#23](https://github.com/turbot/steampipe-plugin-scaleway/pull/23)) (Thanks to [@jplanckeel](https://github.com/jplanckeel) for the contribution!)
+  - [scaleway_kubernetes_node](https://hub.steampipe.io/plugins/turbot/scaleway/tables/scaleway_kubernetes_node) ([#23](https://github.com/turbot/steampipe-plugin-scaleway/pull/23)) (Thanks to [@jplanckeel](https://github.com/jplanckeel) for the contribution!)
+  - [scaleway_kubernetes_pool](https://hub.steampipe.io/plugins/turbot/scaleway/tables/scaleway_kubernetes_pool) ([#23](https://github.com/turbot/steampipe-plugin-scaleway/pull/23)) (Thanks to [@jplanckeel](https://github.com/jplanckeel) for the contribution!)
+
 ## v0.5.0 [2023-01-25]
 
 _What's new?_
