@@ -108,7 +108,7 @@ func tableScalewayBaremetalServer(_ context.Context) *plugin.Table {
 			},
 			{
 				Name:        "ping_status",
-				Description: "The install of the server.",
+				Description: "The status of the ping.",
 				Type:        proto.ColumnType_STRING,
 				Transform:   transform.FromField("PingStatus").Transform(transform.ToString),
 			},
