@@ -43,7 +43,7 @@ select
   name,
   id,
   status,
-   extract(day from current_timestamp - created_date) as age,
+  extract(day from current_timestamp - created_date) as age,
   zone,
   project,
   organization
