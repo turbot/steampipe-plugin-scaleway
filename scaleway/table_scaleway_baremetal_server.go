@@ -157,21 +157,6 @@ func tableScalewayBaremetalServer(_ context.Context) *plugin.Table {
 //// LIST FUNCTION
 
 func listBaremetalServers(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
-	zone := plugin.GetMatrixItem(ctx)["zone"].(string)
-	if zone != "fr-par-1" && zone != "fr-par-2 " {
-		return nil, nil
-	}
-
-	parseZoneData, err := scw.ParseZone(zone)
-	if err != nil {
-		plugin.Logger(ctx).Error("scaleway_baremetal_server.listBaremetalServers", "zone_parsing_error", err)
-		return nil, err
-	}
-
-	quals := d.KeyColumnQuals
-	if quals["zone"] != nil && quals["zone"].GetStringValue() != zone {
-		return nil, nil
-	}
 
 	// Create client
 	client, err := getSessionConfig(ctx, d)
@@ -182,6 +167,29 @@ func listBaremetalServers(ctx context.Context, d *plugin.QueryData, _ *plugin.Hy
 
 	// Create SDK objects for Scaleway Baremetal product
 	baremetalApi := baremetal.NewAPI(client)
+
+	baremetalZones := baremetalApi.Zones()
+	zone := plugin.GetMatrixItem(ctx)["zone"].(string)
+	parseZoneData, err := scw.ParseZone(zone)
+	if err != nil {
+		plugin.Logger(ctx).Error("scaleway_baremetal_server.listBaremetalServers", "zone_parsing_error", err)
+		return nil, err
+	}
+
+	var zoneAvailable bool = false
+	for _, v := range baremetalZones {
+		if v == parseZoneData {
+			zoneAvailable = true
+		}
+	}
+	if !zoneAvailable {
+		return nil, nil
+	}
+
+	quals := d.KeyColumnQuals
+	if quals["zone"] != nil && quals["zone"].GetStringValue() != zone {
+		return nil, nil
+	}
 
 	req := &baremetal.ListServersRequest{
 		Zone: parseZoneData,
