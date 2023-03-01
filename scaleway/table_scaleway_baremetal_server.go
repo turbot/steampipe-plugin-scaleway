@@ -32,7 +32,7 @@ func tableScalewayBaremetalServer(_ context.Context) *plugin.Table {
 			},
 		},
 		Get: &plugin.GetConfig{
-			Hydrate:    getInstanceServer,
+			Hydrate:    getBaremetalServer,
 			KeyColumns: plugin.AllColumns([]string{"id", "zone"}),
 		},
 		Columns: []*plugin.Column{
@@ -198,8 +198,7 @@ func listBaremetalServers(ctx context.Context, d *plugin.QueryData, _ *plugin.Hy
 			maxResult = *limit
 		}
 	}
-	//check if we need this
-	//req.PerPage = scw.Uint32Ptr(uint32(maxResult))
+	req.PageSize = scw.Uint32Ptr(uint32(maxResult))
 
 	var count int
 
