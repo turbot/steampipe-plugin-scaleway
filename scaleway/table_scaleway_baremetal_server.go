@@ -177,7 +177,7 @@ func listBaremetalServers(ctx context.Context, d *plugin.QueryData, _ *plugin.Hy
 		return nil, err
 	}
 
-	// Create SDK objects for Scaleway Instance product
+	// Create SDK objects for Scaleway Baremetal product
 	baremetalApi := baremetal.NewAPI(client)
 
 	req := &baremetal.ListServersRequest{
