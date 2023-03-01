@@ -1,6 +1,6 @@
 # Table: scaleway_baremetal_server
 
-An bare metal provides dedicate server to run your applications on.
+A bare metal provides a dedicated server to run your applications on.
 
 ## Examples
 
