@@ -49,7 +49,7 @@ func tableScalewayBaremetalServer(_ context.Context) *plugin.Table {
 			},
 			{
 				Name:        "description",
-				Description: "The cdescription of the server.",
+				Description: "The description of the server.",
 				Type:        proto.ColumnType_STRING,
 			},
 			{
