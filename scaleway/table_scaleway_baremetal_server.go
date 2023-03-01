@@ -91,7 +91,7 @@ func tableScalewayBaremetalServer(_ context.Context) *plugin.Table {
 			},
 			{
 				Name:        "ips",
-				Description: "A list of ips associated with the server.",
+				Description: "A list of IPs associated with the server.",
 				Type:        proto.ColumnType_JSON,
 				Transform:   transform.FromField("IPs"),
 			},
