@@ -43,7 +43,7 @@ func tableScalewayBaremetalServer(_ context.Context) *plugin.Table {
 			},
 			{
 				Name:        "id",
-				Description: "An unique identifier of the server.",
+				Description: "A unique identifier of the server.",
 				Type:        proto.ColumnType_STRING,
 				Transform:   transform.FromField("ID"),
 			},
