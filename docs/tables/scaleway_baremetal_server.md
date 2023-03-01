@@ -20,7 +20,7 @@ from
   scaleway_baremetal_server;
 ```
 
-### List stopped baremetal servers
+### List stopped bare metal servers
 
 ```sql
 select
