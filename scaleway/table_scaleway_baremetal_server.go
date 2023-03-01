@@ -158,6 +158,9 @@ func tableScalewayBaremetalServer(_ context.Context) *plugin.Table {
 
 func listBaremetalServers(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 	zone := plugin.GetMatrixItem(ctx)["zone"].(string)
+	if zone != "fr-par-1" || zone != "fr-par-2 " {
+		return nil, nil
+	}
 
 	parseZoneData, err := scw.ParseZone(zone)
 	if err != nil {
