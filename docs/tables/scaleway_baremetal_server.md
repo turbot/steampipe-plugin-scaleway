@@ -36,7 +36,7 @@ where
   status = 'stopped';
 ```
 
-### List baremetal servers older than 90 days
+### List bare metal servers older than 90 days
 
 ```sql
 select
