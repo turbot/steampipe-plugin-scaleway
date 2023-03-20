@@ -169,7 +169,8 @@ func listBaremetalServers(ctx context.Context, d *plugin.QueryData, _ *plugin.Hy
 	baremetalApi := baremetal.NewAPI(client)
 
 	baremetalZones := baremetalApi.Zones()
-	zone := plugin.GetMatrixItem(ctx)["zone"].(string)
+	zone := d.EqualsQualString("zone")
+	// zone := d.EqualsQualString("zone")
 	parseZoneData, err := scw.ParseZone(zone)
 	if err != nil {
 		plugin.Logger(ctx).Error("scaleway_baremetal_server.listBaremetalServers", "zone_parsing_error", err)
@@ -244,7 +245,7 @@ func listBaremetalServers(ctx context.Context, d *plugin.QueryData, _ *plugin.Hy
 //// HYDRATE FUNCTIONS
 
 func getBaremetalServer(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	zone := plugin.GetMatrixItem(ctx)["zone"].(string)
+	zone := d.EqualsQualString("zone")
 
 	parseZoneData, err := scw.ParseZone(zone)
 	if err != nil {

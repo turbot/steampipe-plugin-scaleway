@@ -143,7 +143,7 @@ func tableScalewayRDBInstance(_ context.Context) *plugin.Table {
 //// LIST FUNCTION
 
 func listRDBInstances(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
-	region := plugin.GetMatrixItem(ctx)["region"].(string)
+	region := d.EqualsQualString("region")
 
 	parseRegionData, err := scw.ParseRegion(region)
 	if err != nil {
@@ -221,7 +221,7 @@ func listRDBInstances(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydrat
 //// HYDRATE FUNCTIONS
 
 func getRDBInstance(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	region := plugin.GetMatrixItem(ctx)["region"].(string)
+	region := d.EqualsQualString("region")
 
 	parseRegionData, err := scw.ParseRegion(region)
 	if err != nil {

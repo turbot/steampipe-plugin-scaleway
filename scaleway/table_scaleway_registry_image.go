@@ -119,7 +119,7 @@ type imageInfo = struct {
 //// LIST FUNCTION
 
 func listRegistryImages(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	region := plugin.GetMatrixItem(ctx)["region"].(string)
+	region := d.EqualsQualString("region")
 
 	parseRegionData, err := scw.ParseRegion(region)
 	if err != nil {
@@ -197,7 +197,7 @@ func listRegistryImages(ctx context.Context, d *plugin.QueryData, h *plugin.Hydr
 //// HYDRATE FUNCTIONS
 
 func getRegistryImage(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	region := plugin.GetMatrixItem(ctx)["region"].(string)
+	region := d.EqualsQualString("region")
 
 	parseRegionData, err := scw.ParseRegion(region)
 	if err != nil {

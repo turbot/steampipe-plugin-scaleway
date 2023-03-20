@@ -179,7 +179,7 @@ func tableScalewayKubernetesPool(_ context.Context) *plugin.Table {
 //// LIST FUNCTION
 
 func listKubernetesPools(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	region := plugin.GetMatrixItem(ctx)["region"].(string)
+	region := d.EqualsQualString("region")
 
 	parseRegionData, err := scw.ParseRegion(region)
 	if err != nil {
@@ -260,7 +260,7 @@ func listKubernetesPools(ctx context.Context, d *plugin.QueryData, h *plugin.Hyd
 //// HYDRATE FUNCTIONS
 
 func getKubernetesPool(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	region := plugin.GetMatrixItem(ctx)["region"].(string)
+	region := d.EqualsQualString("region")
 
 	parseRegionData, err := scw.ParseRegion(region)
 	if err != nil {

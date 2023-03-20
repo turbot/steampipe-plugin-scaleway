@@ -183,7 +183,7 @@ func tableScalewayKubernetesCluster(_ context.Context) *plugin.Table {
 //// LIST FUNCTION
 
 func listKubernetesClusters(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
-	region := plugin.GetMatrixItem(ctx)["region"].(string)
+	region := d.EqualsQualString("region")
 
 	parseRegionData, err := scw.ParseRegion(region)
 	if err != nil {
@@ -260,7 +260,7 @@ func listKubernetesClusters(ctx context.Context, d *plugin.QueryData, _ *plugin.
 //// HYDRATE FUNCTIONS
 
 func getKubernetesCluster(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	region := plugin.GetMatrixItem(ctx)["region"].(string)
+	region := d.EqualsQualString("region")
 
 	parseRegionData, err := scw.ParseRegion(region)
 	if err != nil {

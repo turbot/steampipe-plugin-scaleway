@@ -213,7 +213,7 @@ func tableScalewayInstanceServer(_ context.Context) *plugin.Table {
 //// LIST FUNCTION
 
 func listInstanceServers(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
-	zone := plugin.GetMatrixItem(ctx)["zone"].(string)
+	zone := d.EqualsQualString("zone")
 
 	parseZoneData, err := scw.ParseZone(zone)
 	if err != nil {
@@ -293,7 +293,7 @@ func listInstanceServers(ctx context.Context, d *plugin.QueryData, _ *plugin.Hyd
 //// HYDRATE FUNCTIONS
 
 func getInstanceServer(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	zone := plugin.GetMatrixItem(ctx)["zone"].(string)
+	zone := d.EqualsQualString("zone")
 
 	parseZoneData, err := scw.ParseZone(zone)
 	if err != nil {

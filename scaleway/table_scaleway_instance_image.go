@@ -129,7 +129,7 @@ func tableScalewayInstanceImage(_ context.Context) *plugin.Table {
 //// LIST FUNCTION
 
 func listInstanceImages(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
-	zone := plugin.GetMatrixItem(ctx)["zone"].(string)
+	zone := d.EqualsQualString("zone")
 
 	parseZoneData, err := scw.ParseZone(zone)
 	if err != nil {
@@ -223,7 +223,7 @@ func listInstanceImages(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydr
 //// HYDRATE FUNCTIONS
 
 func getInstanceImage(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	zone := plugin.GetMatrixItem(ctx)["zone"].(string)
+	zone := d.EqualsQualString("zone")
 
 	parseZoneData, err := scw.ParseZone(zone)
 	if err != nil {

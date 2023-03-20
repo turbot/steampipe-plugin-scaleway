@@ -132,7 +132,7 @@ func tableScalewayInstanceSecurityGroup(_ context.Context) *plugin.Table {
 //// LIST FUNCTION
 
 func listInstanceSecurityGroups(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
-	zone := plugin.GetMatrixItem(ctx)["zone"].(string)
+	zone := d.EqualsQualString("zone")
 
 	parseZoneData, err := scw.ParseZone(zone)
 	if err != nil {
@@ -209,7 +209,7 @@ func listInstanceSecurityGroups(ctx context.Context, d *plugin.QueryData, _ *plu
 //// HYDRATE FUNCTIONS
 
 func getInstanceSecurityGroup(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	zone := plugin.GetMatrixItem(ctx)["zone"].(string)
+	zone := d.EqualsQualString("zone")
 
 	parseZoneData, err := scw.ParseZone(zone)
 	if err != nil {

@@ -110,7 +110,7 @@ type databaseInfo = struct {
 //// LIST FUNCTION
 
 func listRDBDatabases(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	region := plugin.GetMatrixItem(ctx)["region"].(string)
+	region := d.EqualsQualString("region")
 
 	parseRegionData, err := scw.ParseRegion(region)
 	if err != nil {

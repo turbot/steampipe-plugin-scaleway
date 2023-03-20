@@ -97,7 +97,7 @@ func tableScalewayVPCPrivateNetwork(_ context.Context) *plugin.Table {
 //// LIST FUNCTION
 
 func listVPCPrivateNetworks(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
-	zone := plugin.GetMatrixItem(ctx)["zone"].(string)
+	zone := d.EqualsQualString("zone")
 
 	parseZoneData, err := scw.ParseZone(zone)
 	if err != nil {
@@ -175,7 +175,7 @@ func listVPCPrivateNetworks(ctx context.Context, d *plugin.QueryData, _ *plugin.
 //// HYDRATE FUNCTIONS
 
 func getVPCPrivateNetwork(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	zone := plugin.GetMatrixItem(ctx)["zone"].(string)
+	zone := d.EqualsQualString("zone")
 
 	parseZoneData, err := scw.ParseZone(zone)
 	if err != nil {
