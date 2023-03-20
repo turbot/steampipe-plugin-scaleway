@@ -151,7 +151,7 @@ func listRDBInstances(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydrat
 		return nil, err
 	}
 
-	quals := d.KeyColumnQuals
+	quals := d.EqualsQuals
 	if quals["region"] != nil && quals["region"].GetStringValue() != region {
 		return nil, nil
 	}
@@ -203,7 +203,7 @@ func listRDBInstances(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydrat
 			count++
 
 			// Context can be cancelled due to manual cancellation or the limit has been hit
-			if d.QueryStatus.RowsRemaining(ctx) == 0 {
+			if d.RowsRemaining(ctx) == 0 {
 				return nil, nil
 			}
 		}
@@ -229,7 +229,7 @@ func getRDBInstance(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateD
 		return nil, err
 	}
 
-	if d.KeyColumnQuals["region"].GetStringValue() != region {
+	if d.EqualsQuals["region"].GetStringValue() != region {
 		return nil, nil
 	}
 
@@ -243,8 +243,8 @@ func getRDBInstance(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateD
 	// Create SDK objects for Scaleway RDB product
 	rdbApi := rdb.NewAPI(client)
 
-	id := d.KeyColumnQuals["id"].GetStringValue()
-	instanceZone := d.KeyColumnQuals["zone"].GetStringValue()
+	id := d.EqualsQuals["id"].GetStringValue()
+	instanceZone := d.EqualsQuals["zone"].GetStringValue()
 
 	// No inputs
 	if id == "" && instanceZone == "" {

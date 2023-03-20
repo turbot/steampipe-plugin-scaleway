@@ -187,7 +187,7 @@ func listKubernetesPools(ctx context.Context, d *plugin.QueryData, h *plugin.Hyd
 		return nil, err
 	}
 
-	quals := d.KeyColumnQuals
+	quals := d.EqualsQuals
 	if quals["region"] != nil && quals["region"].GetStringValue() != region {
 		return nil, nil
 	}
@@ -243,7 +243,7 @@ func listKubernetesPools(ctx context.Context, d *plugin.QueryData, h *plugin.Hyd
 			count++
 
 			// Context can be cancelled due to manual cancellation or the limit has been hit
-			if d.QueryStatus.RowsRemaining(ctx) == 0 {
+			if d.RowsRemaining(ctx) == 0 {
 				return nil, nil
 			}
 		}
@@ -268,7 +268,7 @@ func getKubernetesPool(ctx context.Context, d *plugin.QueryData, h *plugin.Hydra
 		return nil, err
 	}
 
-	if d.KeyColumnQuals["region"].GetStringValue() != region {
+	if d.EqualsQuals["region"].GetStringValue() != region {
 		return nil, nil
 	}
 
@@ -282,7 +282,7 @@ func getKubernetesPool(ctx context.Context, d *plugin.QueryData, h *plugin.Hydra
 	// Create SDK objects for Scaleway Kubernetes product
 	kubernetesApi := k8s.NewAPI(client)
 
-	id := d.KeyColumnQuals["id"].GetStringValue()
+	id := d.EqualsQuals["id"].GetStringValue()
 
 	// No inputs
 	if id == "" {

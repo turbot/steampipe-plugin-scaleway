@@ -111,8 +111,8 @@ func listAccountSSHKeys(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydr
 	}
 
 	// Additional filter
-	if d.KeyColumnQuals["name"] != nil {
-		req.Name = scw.StringPtr(d.KeyColumnQuals["name"].GetStringValue())
+	if d.EqualsQuals["name"] != nil {
+		req.Name = scw.StringPtr(d.EqualsQuals["name"].GetStringValue())
 	}
 
 	// Retrieve the list of servers
@@ -142,7 +142,7 @@ func listAccountSSHKeys(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydr
 			count++
 
 			// Context can be cancelled due to manual cancellation or the limit has been hit
-			if d.QueryStatus.RowsRemaining(ctx) == 0 {
+			if d.RowsRemaining(ctx) == 0 {
 				return nil, nil
 			}
 		}
@@ -170,7 +170,7 @@ func getAccountSSHKey(ctx context.Context, d *plugin.QueryData, h *plugin.Hydrat
 	// Create SDK objects for Scaleway Instance product
 	accountApi := account.NewAPI(client)
 
-	id := d.KeyColumnQuals["id"].GetStringValue()
+	id := d.EqualsQuals["id"].GetStringValue()
 
 	// No inputs
 	if id == "" {

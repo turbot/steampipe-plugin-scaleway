@@ -137,7 +137,7 @@ func listInstanceImages(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydr
 		return nil, err
 	}
 
-	quals := d.KeyColumnQuals
+	quals := d.EqualsQuals
 	if quals["zone"] != nil && quals["zone"].GetStringValue() != zone {
 		return nil, nil
 	}
@@ -161,8 +161,8 @@ func listInstanceImages(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydr
 		req.Name = scw.StringPtr(quals["name"].GetStringValue())
 	}
 
-	if d.KeyColumnQuals["public"] != nil {
-		req.Public = scw.BoolPtr(d.KeyColumnQuals["public"].GetBoolValue())
+	if d.EqualsQuals["public"] != nil {
+		req.Public = scw.BoolPtr(d.EqualsQuals["public"].GetBoolValue())
 	}
 
 	// Non-Equals Qual Map handling
@@ -206,7 +206,7 @@ func listInstanceImages(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydr
 			count++
 
 			// Context can be cancelled due to manual cancellation or the limit has been hit
-			if d.QueryStatus.RowsRemaining(ctx) == 0 {
+			if d.RowsRemaining(ctx) == 0 {
 				return nil, nil
 			}
 		}
@@ -231,7 +231,7 @@ func getInstanceImage(ctx context.Context, d *plugin.QueryData, h *plugin.Hydrat
 		return nil, err
 	}
 
-	if d.KeyColumnQuals["zone"].GetStringValue() != zone {
+	if d.EqualsQuals["zone"].GetStringValue() != zone {
 		return nil, nil
 	}
 
@@ -245,8 +245,8 @@ func getInstanceImage(ctx context.Context, d *plugin.QueryData, h *plugin.Hydrat
 	// Create SDK objects for Scaleway Instance product
 	instanceApi := instance.NewAPI(client)
 
-	id := d.KeyColumnQuals["id"].GetStringValue()
-	imageZone := d.KeyColumnQuals["zone"].GetStringValue()
+	id := d.EqualsQuals["id"].GetStringValue()
+	imageZone := d.EqualsQuals["zone"].GetStringValue()
 
 	// No inputs
 	if id == "" && imageZone == "" {

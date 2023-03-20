@@ -105,7 +105,7 @@ func listVPCPrivateNetworks(ctx context.Context, d *plugin.QueryData, _ *plugin.
 		return nil, err
 	}
 
-	quals := d.KeyColumnQuals
+	quals := d.EqualsQuals
 	if quals["zone"] != nil && quals["zone"].GetStringValue() != zone {
 		return nil, nil
 	}
@@ -157,7 +157,7 @@ func listVPCPrivateNetworks(ctx context.Context, d *plugin.QueryData, _ *plugin.
 			count++
 
 			// Context can be cancelled due to manual cancellation or the limit has been hit
-			if d.QueryStatus.RowsRemaining(ctx) == 0 {
+			if d.RowsRemaining(ctx) == 0 {
 				return nil, nil
 			}
 		}
@@ -183,7 +183,7 @@ func getVPCPrivateNetwork(ctx context.Context, d *plugin.QueryData, h *plugin.Hy
 		return nil, err
 	}
 
-	if d.KeyColumnQuals["zone"].GetStringValue() != zone {
+	if d.EqualsQuals["zone"].GetStringValue() != zone {
 		return nil, nil
 	}
 
@@ -197,8 +197,8 @@ func getVPCPrivateNetwork(ctx context.Context, d *plugin.QueryData, h *plugin.Hy
 	// Create SDK objects for Scaleway VPC product
 	vpcApi := vpc.NewAPI(client)
 
-	id := d.KeyColumnQuals["id"].GetStringValue()
-	vpcZone := d.KeyColumnQuals["zone"].GetStringValue()
+	id := d.EqualsQuals["id"].GetStringValue()
+	vpcZone := d.EqualsQuals["zone"].GetStringValue()
 
 	// No inputs
 	if id == "" && vpcZone == "" {

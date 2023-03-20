@@ -121,7 +121,7 @@ func listInstanceSnapshots(ctx context.Context, d *plugin.QueryData, _ *plugin.H
 		return nil, err
 	}
 
-	quals := d.KeyColumnQuals
+	quals := d.EqualsQuals
 	if quals["zone"] != nil && quals["zone"].GetStringValue() != zone {
 		return nil, nil
 	}
@@ -173,7 +173,7 @@ func listInstanceSnapshots(ctx context.Context, d *plugin.QueryData, _ *plugin.H
 			count++
 
 			// Context can be cancelled due to manual cancellation or the limit has been hit
-			if d.QueryStatus.RowsRemaining(ctx) == 0 {
+			if d.RowsRemaining(ctx) == 0 {
 				return nil, nil
 			}
 		}
@@ -199,7 +199,7 @@ func getInstanceSnapshot(ctx context.Context, d *plugin.QueryData, h *plugin.Hyd
 		return nil, err
 	}
 
-	if d.KeyColumnQuals["zone"].GetStringValue() != zone {
+	if d.EqualsQuals["zone"].GetStringValue() != zone {
 		return nil, nil
 	}
 
@@ -213,8 +213,8 @@ func getInstanceSnapshot(ctx context.Context, d *plugin.QueryData, h *plugin.Hyd
 	// Create SDK objects for Scaleway Instance product
 	instanceApi := instance.NewAPI(client)
 
-	id := d.KeyColumnQuals["id"].GetStringValue()
-	snapshotZone := d.KeyColumnQuals["zone"].GetStringValue()
+	id := d.EqualsQuals["id"].GetStringValue()
+	snapshotZone := d.EqualsQuals["zone"].GetStringValue()
 
 	// No inputs
 	if id == "" && snapshotZone == "" {

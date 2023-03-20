@@ -138,7 +138,7 @@ func listRegistryNamespaces(ctx context.Context, d *plugin.QueryData, _ *plugin.
 		return nil, err
 	}
 
-	quals := d.KeyColumnQuals
+	quals := d.EqualsQuals
 	if quals["region"] != nil && quals["region"].GetStringValue() != region {
 		return nil, nil
 	}
@@ -190,7 +190,7 @@ func listRegistryNamespaces(ctx context.Context, d *plugin.QueryData, _ *plugin.
 			count++
 
 			// Context can be cancelled due to manual cancellation or the limit has been hit
-			if d.QueryStatus.RowsRemaining(ctx) == 0 {
+			if d.RowsRemaining(ctx) == 0 {
 				return nil, nil
 			}
 		}
@@ -215,7 +215,7 @@ func getRegistryNamespace(ctx context.Context, d *plugin.QueryData, h *plugin.Hy
 		return nil, err
 	}
 
-	if d.KeyColumnQuals["region"].GetStringValue() != region {
+	if d.EqualsQuals["region"].GetStringValue() != region {
 		return nil, nil
 	}
 
@@ -229,8 +229,8 @@ func getRegistryNamespace(ctx context.Context, d *plugin.QueryData, h *plugin.Hy
 	// Create SDK objects for Scaleway Registry product
 	registryApi := registry.NewAPI(client)
 
-	id := d.KeyColumnQuals["id"].GetStringValue()
-	RegistryRegion := d.KeyColumnQuals["region"].GetStringValue()
+	id := d.EqualsQuals["id"].GetStringValue()
+	RegistryRegion := d.EqualsQuals["region"].GetStringValue()
 
 	// No inputs
 	if id == "" && RegistryRegion == "" {
