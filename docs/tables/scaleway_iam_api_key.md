@@ -1,4 +1,4 @@
-# Table: scaleway_account_ssh_key
+# Table: scaleway_iam_api_key
 
 API keys allow you to securely connect to scaleway console in your organization.
 

@@ -1,4 +1,4 @@
-# Table: scaleway_account_ssh_key
+# Table: scaleway_iam_user
 
 Users allow you to connect to scaleway console in your organization.
 
