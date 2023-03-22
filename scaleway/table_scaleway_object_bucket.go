@@ -7,9 +7,9 @@ import (
 	"github.com/aws/aws-sdk-go/aws/awserr"
 	"github.com/aws/aws-sdk-go/service/s3"
 
-	"github.com/turbot/steampipe-plugin-sdk/v4/grpc/proto"
-	"github.com/turbot/steampipe-plugin-sdk/v4/plugin"
-	"github.com/turbot/steampipe-plugin-sdk/v4/plugin/transform"
+	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
+	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
+	"github.com/turbot/steampipe-plugin-sdk/v5/plugin/transform"
 )
 
 //// TABLE DEFINITION
@@ -130,7 +130,7 @@ type bucketInfo = struct {
 //// LIST FUNCTION
 
 func listObjectBuckets(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
-	region := plugin.GetMatrixItem(ctx)["region"].(string)
+	region := d.EqualsQualString("region")
 
 	// Create client
 	client, err := getObjectSessionConfig(ctx, d, region)
@@ -150,7 +150,7 @@ func listObjectBuckets(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydra
 		d.StreamListItem(ctx, bucketInfo{*bucket, region, bucketOwner})
 
 		// Context can be cancelled due to manual cancellation or the limit has been hit
-		if d.QueryStatus.RowsRemaining(ctx) == 0 {
+		if d.RowsRemaining(ctx) == 0 {
 			return nil, nil
 		}
 	}
@@ -161,7 +161,7 @@ func listObjectBuckets(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydra
 //// HYDRATE FUNCTIONS
 
 func getBucketVersioning(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	matrixRegion := plugin.GetMatrixItem(ctx)["region"].(string)
+	matrixRegion := d.EqualsQualString("region")
 	bucket := h.Item.(bucketInfo)
 
 	if matrixRegion != bucket.Region {
@@ -187,7 +187,7 @@ func getBucketVersioning(ctx context.Context, d *plugin.QueryData, h *plugin.Hyd
 }
 
 func getBucketIsPublic(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	matrixRegion := plugin.GetMatrixItem(ctx)["region"].(string)
+	matrixRegion := d.EqualsQualString("region")
 	bucket := h.Item.(bucketInfo)
 
 	if matrixRegion != bucket.Region {
@@ -218,7 +218,7 @@ func getBucketIsPublic(ctx context.Context, d *plugin.QueryData, h *plugin.Hydra
 }
 
 func getBucketPolicy(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	matrixRegion := plugin.GetMatrixItem(ctx)["region"].(string)
+	matrixRegion := d.EqualsQualString("region")
 	bucket := h.Item.(bucketInfo)
 
 	if matrixRegion != bucket.Region {
@@ -249,7 +249,7 @@ func getBucketPolicy(ctx context.Context, d *plugin.QueryData, h *plugin.Hydrate
 }
 
 func getBucketLifecycle(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	matrixRegion := plugin.GetMatrixItem(ctx)["region"].(string)
+	matrixRegion := d.EqualsQualString("region")
 	bucket := h.Item.(bucketInfo)
 
 	if matrixRegion != bucket.Region {
@@ -280,7 +280,7 @@ func getBucketLifecycle(ctx context.Context, d *plugin.QueryData, h *plugin.Hydr
 }
 
 func getBucketACL(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	matrixRegion := plugin.GetMatrixItem(ctx)["region"].(string)
+	matrixRegion := d.EqualsQualString("region")
 	bucket := h.Item.(bucketInfo)
 
 	if matrixRegion != bucket.Region {
@@ -305,7 +305,7 @@ func getBucketACL(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateDat
 }
 
 func getBucketTagging(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	matrixRegion := plugin.GetMatrixItem(ctx)["region"].(string)
+	matrixRegion := d.EqualsQualString("region")
 	bucket := h.Item.(bucketInfo)
 
 	if matrixRegion != bucket.Region {
@@ -331,7 +331,7 @@ func getBucketTagging(ctx context.Context, d *plugin.QueryData, h *plugin.Hydrat
 }
 
 func getBucketCors(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	matrixRegion := plugin.GetMatrixItem(ctx)["region"].(string)
+	matrixRegion := d.EqualsQualString("region")
 	bucket := h.Item.(bucketInfo)
 
 	if matrixRegion != bucket.Region {
@@ -357,7 +357,7 @@ func getBucketCors(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateDa
 }
 
 func getBucketWebsite(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	matrixRegion := plugin.GetMatrixItem(ctx)["region"].(string)
+	matrixRegion := d.EqualsQualString("region")
 	bucket := h.Item.(bucketInfo)
 
 	if matrixRegion != bucket.Region {

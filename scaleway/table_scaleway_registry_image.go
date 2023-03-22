@@ -6,9 +6,9 @@ import (
 	"github.com/scaleway/scaleway-sdk-go/api/registry/v1"
 
 	"github.com/scaleway/scaleway-sdk-go/scw"
-	"github.com/turbot/steampipe-plugin-sdk/v4/grpc/proto"
-	"github.com/turbot/steampipe-plugin-sdk/v4/plugin"
-	"github.com/turbot/steampipe-plugin-sdk/v4/plugin/transform"
+	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
+	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
+	"github.com/turbot/steampipe-plugin-sdk/v5/plugin/transform"
 )
 
 //// TABLE DEFINITION
@@ -119,7 +119,7 @@ type imageInfo = struct {
 //// LIST FUNCTION
 
 func listRegistryImages(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	region := plugin.GetMatrixItem(ctx)["region"].(string)
+	region := d.EqualsQualString("region")
 
 	parseRegionData, err := scw.ParseRegion(region)
 	if err != nil {
@@ -130,7 +130,7 @@ func listRegistryImages(ctx context.Context, d *plugin.QueryData, h *plugin.Hydr
 	// Get Namespace details
 	namespaceData := h.Item.(*registry.Namespace)
 
-	quals := d.KeyColumnQuals
+	quals := d.EqualsQuals
 
 	// Create client
 	client, err := getSessionConfig(ctx, d)
@@ -180,7 +180,7 @@ func listRegistryImages(ctx context.Context, d *plugin.QueryData, h *plugin.Hydr
 			count++
 
 			// Context can be cancelled due to manual cancellation or the limit has been hit
-			if d.QueryStatus.RowsRemaining(ctx) == 0 {
+			if d.RowsRemaining(ctx) == 0 {
 				return nil, nil
 			}
 		}
@@ -197,7 +197,7 @@ func listRegistryImages(ctx context.Context, d *plugin.QueryData, h *plugin.Hydr
 //// HYDRATE FUNCTIONS
 
 func getRegistryImage(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	region := plugin.GetMatrixItem(ctx)["region"].(string)
+	region := d.EqualsQualString("region")
 
 	parseRegionData, err := scw.ParseRegion(region)
 	if err != nil {
@@ -215,8 +215,8 @@ func getRegistryImage(ctx context.Context, d *plugin.QueryData, h *plugin.Hydrat
 	// Create SDK objects for Scaleway Registry product
 	registryApi := registry.NewAPI(client)
 
-	id := d.KeyColumnQuals["id"].GetStringValue()
-	registryRegion := d.KeyColumnQuals["region"].GetStringValue()
+	id := d.EqualsQuals["id"].GetStringValue()
+	registryRegion := d.EqualsQuals["region"].GetStringValue()
 
 	// No inputs
 	if id == "" && registryRegion == "" {

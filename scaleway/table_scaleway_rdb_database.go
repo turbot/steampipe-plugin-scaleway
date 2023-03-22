@@ -6,9 +6,9 @@ import (
 	"github.com/scaleway/scaleway-sdk-go/api/rdb/v1"
 
 	"github.com/scaleway/scaleway-sdk-go/scw"
-	"github.com/turbot/steampipe-plugin-sdk/v4/grpc/proto"
-	"github.com/turbot/steampipe-plugin-sdk/v4/plugin"
-	"github.com/turbot/steampipe-plugin-sdk/v4/plugin/transform"
+	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
+	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
+	"github.com/turbot/steampipe-plugin-sdk/v5/plugin/transform"
 )
 
 //// TABLE DEFINITION
@@ -110,7 +110,7 @@ type databaseInfo = struct {
 //// LIST FUNCTION
 
 func listRDBDatabases(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	region := plugin.GetMatrixItem(ctx)["region"].(string)
+	region := d.EqualsQualString("region")
 
 	parseRegionData, err := scw.ParseRegion(region)
 	if err != nil {
@@ -121,7 +121,7 @@ func listRDBDatabases(ctx context.Context, d *plugin.QueryData, h *plugin.Hydrat
 	// Get Instance details
 	instanceData := h.Item.(*rdb.Instance)
 
-	quals := d.KeyColumnQuals
+	quals := d.EqualsQuals
 	if instanceData.Region.String() != region {
 		return nil, nil
 	}
@@ -149,8 +149,8 @@ func listRDBDatabases(ctx context.Context, d *plugin.QueryData, h *plugin.Hydrat
 		req.Owner = scw.StringPtr(quals["owner"].GetStringValue())
 	}
 
-	if d.KeyColumnQuals["managed"] != nil {
-		req.Managed = scw.BoolPtr(d.KeyColumnQuals["managed"].GetBoolValue())
+	if d.EqualsQuals["managed"] != nil {
+		req.Managed = scw.BoolPtr(d.EqualsQuals["managed"].GetBoolValue())
 	}
 
 	// Non-Equals Qual Map handling
@@ -194,7 +194,7 @@ func listRDBDatabases(ctx context.Context, d *plugin.QueryData, h *plugin.Hydrat
 			count++
 
 			// Context can be cancelled due to manual cancellation or the limit has been hit
-			if d.QueryStatus.RowsRemaining(ctx) == 0 {
+			if d.RowsRemaining(ctx) == 0 {
 				return nil, nil
 			}
 		}
