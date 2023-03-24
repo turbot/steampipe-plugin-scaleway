@@ -6,9 +6,9 @@ import (
 	iam "github.com/scaleway/scaleway-sdk-go/api/iam/v1alpha1"
 
 	"github.com/scaleway/scaleway-sdk-go/scw"
-	"github.com/turbot/steampipe-plugin-sdk/v4/grpc/proto"
-	"github.com/turbot/steampipe-plugin-sdk/v4/plugin"
-	"github.com/turbot/steampipe-plugin-sdk/v4/plugin/transform"
+	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
+	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
+	"github.com/turbot/steampipe-plugin-sdk/v5/plugin/transform"
 )
 
 //// TABLE DEFINITION
@@ -111,11 +111,6 @@ func listIamAPIKeys(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateD
 		OrganizationID: organisationId,
 	}
 
-	// Additional filter
-	if d.KeyColumnQuals["access_key"] != nil {
-		req.AccessKey = scw.StringPtr(d.KeyColumnQuals["access_key"].GetStringValue())
-	}
-
 	// Retrieve the list of servers
 	maxResult := int64(100)
 
@@ -143,7 +138,7 @@ func listIamAPIKeys(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateD
 			count++
 
 			// Context can be cancelled due to manual cancellation or the limit has been hit
-			if d.QueryStatus.RowsRemaining(ctx) == 0 {
+			if d.RowsRemaining(ctx) == 0 {
 				return nil, nil
 			}
 		}
@@ -171,7 +166,7 @@ func getIamAPIKey(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateDat
 	// Create SDK objects for Scaleway Instance product
 	iamApi := iam.NewAPI(client)
 
-	accessKey := d.KeyColumnQuals["access_key"].GetStringValue()
+	accessKey := d.EqualsQuals["access_key"].GetStringValue()
 
 	// No inputs
 	if accessKey == "" {
