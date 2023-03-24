@@ -6,9 +6,9 @@ import (
 	"github.com/scaleway/scaleway-sdk-go/api/instance/v1"
 
 	"github.com/scaleway/scaleway-sdk-go/scw"
-	"github.com/turbot/steampipe-plugin-sdk/v4/grpc/proto"
-	"github.com/turbot/steampipe-plugin-sdk/v4/plugin"
-	"github.com/turbot/steampipe-plugin-sdk/v4/plugin/transform"
+	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
+	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
+	"github.com/turbot/steampipe-plugin-sdk/v5/plugin/transform"
 )
 
 //// TABLE DEFINITION
@@ -132,7 +132,7 @@ func tableScalewayInstanceSecurityGroup(_ context.Context) *plugin.Table {
 //// LIST FUNCTION
 
 func listInstanceSecurityGroups(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
-	zone := plugin.GetMatrixItem(ctx)["zone"].(string)
+	zone := d.EqualsQualString("zone")
 
 	parseZoneData, err := scw.ParseZone(zone)
 	if err != nil {
@@ -140,7 +140,7 @@ func listInstanceSecurityGroups(ctx context.Context, d *plugin.QueryData, _ *plu
 		return nil, err
 	}
 
-	quals := d.KeyColumnQuals
+	quals := d.EqualsQuals
 	if quals["zone"] != nil && quals["zone"].GetStringValue() != zone {
 		return nil, nil
 	}
@@ -192,7 +192,7 @@ func listInstanceSecurityGroups(ctx context.Context, d *plugin.QueryData, _ *plu
 			count++
 
 			// Context can be cancelled due to manual cancellation or the limit has been hit
-			if d.QueryStatus.RowsRemaining(ctx) == 0 {
+			if d.RowsRemaining(ctx) == 0 {
 				return nil, nil
 			}
 		}
@@ -209,7 +209,7 @@ func listInstanceSecurityGroups(ctx context.Context, d *plugin.QueryData, _ *plu
 //// HYDRATE FUNCTIONS
 
 func getInstanceSecurityGroup(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	zone := plugin.GetMatrixItem(ctx)["zone"].(string)
+	zone := d.EqualsQualString("zone")
 
 	parseZoneData, err := scw.ParseZone(zone)
 	if err != nil {
@@ -217,7 +217,7 @@ func getInstanceSecurityGroup(ctx context.Context, d *plugin.QueryData, h *plugi
 		return nil, err
 	}
 
-	if d.KeyColumnQuals["zone"].GetStringValue() != zone {
+	if d.EqualsQuals["zone"].GetStringValue() != zone {
 		return nil, nil
 	}
 
@@ -231,8 +231,8 @@ func getInstanceSecurityGroup(ctx context.Context, d *plugin.QueryData, h *plugi
 	// Create SDK objects for Scaleway Instance product
 	instanceApi := instance.NewAPI(client)
 
-	id := d.KeyColumnQuals["id"].GetStringValue()
-	sgZone := d.KeyColumnQuals["zone"].GetStringValue()
+	id := d.EqualsQuals["id"].GetStringValue()
+	sgZone := d.EqualsQuals["zone"].GetStringValue()
 
 	// No inputs
 	if id == "" && sgZone == "" {

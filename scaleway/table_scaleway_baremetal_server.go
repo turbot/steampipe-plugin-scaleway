@@ -6,9 +6,9 @@ import (
 	"github.com/scaleway/scaleway-sdk-go/api/baremetal/v1"
 
 	"github.com/scaleway/scaleway-sdk-go/scw"
-	"github.com/turbot/steampipe-plugin-sdk/v4/grpc/proto"
-	"github.com/turbot/steampipe-plugin-sdk/v4/plugin"
-	"github.com/turbot/steampipe-plugin-sdk/v4/plugin/transform"
+	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
+	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
+	"github.com/turbot/steampipe-plugin-sdk/v5/plugin/transform"
 )
 
 //// TABLE DEFINITION
@@ -169,7 +169,8 @@ func listBaremetalServers(ctx context.Context, d *plugin.QueryData, _ *plugin.Hy
 	baremetalApi := baremetal.NewAPI(client)
 
 	baremetalZones := baremetalApi.Zones()
-	zone := plugin.GetMatrixItem(ctx)["zone"].(string)
+	zone := d.EqualsQualString("zone")
+	// zone := d.EqualsQualString("zone")
 	parseZoneData, err := scw.ParseZone(zone)
 	if err != nil {
 		plugin.Logger(ctx).Error("scaleway_baremetal_server.listBaremetalServers", "zone_parsing_error", err)
@@ -186,7 +187,7 @@ func listBaremetalServers(ctx context.Context, d *plugin.QueryData, _ *plugin.Hy
 		return nil, nil
 	}
 
-	quals := d.KeyColumnQuals
+	quals := d.EqualsQuals
 	if quals["zone"] != nil && quals["zone"].GetStringValue() != zone {
 		return nil, nil
 	}
@@ -227,7 +228,7 @@ func listBaremetalServers(ctx context.Context, d *plugin.QueryData, _ *plugin.Hy
 			count++
 
 			// Context can be cancelled due to manual cancellation or the limit has been hit
-			if d.QueryStatus.RowsRemaining(ctx) == 0 {
+			if d.RowsRemaining(ctx) == 0 {
 				return nil, nil
 			}
 		}
@@ -244,7 +245,7 @@ func listBaremetalServers(ctx context.Context, d *plugin.QueryData, _ *plugin.Hy
 //// HYDRATE FUNCTIONS
 
 func getBaremetalServer(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	zone := plugin.GetMatrixItem(ctx)["zone"].(string)
+	zone := d.EqualsQualString("zone")
 
 	parseZoneData, err := scw.ParseZone(zone)
 	if err != nil {
@@ -252,7 +253,7 @@ func getBaremetalServer(ctx context.Context, d *plugin.QueryData, h *plugin.Hydr
 		return nil, err
 	}
 
-	if d.KeyColumnQuals["zone"].GetStringValue() != zone {
+	if d.EqualsQuals["zone"].GetStringValue() != zone {
 		return nil, nil
 	}
 
@@ -266,8 +267,8 @@ func getBaremetalServer(ctx context.Context, d *plugin.QueryData, h *plugin.Hydr
 	// Create SDK objects for Scaleway Baremetal product
 	baremetalApi := baremetal.NewAPI(client)
 
-	id := d.KeyColumnQuals["id"].GetStringValue()
-	baremetalZone := d.KeyColumnQuals["zone"].GetStringValue()
+	id := d.EqualsQuals["id"].GetStringValue()
+	baremetalZone := d.EqualsQuals["zone"].GetStringValue()
 
 	// No inputs
 	if id == "" && baremetalZone == "" {
