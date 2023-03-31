@@ -1,3 +1,14 @@
+## v0.7.0 [2023-03-31]
+
+_What's new?_
+
+- New tables added
+  - [scaleway_baremetal_server](https://hub.steampipe.io/plugins/turbot/scaleway/tables/scaleway_baremetal_server) ([#17](https://github.com/turbot/steampipe-plugin-scaleway/pull/17)) (Thanks [@jplanckeel](https://github.com/jplanckeel) for the contribution!)
+
+_Dependencies_
+
+- Recompiled plugin with [steampipe-plugin-sdk v5.3.0](https://github.com/turbot/steampipe-plugin-sdk/blob/main/CHANGELOG.md#v530-2023-03-16) which includes fixes for query cache pending item mechanism and aggregator connections not working for dynamic tables. ([#26](https://github.com/turbot/steampipe-plugin-scaleway/pull/26))
+
 ## v0.6.0 [2023-02-16]
 
 _What's new?_
