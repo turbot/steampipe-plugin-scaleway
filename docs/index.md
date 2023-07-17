@@ -127,7 +127,7 @@ Querying tables from this connection will return results from the `scaleway_dev`
 select * from scaleway_all.scaleway_object_bucket
 ```
 
-Alternatively, you can use an unqualified name and it will be resolved according to the [Search Path](https://steampipe.io/docs/guides/search-path). It's a good idea to name your aggregator first alphabetically, so that it is the first connection in the search path (i.e. `scaleway_all` comes before `scaleway_dev`):
+Alternatively, you can use an unqualified name and it will be resolved according to the [Search Path](https://steampipe.io/docs/guides/search-path). It's a good idea to name your aggregator first alphabetically so that it is the first connection in the search path (i.e. `scaleway_all` comes before `scaleway_dev`):
 
 ```sql
 select * from scaleway_object_bucket
