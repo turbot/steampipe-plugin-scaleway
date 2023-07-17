@@ -81,7 +81,7 @@ connection "scaleway" {
 }
 ```
 
-## Multi-Account Connections
+## Multi-Project Connections
 
 You may create multiple scaleway connections:
 
@@ -111,7 +111,7 @@ Each connection is implemented as a distinct [Postgres schema](https://www.postg
 select * from scaleway_qa.scaleway_object_bucket
 ```
 
-You can multi-account connections by using an [**aggregator** connection](https://steampipe.io/docs/using-steampipe/managing-connections#using-aggregators). Aggregators allow you to query data from multiple connections for a plugin as if they are a single connection.
+You can create multi-project connections by using an [**aggregator** connection](https://steampipe.io/docs/using-steampipe/managing-connections#using-aggregators). Aggregators allow you to query data from multiple connections for a plugin as if they are a single connection.
 
 ```hcl
 connection "scaleway_all" {
@@ -127,7 +127,7 @@ Querying tables from this connection will return results from the `scaleway_dev`
 select * from scaleway_all.scaleway_object_bucket
 ```
 
-Alternatively, can use an unqualified name and it will be resolved according to the [Search Path](https://steampipe.io/docs/guides/search-path). It's a good idea to name your aggregator first alphbetically, so that it is the first connection in the search path (i.e. `scaleway_all` comes before `scaleway_dev`):
+Alternatively, you can use an unqualified name and it will be resolved according to the [Search Path](https://steampipe.io/docs/guides/search-path). It's a good idea to name your aggregator first alphabetically, so that it is the first connection in the search path (i.e. `scaleway_all` comes before `scaleway_dev`):
 
 ```sql
 select * from scaleway_object_bucket
