@@ -71,13 +71,75 @@ connection "scaleway" {
   # Set the static credential with the `access_key` and `secret_key` arguments.
   # Alternatively, if no creds passed in config, you may set the environment
   # variables using the `SCW_ACCESS_KEY` and `SCW_SECRET_KEY` arguments.
-  access_key = "YOUR_ACCESS_KEY"
-  secret_key = "YOUR_SECRET_ACCESS_KEY"
+  # access_key = "SCWKMH185ZG5THRH7WVX"
+  # secret_key = "ee3b5cb8-2c81-887c-a772-17d46dd34vc7"
 
   # You may connect to one or more regions. If `regions` is not specified,
   # Steampipe will use a single default region using the `SCW_DEFAULT_REGION`
   # environment variable.
   # regions = ["fr-par", "nl-ams"]
+}
+```
+
+## Multi-Account Connections
+
+You may create multiple scaleway connections:
+
+```hcl
+connection "scaleway_dev" {
+  access_key = "SCWKMH185YH6THRH7WVX"
+  secret_key = "ee3b5cb8-2c81-887c-a772-86d46uu99vc7"
+  regions    = ["fr-par", "nl-ams"]
+}
+
+connection "scaleway_qa" {
+  access_key = "SCWKMH185YH6THRH7KKX"
+  secret_key = "ee3b5cb8-2c81-887c-a772-17d46uu09vc7"
+  regions    = ["fr-par", "nl-ams"]
+}
+
+connection "scaleway_prod" {
+  access_key = "SCWKMH185YH6THRH7WLL"
+  secret_key = "ee3b5cb8-2c81-887c-a772-17d46uu87vc7"
+  regions    = ["fr-par", "nl-ams"]
+}
+```
+
+Each connection is implemented as a distinct [Postgres schema](https://www.postgresql.org/docs/current/ddl-schemas.html). As such, you can use qualified table names to query a specific connection:
+
+```sql
+select * from scaleway_qa.scaleway_object_bucket
+```
+
+You can multi-account connections by using an [**aggregator** connection](https://steampipe.io/docs/using-steampipe/managing-connections#using-aggregators). Aggregators allow you to query data from multiple connections for a plugin as if they are a single connection.
+
+```hcl
+connection "scaleway_all" {
+  plugin      = "scaleway"
+  type        = "aggregator"
+  connections = ["scaleway_dev", "scaleway_qa", "scaleway_prod"]
+}
+```
+
+Querying tables from this connection will return results from the `scaleway_dev`, `scaleway_qa`, and `scaleway_prod` connections:
+
+```sql
+select * from scaleway_all.scaleway_object_bucket
+```
+
+Alternatively, can use an unqualified name and it will be resolved according to the [Search Path](https://steampipe.io/docs/guides/search-path). It's a good idea to name your aggregator first alphbetically, so that it is the first connection in the search path (i.e. `scaleway_all` comes before `scaleway_dev`):
+
+```sql
+select * from scaleway_object_bucket
+```
+
+Steampipe supports the `*` wildcard in the connection names. For example, to aggregate all the scaleway plugin connections whose names begin with `scaleway_`:
+
+```hcl
+connection "scaleway_all" {
+  type        = "aggregator"
+  plugin      = "scaleway"
+  connections = ["scaleway_*"]
 }
 ```
 
