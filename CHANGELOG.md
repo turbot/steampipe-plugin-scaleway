@@ -1,3 +1,9 @@
+## v0.8.0 [2023-07-17]
+
+_Enhancements_
+
+- Updated the `docs/index.md` file to include multi-project configuration examples. ([#28](https://github.com/turbot/steampipe-plugin-scaleway/pull/28))
+
 ## v0.7.0 [2023-03-31]
 
 _What's new?_
