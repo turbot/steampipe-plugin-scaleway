@@ -146,7 +146,7 @@ connection "scaleway_all" {
 ## Get involved
 
 - Open source: https://github.com/turbot/steampipe-plugin-scaleway
-- Community: [Slack Channel](https://steampipe.io/community/join)
+- Community: [Join #steampipe on Slack →](https://turbot.com/community/join)
 
 ## Multi-Region Connections
 
