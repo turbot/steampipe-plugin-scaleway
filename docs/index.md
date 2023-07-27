@@ -74,6 +74,9 @@ connection "scaleway" {
   # access_key = "SCWKMH185ZG5THRH7WVX"
   # secret_key = "ee3b5cb8-2c81-887c-a772-17d46dd34vc7"
 
+  # Your organization ID is the identifier of your account inside Scaleway infrastructure.
+  organization_id = "YOUR_ORGANIZATION_ID"
+
   # You may connect to one or more regions. If `regions` is not specified,
   # Steampipe will use a single default region using the `SCW_DEFAULT_REGION`
   # environment variable.
