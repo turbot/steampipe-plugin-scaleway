@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/aws/aws-sdk-go v1.40.58
-	github.com/scaleway/scaleway-sdk-go v1.0.0-beta.12
+	github.com/scaleway/scaleway-sdk-go v1.0.0-beta.20
 	github.com/turbot/go-kit v0.5.0
 	github.com/turbot/steampipe-plugin-sdk/v5 v5.3.0
 	golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1
