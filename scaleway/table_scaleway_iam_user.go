@@ -16,7 +16,7 @@ import (
 func tableScalewayIamUser(_ context.Context) *plugin.Table {
 	return &plugin.Table{
 		Name:        "scaleway_iam_user",
-		Description: "Users allow you to connect to scaleway console in your organization..",
+		Description: "Users allow you to connect to scaleway console in your organization.",
 		List: &plugin.ListConfig{
 			Hydrate: listIamUsers,
 			KeyColumns: []*plugin.KeyColumn{
@@ -76,7 +76,6 @@ func tableScalewayIamUser(_ context.Context) *plugin.Table {
 				Name:        "status",
 				Description: "The status of invitation for the user.",
 				Type:        proto.ColumnType_STRING,
-				Transform:   transform.FromField("Status"),
 			},
 
 			// Scaleway standard columns
@@ -85,6 +84,14 @@ func tableScalewayIamUser(_ context.Context) *plugin.Table {
 				Description: "The ID of the organization where the server resides.",
 				Type:        proto.ColumnType_STRING,
 				Transform:   transform.FromField("OrganizationID"),
+			},
+
+			// Steampipe standard columns
+			{
+				Name:        "title",
+				Description: "Title of the resource.",
+				Type:        proto.ColumnType_STRING,
+				Transform:   transform.FromField("ID"),
 			},
 		},
 	}
@@ -166,7 +173,7 @@ func getIamUser(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData)
 	// Create SDK objects for Scaleway Instance product
 	iamApi := iam.NewAPI(client)
 
-	userId := d.EqualsQuals["id"].GetStringValue()
+	userId := d.EqualsQualString("id")
 
 	// No inputs
 	if userId == "" {

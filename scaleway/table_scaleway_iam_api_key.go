@@ -44,24 +44,24 @@ func tableScalewayIamAPIKey(_ context.Context) *plugin.Table {
 			},
 			{
 				Name:        "application_id",
-				Description: "The applicationID: ID of application bearer,",
+				Description: "ID of application bearer.",
 				Type:        proto.ColumnType_STRING,
 				Transform:   transform.FromField("ApplicationID").Transform(transform.ToString),
 			},
 			{
 				Name:        "created_at",
-				Description: "The time when the key was created.",
+				Description: "Creation date and time of API key.",
 				Type:        proto.ColumnType_TIMESTAMP,
 			},
 			{
 				Name:        "user_id",
-				Description: "The ID of application bearer.",
+				Description: "ID of user bearer.",
 				Type:        proto.ColumnType_STRING,
 				Transform:   transform.FromField("UserID").Transform(transform.ToString),
 			},
 			{
 				Name:        "updated_at",
-				Description: "The time when the key was last updated.",
+				Description: "Last update date and time of API key.",
 				Type:        proto.ColumnType_TIMESTAMP,
 			},
 			{
@@ -77,7 +77,7 @@ func tableScalewayIamAPIKey(_ context.Context) *plugin.Table {
 			},
 			{
 				Name:        "editable",
-				Description: "whether or not the API key is editable.",
+				Description: "Whether or not the API key is editable.",
 				Type:        proto.ColumnType_BOOL,
 			},
 			{
@@ -85,6 +85,12 @@ func tableScalewayIamAPIKey(_ context.Context) *plugin.Table {
 				Description: "The IP Address of the device which created the API key.",
 				Type:        proto.ColumnType_STRING,
 				Transform:   transform.FromField("CreationIP").Transform(transform.ToString),
+			},
+			{
+				Name:        "description",
+				Description: "Description of API key.",
+				Type:        proto.ColumnType_STRING,
+				Transform:   transform.FromField("Description").Transform(transform.ToString),
 			},
 		},
 	}
