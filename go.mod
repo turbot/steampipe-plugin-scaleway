@@ -6,8 +6,7 @@ require (
 	github.com/aws/aws-sdk-go v1.44.122
 	github.com/scaleway/scaleway-sdk-go v1.0.0-beta.12
 	github.com/turbot/go-kit v0.8.0-rc.0
-	github.com/turbot/steampipe-plugin-sdk/v5 v5.6.0
-	golang.org/x/xerrors v0.0.0-20220907171357-04be3eba64a2
+	github.com/turbot/steampipe-plugin-sdk/v5 v5.6.1
 )
 
 require (
@@ -103,6 +102,7 @@ require (
 	golang.org/x/sys v0.11.0 // indirect
 	golang.org/x/text v0.11.0 // indirect
 	golang.org/x/time v0.3.0 // indirect
+	golang.org/x/xerrors v0.0.0-20220907171357-04be3eba64a2 // indirect
 	google.golang.org/api v0.126.0 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/genproto v0.0.0-20230711160842-782d3b101e98 // indirect
