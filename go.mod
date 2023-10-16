@@ -3,7 +3,7 @@ module github.com/turbot/steampipe-plugin-scaleway
 go 1.21
 
 require (
-	github.com/aws/aws-sdk-go v1.44.122
+	github.com/aws/aws-sdk-go v1.45.25
 	github.com/scaleway/scaleway-sdk-go v1.0.0-beta.12
 	github.com/turbot/go-kit v0.8.0-rc.0
 	github.com/turbot/steampipe-plugin-sdk/v5 v5.6.2
