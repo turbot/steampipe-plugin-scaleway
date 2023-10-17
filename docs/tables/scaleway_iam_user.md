@@ -2,6 +2,8 @@
 
 Users allow you to connect to scaleway console in your organization.
 
+This table requires an Organization ID to be configured in the scaleway.spc file.
+
 ## Examples
 
 ### Basic info
