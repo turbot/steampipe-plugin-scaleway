@@ -21,14 +21,14 @@ func tableScalewayIamUser(_ context.Context) *plugin.Table {
 			Hydrate: listIamUsers,
 			KeyColumns: []*plugin.KeyColumn{
 				{
-					Name:    "id",
+					Name:    "user_id",
 					Require: plugin.Optional,
 				},
 			},
 		},
 		Get: &plugin.GetConfig{
 			Hydrate:    getIamUser,
-			KeyColumns: plugin.SingleColumn("id"),
+			KeyColumns: plugin.SingleColumn("user_id"),
 		},
 		Columns: []*plugin.Column{
 			{
