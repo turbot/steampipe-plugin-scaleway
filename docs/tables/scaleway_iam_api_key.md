@@ -2,7 +2,7 @@
 
 API keys allow you to securely connect to scaleway console in your organization.
 
-This table requires an Organization ID to be configured in the scaleway.spc file.
+This table requires the `organization_id` config argument to be set.
 
 ## Examples
 
