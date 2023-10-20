@@ -71,11 +71,11 @@ connection "scaleway" {
   # Set the static credential with the `access_key` and `secret_key` arguments.
   # Alternatively, if no creds passed in config, you may set the environment
   # variables using the `SCW_ACCESS_KEY` and `SCW_SECRET_KEY` arguments.
-  access_key = "YOUR_ACCESS_KEY"
-  secret_key = "YOUR_SECRET_ACCESS_KEY"
+  access_key = "SCWKMH185ZG5THRH7WVX"
+  secret_key = "ee3b5cb8-2c81-887c-a772-17d46dd34vc7"
   # Your organization ID is the identifier of your account inside Scaleway infrastructure.
   # This is only required while querying the `scaleway_iam_api_key` and `scaleway_iam_user` tables. 
-  # organization_id = "YOUR_ORGANIZATION_ID"
+  # organization_id = "14czbd62-29fe-46a6-967f-5433adcb2fc5"
 
   # You may connect to one or more regions. If `regions` is not specified,
   # Steampipe will use a single default region using the `SCW_DEFAULT_REGION`
