@@ -102,11 +102,11 @@ func listIamAPIKeys(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateD
 	// Create client
 	client, err := getSessionConfig(ctx, d)
 	if err != nil {
-		plugin.Logger(ctx).Error("scaleway_instance.listIamAPIKeys", "connection_error", err)
+		plugin.Logger(ctx).Error("scaleway_iam_api_key.listIamAPIKeys", "connection_error", err)
 		return nil, err
 	}
 
-	// Create SDK objects for Scaleway Instance product
+	// Create SDK objects for Scaleway IAM product
 	iamApi := iam.NewAPI(client)
 
 	// Get organisationID from config to request IAM API
@@ -134,7 +134,7 @@ func listIamAPIKeys(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateD
 	for {
 		resp, err := iamApi.ListAPIKeys(req)
 		if err != nil {
-			plugin.Logger(ctx).Error("scaleway_instance.listIamAPIKeys", "query_error", err)
+			plugin.Logger(ctx).Error("scaleway_iam_api_key.listIamAPIKeys", "query_error", err)
 		}
 
 		for _, key := range resp.APIKeys {
@@ -165,11 +165,11 @@ func getIamAPIKey(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateDat
 	// Create client
 	client, err := getSessionConfig(ctx, d)
 	if err != nil {
-		plugin.Logger(ctx).Error("scaleway_iamt_api_key.getIamAPIKey", "connection_error", err)
+		plugin.Logger(ctx).Error("scaleway_iam_api_key.getIamAPIKey", "connection_error", err)
 		return nil, err
 	}
 
-	// Create SDK objects for Scaleway Instance product
+	// Create SDK objects for Scaleway IAM product
 	iamApi := iam.NewAPI(client)
 
 	accessKey := d.EqualsQuals["access_key"].GetStringValue()
