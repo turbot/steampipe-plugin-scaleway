@@ -85,7 +85,7 @@ func tableScalewayIamUser(_ context.Context) *plugin.Table {
 				Name:        "title",
 				Description: "Title of the resource.",
 				Type:        proto.ColumnType_STRING,
-				Transform:   transform.FromField("ID"),
+				Transform:   transform.FromField("Email"),
 			},
 		},
 	}
@@ -97,11 +97,11 @@ func listIamUsers(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateDat
 	// Create client
 	client, err := getSessionConfig(ctx, d)
 	if err != nil {
-		plugin.Logger(ctx).Error("scaleway_instance.listIamUsers", "connection_error", err)
+		plugin.Logger(ctx).Error("scaleway_iam_user.listIamUsers", "connection_error", err)
 		return nil, err
 	}
 
-	// Create SDK objects for Scaleway Instance product
+	// Create SDK objects for Scaleway IAM product
 	iamApi := iam.NewAPI(client)
 
 	// Get organisationID from config to request IAM API
@@ -129,7 +129,7 @@ func listIamUsers(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateDat
 	for {
 		resp, err := iamApi.ListUsers(req)
 		if err != nil {
-			plugin.Logger(ctx).Error("scaleway_instance.listIamUsers", "query_error", err)
+			plugin.Logger(ctx).Error("scaleway_iam_user.listIamUsers", "query_error", err)
 		}
 
 		for _, key := range resp.Users {
@@ -160,11 +160,11 @@ func getIamUser(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData)
 	// Create client
 	client, err := getSessionConfig(ctx, d)
 	if err != nil {
-		plugin.Logger(ctx).Error("scaleway_iamt_user.getIamUser", "connection_error", err)
+		plugin.Logger(ctx).Error("scaleway_iam_user.getIamUser", "connection_error", err)
 		return nil, err
 	}
 
-	// Create SDK objects for Scaleway Instance product
+	// Create SDK objects for Scaleway IAM product
 	iamApi := iam.NewAPI(client)
 
 	userId := d.EqualsQualString("id")
