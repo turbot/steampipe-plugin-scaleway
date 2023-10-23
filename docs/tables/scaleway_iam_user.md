@@ -13,7 +13,7 @@ select
   email,
   created_at,
   last_login_at,
-  user_id,
+  id,
   status,
   two_factor_enabled
 from
@@ -25,7 +25,7 @@ from
 ```sql
 select
   email,
-  user_id,
+  id,
   two_factor_enabled
 from
   scaleway_iam_user
@@ -38,7 +38,7 @@ where
 ```sql
 select
   email,
-  user_id,
+  id,
   status
 from
   scaleway_iam_user
@@ -51,7 +51,7 @@ where
 ```sql
 select
   email,
-  user_id,
+  id,
   last_login_at
 from
   scaleway_iam_user
