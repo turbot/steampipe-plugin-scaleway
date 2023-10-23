@@ -2,6 +2,8 @@
 
 Users allow you to connect to scaleway console in your organization.
 
+This table requires the `organization_id` config argument to be set.
+
 ## Examples
 
 ### Basic info

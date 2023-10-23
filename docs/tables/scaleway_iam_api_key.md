@@ -2,6 +2,8 @@
 
 API keys allow you to securely connect to scaleway console in your organization.
 
+This table requires the `organization_id` config argument to be set.
+
 ## Examples
 
 ### Basic info

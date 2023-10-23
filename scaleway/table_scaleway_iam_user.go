@@ -19,12 +19,6 @@ func tableScalewayIamUser(_ context.Context) *plugin.Table {
 		Description: "Users allow you to connect to scaleway console in your organization.",
 		List: &plugin.ListConfig{
 			Hydrate: listIamUsers,
-			KeyColumns: []*plugin.KeyColumn{
-				{
-					Name:    "id",
-					Require: plugin.Optional,
-				},
-			},
 		},
 		Get: &plugin.GetConfig{
 			Hydrate:    getIamUser,

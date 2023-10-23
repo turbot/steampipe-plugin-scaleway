@@ -44,11 +44,6 @@ func getSessionConfig(ctx context.Context, d *plugin.QueryData) (*scw.Client, er
 		secretKey = *scalewayConfig.SecretKey
 	}
 
-	// No Organization Id
-	if scalewayConfig.OrganizationID == nil {
-		return nil, fmt.Errorf("partial credentials found in connection config, missing: organization_id")
-	}
-
 	// No creds
 	if accessKey == "" && secretKey == "" {
 		return nil, fmt.Errorf("both access_key and secret_key must be configured")
