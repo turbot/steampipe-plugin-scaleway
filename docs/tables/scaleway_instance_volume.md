@@ -1,10 +1,20 @@
-# Table: scaleway_instance_volume
+---
+title: "Steampipe Table: scaleway_instance_volume - Query Scaleway Instance Volumes using SQL"
+description: "Allows users to query Scaleway Instance Volumes, providing detailed insights into the storage capabilities and configurations of Scaleway instances."
+---
 
-A volume is where you store your data inside your instance. It appears as a block device on Linux that you can use to create a filesystem and mount it.
+# Table: scaleway_instance_volume - Query Scaleway Instance Volumes using SQL
+
+Scaleway Instance Volumes are block storage devices that you can attach to your Scaleway Instances. They offer reliable, scalable, and high-performance storage for your cloud servers. Instance Volumes can be used for primary storage of data, to provide additional storage capacity, or to increase I/O performance.
+
+## Table Usage Guide
+
+The `scaleway_instance_volume` table provides insights into the storage capabilities and configurations of Scaleway instances. As a system administrator or DevOps engineer, you can explore volume-specific details through this table, including size, type, and state. Utilize it to monitor storage usage, verify configurations, and ensure optimal storage performance for your Scaleway instances.
 
 ## Examples
 
 ### Basic info
+Explore which instances are active within your Scaleway project, along with their respective sizes and types. This can help you manage resources and identify areas for potential optimization or scaling.
 
 ```sql
 select
@@ -20,6 +30,7 @@ from
 ```
 
 ### Count of volumes by volume type
+Analyze the distribution of volume types in your Scaleway instance to better understand your storage utilization. This could potentially help optimize storage resources by identifying which volume types are most commonly used.
 
 ```sql
 select
@@ -32,6 +43,7 @@ group by
 ```
 
 ### List unattached volumes
+Discover the segments that consist of unused storage volumes within your Scaleway instances. This can aid in optimizing storage utilization and reducing unnecessary costs.
 
 ```sql
 select
@@ -44,6 +56,7 @@ where
 ```
 
 ### List volumes with size more than 10 GB (10000000000 Bytes)
+Identify instances where your Scaleway volumes exceed 10 GB to help manage your storage resources more effectively.
 
 ```sql
 select
@@ -61,6 +74,7 @@ where
 ```
 
 ### Find volumes attached to stopped instance servers
+Determine the areas in which storage volumes are attached to servers that are not currently active. This is useful for optimizing resource usage and managing costs, as unused volumes may be unnecessarily incurring charges.
 
 ```sql
 select
