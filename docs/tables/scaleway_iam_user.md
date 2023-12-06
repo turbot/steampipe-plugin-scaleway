@@ -11,6 +11,9 @@ Scaleway Identity and Access Management (IAM) is a service within Scaleway that 
 
 The `scaleway_iam_user` table provides insights into IAM users within Scaleway Identity and Access Management (IAM). As a DevOps engineer, explore user-specific details through this table, including permissions, roles, and associated metadata. Utilize it to uncover information about users, such as those with specific permissions, the roles assigned to each user, and the verification of user credentials.
 
+**Important Notes**
+- This table requires the `organization_id` config argument to be set.
+
 ## Examples
 
 ### Basic info

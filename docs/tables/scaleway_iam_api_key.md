@@ -11,6 +11,9 @@ Scaleway IAM API Keys are unique identifiers associated with a Scaleway account.
 
 The `scaleway_iam_api_key` table provides insights into IAM API keys within Scaleway Identity and Access Management (IAM). As a security analyst, explore key-specific details through this table, including key states, creation and expiration dates, and associated user information. Utilize it to monitor and manage the lifecycle of API keys, ensuring they are rotated regularly and expired keys are deleted, enhancing the security posture of your Scaleway environment.
 
+**Important Notes**
+- This table requires the `organization_id` config argument to be set.
+
 ## Examples
 
 ### Basic info
