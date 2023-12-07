@@ -16,7 +16,17 @@ The `scaleway_instance_ip` table provides insights into IP addresses associated 
 ### Basic info
 Explore which instances in your Scaleway project are associated with specific IP addresses, to better manage your resources and ensure optimal project performance. This could be particularly useful for identifying potential bottlenecks or understanding the distribution of your resources.
 
-```sql
+```sql+postgres
+select
+  id,
+  address,
+  zone,
+  project
+from
+  scaleway_instance_ip;
+```
+
+```sql+sqlite
 select
   id,
   address,
@@ -29,7 +39,20 @@ from
 ### List unused instance IPs
 Discover the segments that contain unused IP addresses within your Scaleway instances. This can be useful for optimizing resource usage and reducing unnecessary costs.
 
-```sql
+```sql+postgres
+select
+  id,
+  address,
+  zone,
+  project
+from
+  scaleway_instance_ip
+where
+  server is null
+  and reverse is null;
+```
+
+```sql+sqlite
 select
   id,
   address,

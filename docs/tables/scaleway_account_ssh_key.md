@@ -16,7 +16,17 @@ The `scaleway_account_ssh_key` table provides insights into the SSH keys associa
 ### Basic info
 Explore the creation dates and unique identifiers of your Scaleway account's SSH keys. This allows you to manage and track the keys more effectively.
 
-```sql
+```sql+postgres
+select
+  name,
+  id,
+  created_at,
+  fingerprint
+from
+  scaleway_account_ssh_key;
+```
+
+```sql+sqlite
 select
   name,
   id,
@@ -29,7 +39,7 @@ from
 ### List SSH keys older than 90 days
 Discover the SSH keys that have been in use for more than 90 days. This is useful in understanding potential security risks associated with outdated keys and aids in maintaining optimal security practices.
 
-```sql
+```sql+postgres
 select
   name,
   id,
@@ -40,4 +50,17 @@ from
   scaleway_account_ssh_key
 where
   extract(day from current_timestamp - created_at) > 90;
+```
+
+```sql+sqlite
+select
+  name,
+  id,
+  created_at,
+  fingerprint,
+  cast((julianday('now') - julianday(created_at)) as integer) as age
+from
+  scaleway_account_ssh_key
+where
+  cast((julianday('now') - julianday(created_at)) as integer) > 90;
 ```

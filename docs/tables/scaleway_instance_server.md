@@ -16,7 +16,20 @@ The `scaleway_instance_server` table provides insights into the instances within
 ### Basic info
 Explore which Scaleway servers are currently active, when they were created, and where they are located. This is useful for gaining insights into resource allocation and server management across different projects and organizations.
 
-```sql
+```sql+postgres
+select
+  name,
+  id,
+  state,
+  creation_date,
+  zone,
+  project,
+  organization
+from
+  scaleway_instance_server;
+```
+
+```sql+sqlite
 select
   name,
   id,
@@ -32,7 +45,7 @@ from
 ### List stopped instance servers
 Identify instances where Scaleway servers are in a 'stopped' state. This is useful to manage resources and maintain operational efficiency by pinpointing idle servers.
 
-```sql
+```sql+postgres
 select
   name,
   id,
@@ -46,10 +59,24 @@ where
   state = 'stopped';
 ```
 
+```sql+sqlite
+select
+  name,
+  id,
+  state,
+  zone,
+  project,
+  organization
+from
+  scaleway_instance_server
+where
+  state = 'stopped';
+```
+
 ### List instance servers older than 90 days
 Determine the areas in which instance servers have been running for more than 90 days. This is useful for identifying potential areas for resource optimization and cost-saving by assessing long-running servers.
 
-```sql
+```sql+postgres
 select
   name,
   id,
@@ -63,4 +90,20 @@ from
 where
   state = 'running'
   and extract(day from current_timestamp - creation_date) > 90;
+```
+
+```sql+sqlite
+select
+  name,
+  id,
+  state,
+  julianday('now') - julianday(creation_date) as age,
+  zone,
+  project,
+  organization
+from
+  scaleway_instance_server
+where
+  state = 'running'
+  and julianday('now') - julianday(creation_date) > 90;
 ```

@@ -16,7 +16,19 @@ The `scaleway_instance_security_group` table provides insights into the security
 ### Basic info
 Explore which security groups were created on a specific date within your Scaleway instance. This can help you identify instances where changes were made to the default project or specific zones, aiding in configuration review and management.
 
-```sql
+```sql+postgres
+select
+  name,
+  id,
+  creation_date,
+  project_default,
+  zone,
+  project
+from
+  scaleway_instance_security_group;
+```
+
+```sql+sqlite
 select
   name,
   id,
@@ -31,7 +43,7 @@ from
 ### List default security groups
 Explore which security groups are set as the default in your project to ensure correct configurations and prevent potential security risks. This can be particularly useful in managing access controls and maintaining secure project environments.
 
-```sql
+```sql+postgres
 select
   name,
   id,
@@ -43,4 +55,18 @@ from
   scaleway_instance_security_group
 where
   project_default;
+```
+
+```sql+sqlite
+select
+  name,
+  id,
+  creation_date,
+  project_default,
+  zone,
+  project
+from
+  scaleway_instance_security_group
+where
+  project_default = 1;
 ```

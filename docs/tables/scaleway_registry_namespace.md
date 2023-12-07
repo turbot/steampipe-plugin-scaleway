@@ -16,7 +16,20 @@ The `scaleway_registry_namespace` table provides insights into the registry name
 ### Basic info
 Explore the status and creation date of your Scaleway registry namespaces, which can help you track and manage your resources more effectively. This is particularly useful for maintaining organization and project information across multiple regions.
 
-```sql
+```sql+postgres
+select
+  name,
+  id,
+  status,
+  created_at,
+  region,
+  project,
+  organization
+from
+  scaleway_registry_namespace;
+```
+
+```sql+sqlite
 select
   name,
   id,
@@ -32,7 +45,7 @@ from
 ### List public registry namespaces
 Explore which registry namespaces are publicly accessible. This can help in understanding the level of data exposure and potential security risks.
 
-```sql
+```sql+postgres
 select
   name,
   id,
@@ -45,4 +58,19 @@ from
   scaleway_registry_namespace
 where
   is_public = true;
+```
+
+```sql+sqlite
+select
+  name,
+  id,
+  status,
+  created_at,
+  region,
+  project,
+  organization
+from
+  scaleway_registry_namespace
+where
+  is_public = 1;
 ```

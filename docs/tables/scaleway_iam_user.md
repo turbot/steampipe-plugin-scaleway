@@ -19,7 +19,19 @@ The `scaleway_iam_user` table provides insights into IAM users within Scaleway I
 ### Basic info
 Explore the user profiles in your Scaleway IAM to understand their status and security settings. This can help identify if any users have an outdated login or if two-factor authentication is enabled, assisting in maintaining account security.
 
-```sql
+```sql+postgres
+select
+  email,
+  created_at,
+  last_login_at,
+  id,
+  status,
+  two_factor_enabled
+from
+  scaleway_iam_user
+```
+
+```sql+sqlite
 select
   email,
   created_at,
@@ -34,7 +46,18 @@ from
 ### List all the users for whom MFA is not enabled
 Explore which users have not activated Multi-Factor Authentication (MFA) to identify potential security risks and enhance user account protection measures.
 
-```sql
+```sql+postgres
+select
+  email,
+  id,
+  two_factor_enabled
+from
+  scaleway_iam_user
+where
+  not two_factor_enabled;
+```
+
+```sql+sqlite
 select
   email,
   id,
@@ -48,7 +71,18 @@ where
 ### List all the users not actived
 Discover the segments that comprise users with an unknown status in the Scaleway IAM service. This allows you to pinpoint specific instances where user status may need investigation or clarification, enhancing your overall user management process.
 
-```sql
+```sql+postgres
+select
+  email,
+  id,
+  status
+from
+  scaleway_iam_user
+where
+   status = 'unknown_status';
+```
+
+```sql+sqlite
 select
   email,
   id,
@@ -62,7 +96,7 @@ where
 ### List all the users never connected
 Identify users who have never logged in to your system, which can help in assessing inactive accounts and potentially freeing up resources.
 
-```sql
+```sql+postgres
 select
   email,
   id,
@@ -71,3 +105,15 @@ from
   scaleway_iam_user
 where
    last_login_at is null;
+
+
+```sql+sqlite
+select
+  email,
+  id,
+  last_login_at
+from
+  scaleway_iam_user
+where
+  last_login_at is null;
+```

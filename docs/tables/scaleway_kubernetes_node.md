@@ -16,7 +16,18 @@ The `scaleway_kubernetes_node` table provides insights into Kubernetes Nodes wit
 ### Basic info
 Analyze the status and creation date of your Scaleway Kubernetes nodes to understand their current operational state and longevity. This can be useful in assessing the overall health and maintenance needs of your Kubernetes infrastructure.
 
-```sql
+```sql+postgres
+select
+  name,
+  cluster_id,
+  id,
+  status,
+  created_at
+from
+  scaleway_kubernetes_node;
+```
+
+```sql+sqlite
 select
   name,
   cluster_id,
@@ -30,7 +41,21 @@ from
 ### List kubernetes nodes where status is not ready
 Identify Kubernetes nodes that are not in a 'ready' status. This query is useful in pinpointing potential issues within your Kubernetes cluster that may need attention or troubleshooting.
 
-```sql
+```sql+postgres
+select
+  name,
+  cluster_id,
+  id,
+  status,
+  error_message,
+  created_at
+from
+  scaleway_kubernetes_node
+where
+  status <> 'ready';
+```
+
+```sql+sqlite
 select
   name,
   cluster_id,
@@ -47,7 +72,21 @@ where
 ### List kubernetes nodes with ipv6 public
 Analyze the settings to understand the status and creation date of Kubernetes nodes on Scaleway that are utilizing IPv6 public IP addresses. This is useful for maintaining network configurations and ensuring optimal performance.
 
-```sql
+```sql+postgres
+select
+  name,
+  cluster_id,
+  id,
+  status,
+  public_ip_v6,
+  created_at
+from
+  scaleway_kubernetes_node
+where
+  public_ip_v6 != '<nil>';
+```
+
+```sql+sqlite
 select
   name,
   cluster_id,
@@ -64,7 +103,7 @@ where
 ### List kubernetes nodes created more than 90 days ago
 Identify instances where Kubernetes nodes have been active for a prolonged period of time, specifically more than 90 days. This can be useful in managing resources and ensuring optimal performance within your system.
 
-```sql
+```sql+postgres
 select
   name,
   cluster_id,
@@ -76,4 +115,18 @@ from
   scaleway_kubernetes_node
 where
   created_at <= now() - interval '90' day;
+```
+
+```sql+sqlite
+select
+  name,
+  cluster_id,
+  id,
+  status,
+  updated_at,
+  created_at
+from
+  scaleway_kubernetes_node
+where
+  created_at <= datetime('now','-90 day');
 ```

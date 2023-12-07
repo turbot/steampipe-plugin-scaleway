@@ -16,7 +16,19 @@ The `scaleway_instance_snapshot` table provides insights into Instance Snapshots
 ### Basic info
 Explore which Scaleway instance snapshots are currently active, by assessing their state and size. This can help manage resources and plan projects more efficiently.
 
-```sql
+```sql+postgres
+select
+  name,
+  id,
+  state,
+  size,
+  zone,
+  project
+from
+  scaleway_instance_snapshot;
+```
+
+```sql+sqlite
 select
   name,
   id,
@@ -31,7 +43,7 @@ from
 ### List snapshots older than 90 days
 Assess the elements within your Scaleway instances by identifying snapshots that have been stored for more than 90 days. This can be useful for managing storage and ensuring efficient use of resources.
 
-```sql
+```sql+postgres
 select
   name,
   id,
@@ -46,10 +58,39 @@ where
   extract(day from current_timestamp - creation_date) > 90;
 ```
 
+```sql+sqlite
+select
+  name,
+  id,
+  state,
+  julianday('now') - julianday(creation_date) as age,
+  size,
+  zone,
+  project
+from
+  scaleway_instance_snapshot
+where
+  julianday('now') - julianday(creation_date) > 90;
+```
+
 ### List large snapshots (> 100GB or 100000000000 Bytes)
 Discover the segments that contain large snapshots, specifically those exceeding 100GB. This can be beneficial in managing storage space and optimizing resource allocation within your project.
 
-```sql
+```sql+postgres
+select
+  name,
+  id,
+  state,
+  size,
+  zone,
+  project
+from
+  scaleway_instance_snapshot
+where
+  size > 100000000000;
+```
+
+```sql+sqlite
 select
   name,
   id,

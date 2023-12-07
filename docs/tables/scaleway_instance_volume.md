@@ -16,7 +16,20 @@ The `scaleway_instance_volume` table provides insights into the storage capabili
 ### Basic info
 Explore which instances are active within your Scaleway project, along with their respective sizes and types. This can help you manage resources and identify areas for potential optimization or scaling.
 
-```sql
+```sql+postgres
+select
+  name,
+  id,
+  state,
+  size,
+  volume_type,
+  zone,
+  project
+from
+  scaleway_instance_volume;
+```
+
+```sql+sqlite
 select
   name,
   id,
@@ -32,7 +45,17 @@ from
 ### Count of volumes by volume type
 Analyze the distribution of volume types in your Scaleway instance to better understand your storage utilization. This could potentially help optimize storage resources by identifying which volume types are most commonly used.
 
-```sql
+```sql+postgres
+select
+  volume_type,
+  count(id)
+from
+  scaleway_instance_volume
+group by
+  volume_type;
+```
+
+```sql+sqlite
 select
   volume_type,
   count(id)
@@ -45,7 +68,17 @@ group by
 ### List unattached volumes
 Discover the segments that consist of unused storage volumes within your Scaleway instances. This can aid in optimizing storage utilization and reducing unnecessary costs.
 
-```sql
+```sql+postgres
+select
+  id,
+  volume_type
+from
+  scaleway_instance_volume
+where
+  server is null;
+```
+
+```sql+sqlite
 select
   id,
   volume_type
@@ -58,7 +91,22 @@ where
 ### List volumes with size more than 10 GB (10000000000 Bytes)
 Identify instances where your Scaleway volumes exceed 10 GB to help manage your storage resources more effectively.
 
-```sql
+```sql+postgres
+select
+  name,
+  id,
+  state,
+  size,
+  volume_type,
+  zone,
+  project
+from
+  scaleway_instance_volume
+where
+  size > 10000000000;
+```
+
+```sql+sqlite
 select
   name,
   id,
@@ -76,7 +124,7 @@ where
 ### Find volumes attached to stopped instance servers
 Determine the areas in which storage volumes are attached to servers that are not currently active. This is useful for optimizing resource usage and managing costs, as unused volumes may be unnecessarily incurring charges.
 
-```sql
+```sql+postgres
 select
   v.name,
   v.id,
@@ -90,4 +138,20 @@ from
   scaleway_instance_server as s
 where
   s.id = v.server ->> 'id';
+```
+
+```sql+sqlite
+select
+  v.name,
+  v.id,
+  v.state,
+  v.volume_type,
+  s.name as server_name,
+  v.zone,
+  v.project
+from
+  scaleway_instance_volume as v,
+  scaleway_instance_server as s
+where
+  s.id = json_extract(v.server, '$.id');
 ```

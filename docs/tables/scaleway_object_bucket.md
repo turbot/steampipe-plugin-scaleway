@@ -16,7 +16,17 @@ The `scaleway_object_bucket` table provides insights into Object Storage Buckets
 ### Basic info
 Explore which of your Scaleway object storage buckets are publicly accessible. This can help in identifying potential security risks and ensuring that sensitive data is not exposed unintentionally.
 
-```sql
+```sql+postgres
+select
+  name,
+  region,
+  project,
+  bucket_policy_is_public
+from
+  scaleway_object_bucket;
+```
+
+```sql+sqlite
 select
   name,
   region,
@@ -29,7 +39,19 @@ from
 ### List buckets with versioning disabled
 Discover the segments that have versioning disabled in your Scaleway object storage. This can be useful to identify potential risks and ensure data integrity by enabling versioning.
 
-```sql
+```sql+postgres
+select
+  name,
+  region,
+  project,
+  versioning_enabled
+from
+  scaleway_object_bucket
+where
+  not versioning_enabled;
+```
+
+```sql+sqlite
 select
   name,
   region,
@@ -44,7 +66,19 @@ where
 ### List buckets with no lifecycle policy
 Explore which Scaleway object buckets are missing a lifecycle policy. This can be useful to identify potential areas of cost savings, as lifecycle policies can help manage storage costs by automatically archiving or deleting old data.
 
-```sql
+```sql+postgres
+select
+  name,
+  region,
+  project,
+  versioning_enabled
+from
+  scaleway_object_bucket
+where
+  lifecycle_rules is null;
+```
+
+```sql+sqlite
 select
   name,
   region,

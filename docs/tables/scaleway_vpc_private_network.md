@@ -16,7 +16,18 @@ The `scaleway_vpc_private_network` table provides insights into private networks
 ### Basic info
 Explore which private networks have been created within your Scaleway VPC. This is useful for keeping track of your network configurations and identifying any potential issues or areas for improvement.
 
-```sql
+```sql+postgres
+select
+  name,
+  id,
+  created_at,
+  zone,
+  project
+from
+  scaleway_vpc_private_network;
+```
+
+```sql+sqlite
 select
   name,
   id,

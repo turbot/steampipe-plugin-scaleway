@@ -16,7 +16,20 @@ The `scaleway_kubernetes_pool` table offers insights into the configuration and 
 ### Basic info
 Explore the status and details of your Kubernetes clusters in Scaleway. This allows you to assess the health and version of your clusters, helping with maintenance and troubleshooting.
 
-```sql
+```sql+postgres
+select
+  name,
+  node_type,
+  cluster_id,
+  id,
+  status,
+  created_at,
+  version
+from
+  scaleway_kubernetes_pool;
+```
+
+```sql+sqlite
 select
   name,
   node_type,
@@ -32,7 +45,22 @@ from
 ### List kubernetes pools with a specific node type
 Determine the areas in which Kubernetes pools are utilizing a specific node type within the Scaleway platform. This can be useful for resource optimization and understanding the distribution of node types across your Kubernetes clusters.
 
-```sql
+```sql+postgres
+select
+  name,
+  node_type,
+  cluster_id,
+  id,
+  status,
+  created_at,
+  version
+from
+  scaleway_kubernetes_pool
+where
+  node_type = 'play2_nano';
+```
+
+```sql+sqlite
 select
   name,
   node_type,
@@ -50,7 +78,7 @@ where
 ### List kubernetes pools with auto-scaling disabled
 Identify Kubernetes pools where auto-scaling is turned off. This can be useful in managing system resources and preventing unexpected scaling actions.
 
-```sql
+```sql+postgres
 select
   name,
   node_type,
@@ -65,10 +93,39 @@ where
   autoscaling is false;
 ```
 
+```sql+sqlite
+select
+  name,
+  node_type,
+  cluster_id,
+  id,
+  status,
+  autoscaling,
+  version
+from
+  scaleway_kubernetes_pool
+where
+  autoscaling is 0;
+```
+
 ### List kubernetes pools with Kubernetes version inferior to 1.24
 Determine the areas in which Kubernetes pools are operating on versions older than 1.24. This can help in identifying pools that may need to be updated for security or feature improvements.
 
-```sql
+```sql+postgres
+select
+  name,
+  node_type,
+  cluster_id,
+  id,
+  status,
+  version
+from
+  scaleway_kubernetes_pool
+where
+  version < '1.24';
+```
+
+```sql+sqlite
 select
   name,
   node_type,

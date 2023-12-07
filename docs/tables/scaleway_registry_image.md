@@ -17,7 +17,19 @@ The `scaleway_registry_image` table provides insights into registry images withi
 ### Basic info
 Explore which Scaleway registry images are active and when they were created to manage storage effectively. This helps in understanding the overall usage and aids in resource optimization.
 
-```sql
+```sql+postgres
+select
+  name,
+  id,
+  status,
+  created_at,
+  tags,
+  size
+from
+  scaleway_registry_image;
+```
+
+```sql+sqlite
 select
   name,
   id,
@@ -32,7 +44,7 @@ from
 ### List images updated in last 10 days for a repository
 Determine the images in a repository that have been updated recently, allowing you to stay informed about the latest changes and developments within your project.
 
-```sql
+```sql+postgres
 select
   name,
   id,
@@ -47,17 +59,47 @@ where
   updated_at >= now() - interval '10' day
 ```
 
+```sql+sqlite
+select
+  name,
+  id,
+  status,
+  created_at,
+  updated_at,
+  tags,
+  size
+from
+  scaleway_registry_image
+where
+  updated_at >= datetime('now', '-10 days')
+```
+
 
 ### List images with a public visibility
 Discover the segments that have images with public visibility, allowing you to assess potential security risks and manage access controls more effectively. This is useful for maintaining data privacy and ensuring only appropriate images are publicly accessible.
 
-```sql
+```sql+postgres
 select
   name,
   id,
   status,
   created_at,
   updated_at
+  tags,
+  visibility
+from
+  scaleway_registry_image
+where
+  visibility = 'public'
+```
+
+```sql+sqlite
+select
+  name,
+  id,
+  status,
+  created_at,
+  updated_at,
   tags,
   visibility
 from

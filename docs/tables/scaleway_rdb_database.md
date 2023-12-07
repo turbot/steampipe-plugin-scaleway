@@ -16,7 +16,19 @@ The `scaleway_rdb_database` table provides insights into RDB Databases within Sc
 ### Basic info
 Explore which Scaleway databases are managed and identify their respective sizes and locations. This can help in assessing resource allocation and optimizing database management across different projects.
 
-```sql
+```sql+postgres
+select
+  name,
+  instance_id,
+  size,
+  managed,
+  region,
+  project
+from
+  scaleway_rdb_database;
+```
+
+```sql+sqlite
 select
   name,
   instance_id,
@@ -31,7 +43,7 @@ from
 ### List managed databases
 Explore which databases are managed within your Scaleway RDB project. This query helps you to pinpoint specific locations and assess the elements within your project, providing insights into your data management and storage.
 
-```sql
+```sql+postgres
 select
   name,
   instance_id,
@@ -45,10 +57,34 @@ where
   managed;
 ```
 
+```sql+sqlite
+select
+  name,
+  instance_id,
+  size,
+  managed,
+  region,
+  project
+from
+  scaleway_rdb_database
+where
+  managed = 1;
+```
+
 ### Get count of databases by instance
 Explore the distribution of databases across different instances to understand how data is organized and managed within your Scaleway RDB environment. This can help optimize resource allocation and management strategies.
 
-```sql
+```sql+postgres
+select
+  instance_id,
+  count(name)
+from
+  scaleway_rdb_database
+group by
+  instance_id;
+```
+
+```sql+sqlite
 select
   instance_id,
   count(name)

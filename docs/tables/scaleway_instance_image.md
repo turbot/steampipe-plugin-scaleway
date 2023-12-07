@@ -16,7 +16,20 @@ The `scaleway_instance_image` table provides insights into Instance Images withi
 ### Basic info
 Explore the details of your Scaleway instances, such as their names, IDs, states, creation dates, and associated projects and organizations. This helps you to effectively manage and monitor your Scaleway resources.
 
-```sql
+```sql+postgres
+select
+  name,
+  id,
+  state,
+  creation_date,
+  zone,
+  project,
+  organization
+from
+  scaleway_instance_image;
+```
+
+```sql+sqlite
 select
   name,
   id,
@@ -32,7 +45,7 @@ from
 ### List custom (user-defined) images
 Discover the segments that are utilizing custom images in your cloud infrastructure. This can assist in identifying areas for optimization and potential security risks.
 
-```sql
+```sql+postgres
 select
   name,
   id,
@@ -47,10 +60,25 @@ where
   not public;
 ```
 
+```sql+sqlite
+select
+  name,
+  id,
+  state,
+  creation_date,
+  zone,
+  project,
+  organization
+from
+  scaleway_instance_image
+where
+  public = 0;
+```
+
 ### List images older than 90 days
 Determine the areas in which images from Scaleway instances have been stored for more than 90 days. This can be useful in identifying outdated or potentially unnecessary data, enabling more efficient resource management and cost savings.
 
-```sql
+```sql+postgres
 select
   name,
   id,
@@ -63,4 +91,19 @@ from
   scaleway_instance_image
 where
   extract(day from current_timestamp - creation_date) > 90;
+```
+
+```sql+sqlite
+select
+  name,
+  id,
+  state,
+  julianday('now') - julianday(creation_date) as age,
+  zone,
+  project,
+  organization
+from
+  scaleway_instance_image
+where
+  julianday('now') - julianday(creation_date) > 90;
 ```

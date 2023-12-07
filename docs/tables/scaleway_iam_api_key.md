@@ -19,7 +19,18 @@ The `scaleway_iam_api_key` table provides insights into IAM API keys within Scal
 ### Basic info
 Explore which Scaleway IAM API keys have been created, when they were made, and their expiration dates. This allows for efficient management of API keys, ensuring none are expired or unused.
 
-```sql
+```sql+postgres
+select
+  access_key,
+  created_at,
+  user_id,
+  expires_at,
+  default_project_id
+from
+  scaleway_iam_api_key
+```
+
+```sql+sqlite
 select
   access_key,
   created_at,
@@ -33,7 +44,7 @@ from
 ### List API keys older than 90 days
 Determine the areas in which API keys are older than 90 days to manage and update them as necessary. This helps in maintaining security and ensuring all keys are up-to-date.
 
-```sql
+```sql+postgres
 select
   access_key,
   created_at,
@@ -45,4 +56,18 @@ from
   scaleway_iam_api_key
 where
   extract(day from current_timestamp - created_at) > 90;
+```
+
+```sql+sqlite
+select
+  access_key,
+  created_at,
+  user_id,
+  expires_at,
+  default_project_id,
+  julianday('now') - julianday(created_at) as age
+from
+  scaleway_iam_api_key
+where
+  julianday('now') - julianday(created_at) > 90;
 ```
