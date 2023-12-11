@@ -8,6 +8,7 @@ short_name: "scaleway"
 description: "Steampipe plugin to query servers, networks, databases and more from your Scaleway project."
 og_description: "Query Scaleway with SQL! Open source CLI. No DB required."
 og_image: "/images/plugins/turbot/scaleway-social-graphic.png"
+engines: ["steampipe", "sqlite", "postgres", "export"]
 ---
 
 # Scaleway + Steampipe
