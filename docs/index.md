@@ -15,7 +15,7 @@ engines: ["steampipe", "sqlite", "postgres", "export"]
 
 [Scaleway](https://www.scaleway.com) is a cloud platform, offering BareMetal and Virtual SSD Cloud Servers for any workload.
 
-[Steampipe](https://steampipe.io) is an open source CLI to instantly query cloud APIs using SQL.
+[Steampipe](https://steampipe.io) is an open-source zero-ETL engine to instantly query cloud APIs using SQL.
 
 List VPC private networks in your Scaleway project:
 
