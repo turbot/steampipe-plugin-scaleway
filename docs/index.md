@@ -8,13 +8,14 @@ short_name: "scaleway"
 description: "Steampipe plugin to query servers, networks, databases and more from your Scaleway project."
 og_description: "Query Scaleway with SQL! Open source CLI. No DB required."
 og_image: "/images/plugins/turbot/scaleway-social-graphic.png"
+engines: ["steampipe", "sqlite", "postgres", "export"]
 ---
 
 # Scaleway + Steampipe
 
 [Scaleway](https://www.scaleway.com) is a cloud platform, offering BareMetal and Virtual SSD Cloud Servers for any workload.
 
-[Steampipe](https://steampipe.io) is an open source CLI to instantly query cloud APIs using SQL.
+[Steampipe](https://steampipe.io) is an open-source zero-ETL engine to instantly query cloud APIs using SQL.
 
 List VPC private networks in your Scaleway project:
 
@@ -146,11 +147,6 @@ connection "scaleway_all" {
   connections = ["scaleway_*"]
 }
 ```
-
-## Get involved
-
-- Open source: https://github.com/turbot/steampipe-plugin-scaleway
-- Community: [Join #steampipe on Slack →](https://turbot.com/community/join)
 
 ## Multi-Region Connections
 
