@@ -22,11 +22,11 @@ func tableScalewayIamUser(_ context.Context) *plugin.Table {
 		},
 		Get: &plugin.GetConfig{
 			Hydrate:    getIamUser,
-			KeyColumns: plugin.SingleColumn("user_id"),
+			KeyColumns: plugin.SingleColumn("id"),
 		},
 		Columns: []*plugin.Column{
 			{
-				Name:        "user_id",
+				Name:        "id",
 				Description: "ID of user.",
 				Type:        proto.ColumnType_STRING,
 				Transform:   transform.FromField("ID"),
