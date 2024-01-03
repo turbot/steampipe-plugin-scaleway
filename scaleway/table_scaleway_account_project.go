@@ -27,6 +27,10 @@ func tableScalewayAccountProject(_ context.Context) *plugin.Table {
 				},
 			},
 		},
+		Get: &plugin.GetConfig{
+			Hydrate:    getAccountProject,
+			KeyColumns: plugin.SingleColumn("id"),
+		},
 		Columns: []*plugin.Column{
 			{
 				Name:        "id",
@@ -136,4 +140,38 @@ func listAccountProjects(ctx context.Context, d *plugin.QueryData, _ *plugin.Hyd
 	}
 
 	return nil, nil
+}
+
+//// HYDRATE FUNCTIONS
+
+func getAccountProject(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
+	// Create client
+	client, err := getSessionConfig(ctx, d)
+	if err != nil {
+		plugin.Logger(ctx).Error("scaleway_account_project.getAccountProject", "connection_error", err)
+		return nil, err
+	}
+
+	// Create SDK objects for Scaleway IAM product
+	accountApi := account.NewProjectAPI(client)
+
+	projectId := d.EqualsQuals["id"].GetStringValue()
+
+	// No inputs
+	if projectId == "" {
+		return nil, nil
+	}
+
+	data, err := accountApi.GetProject(&account.ProjectAPIGetProjectRequest{
+		ProjectID: projectId,
+	})
+	if err != nil {
+		plugin.Logger(ctx).Error("scaleway_account_project.getAccountProject", "query_error", err)
+		if is404Error(err) {
+			return nil, nil
+		}
+		return nil, err
+	}
+
+	return data, nil
 }
