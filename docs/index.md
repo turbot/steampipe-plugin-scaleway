@@ -79,10 +79,6 @@ connection "scaleway" {
   # This is only required while querying the scaleway_iam_api_key and scaleway_iam_user tables. 
   # organization_id = "14czbd62-29fe-46a6-967f-5433adcb2fc5"
 
-  # Your organization ID is the identifier of your account inside Scaleway infrastructure.
-  # This is only required while querying `scaleway_iam_api_key` and `scaleway_iam_user` tables. 
-  # organization_id = "YOUR_ORGANIZATION_ID"
-
   # You may connect to one or more regions. If `regions` is not specified,
   # Steampipe will use a single default region using the `SCW_DEFAULT_REGION`
   # environment variable.
