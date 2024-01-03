@@ -13,7 +13,7 @@ select
   name,
   project_id,
   created_at,
-  organization_id
+  organization
 from
   scaleway_project;
 ```

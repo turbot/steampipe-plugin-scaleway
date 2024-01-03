@@ -34,7 +34,7 @@ func tableScalewayProject(_ context.Context) *plugin.Table {
 				Type:        proto.ColumnType_STRING,
 			},
 			{
-				Name:        "creation_date",
+				Name:        "created_at",
 				Description: "The time when the project was created.",
 				Type:        proto.ColumnType_TIMESTAMP,
 			},
