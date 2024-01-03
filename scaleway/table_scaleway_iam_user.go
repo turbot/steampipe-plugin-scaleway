@@ -26,7 +26,7 @@ func tableScalewayIamUser(_ context.Context) *plugin.Table {
 		},
 		Columns: []*plugin.Column{
 			{
-				Name:        "id",
+				Name:        "user_id",
 				Description: "ID of user.",
 				Type:        proto.ColumnType_STRING,
 				Transform:   transform.FromField("ID"),
