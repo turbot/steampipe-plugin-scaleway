@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/scaleway/scaleway-sdk-go/api/account/v2"
+	"github.com/scaleway/scaleway-sdk-go/api/account/v3"
 	"github.com/scaleway/scaleway-sdk-go/scw"
 
 	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
@@ -14,12 +14,12 @@ import (
 
 //// TABLE DEFINITION
 
-func tableScalewayProject(_ context.Context) *plugin.Table {
+func tableScalewayAccountProject(_ context.Context) *plugin.Table {
 	return &plugin.Table{
-		Name:        "scaleway_project",
-		Description: "A Scaleway Project.",
+		Name:        "scaleway_account_project",
+		Description: "A Scaleway Account Project.",
 		List: &plugin.ListConfig{
-			Hydrate: listProjects,
+			Hydrate: listAccountProjects,
 		},
 		Columns: []*plugin.Column{
 			{
@@ -60,7 +60,7 @@ func tableScalewayProject(_ context.Context) *plugin.Table {
 
 //// LIST FUNCTION
 
-func listProjects(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
+func listAccountProjects(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 
 	// Create client
 	client, err := getSessionConfig(ctx, d)
@@ -70,7 +70,7 @@ func listProjects(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateDat
 	}
 
 	// Create SDK objects for Scaleway Account product
-	accountApi := account.NewAPI(client)
+	accountApi := account.NewProjectAPI(client)
 
 	// Get organisationID from config to request IAM API
 	organisationId := GetConfig(d.Connection).OrganizationID
@@ -82,7 +82,7 @@ func listProjects(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateDat
 
 	quals := d.EqualsQuals
 
-	req := &account.ListProjectsRequest{
+	req := &account.ProjectAPIListProjectsRequest{
 		OrganizationID: *organisationId,
 		Page:           scw.Int32Ptr(1),
 	}
@@ -123,7 +123,7 @@ func listProjects(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateDat
 			}
 		}
 
-		if resp.TotalCount == uint32(count) {
+		if resp.TotalCount == uint64(count) {
 			break
 		}
 		req.Page = scw.Int32Ptr(*req.Page + 1)

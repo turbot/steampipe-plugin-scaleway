@@ -19,6 +19,7 @@ func Plugin(ctx context.Context) *plugin.Plugin {
 			NewInstance: ConfigInstance,
 		},
 		TableMap: map[string]*plugin.Table{
+			"scaleway_account_project":         tableScalewayAccountProject(ctx),
 			"scaleway_account_ssh_key":         tableScalewayAccountSSHKey(ctx),
 			"scaleway_baremetal_server":        tableScalewayBaremetalServer(ctx),
 			"scaleway_iam_api_key":             tableScalewayIamAPIKey(ctx),
@@ -33,7 +34,6 @@ func Plugin(ctx context.Context) *plugin.Plugin {
 			"scaleway_kubernetes_node":         tableScalewayKubernetesNode(ctx),
 			"scaleway_kubernetes_pool":         tableScalewayKubernetesPool(ctx),
 			"scaleway_object_bucket":           tableScalewayObjectBucket(ctx),
-			"scaleway_project":                 tableScalewayProject(ctx),
 			"scaleway_rdb_database":            tableScalewayRDBDatabase(ctx),
 			"scaleway_rdb_instance":            tableScalewayRDBInstance(ctx),
 			"scaleway_registry_image":          tableScalewayRegistryImage(ctx),
