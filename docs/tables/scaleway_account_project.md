@@ -11,9 +11,9 @@ This table requires an Organization ID to be configured in the scaleway.spc file
 ```sql
 select
   name,
-  project_id,
+  id,
   created_at,
-  organization
+  organization_id
 from
   scaleway_account_project;
 ```
