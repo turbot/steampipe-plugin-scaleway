@@ -2,6 +2,7 @@ package scaleway
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/scaleway/scaleway-sdk-go/api/account/v2"
 	"github.com/scaleway/scaleway-sdk-go/scw"
@@ -73,11 +74,16 @@ func listProjects(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateDat
 
 	// Get organisationID from config to request IAM API
 	organisationId := GetConfig(d.Connection).OrganizationID
+	if organisationId == nil {
+		err := fmt.Errorf("missing organization_id in scaleway.spc")
+		plugin.Logger(ctx).Error("scaleway_project.listProjects", "query_error", err)
+		return nil, err
+	}
 
 	quals := d.EqualsQuals
 
 	req := &account.ListProjectsRequest{
-		OrganizationID: organisationId,
+		OrganizationID: *organisationId,
 		Page:           scw.Int32Ptr(1),
 	}
 	// Additional filters
