@@ -20,10 +20,16 @@ func tableScalewayAccountProject(_ context.Context) *plugin.Table {
 		Description: "A Scaleway Account Project.",
 		List: &plugin.ListConfig{
 			Hydrate: listAccountProjects,
+			KeyColumns: []*plugin.KeyColumn{
+				{
+					Name:    "name",
+					Require: plugin.Optional,
+				},
+			},
 		},
 		Columns: []*plugin.Column{
 			{
-				Name:        "project_id",
+				Name:        "id",
 				Description: "The ID of the project.",
 				Type:        proto.ColumnType_STRING,
 				Transform:   transform.FromField("ID"),
@@ -49,7 +55,7 @@ func tableScalewayAccountProject(_ context.Context) *plugin.Table {
 				Type:        proto.ColumnType_STRING,
 			},
 			{
-				Name:        "organization",
+				Name:        "organization_id",
 				Description: "Organization ID of the project.",
 				Type:        proto.ColumnType_STRING,
 				Transform:   transform.FromField("OrganizationID"),
