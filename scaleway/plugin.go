@@ -19,6 +19,7 @@ func Plugin(ctx context.Context) *plugin.Plugin {
 			NewInstance: ConfigInstance,
 		},
 		TableMap: map[string]*plugin.Table{
+			"scaleway_account_project":         tableScalewayAccountProject(ctx),
 			"scaleway_account_ssh_key":         tableScalewayAccountSSHKey(ctx),
 			"scaleway_baremetal_server":        tableScalewayBaremetalServer(ctx),
 			"scaleway_iam_api_key":             tableScalewayIamAPIKey(ctx),
