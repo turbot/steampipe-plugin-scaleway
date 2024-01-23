@@ -20,10 +20,10 @@ Explore the billing for all scaleway service.
 
 ```sql+postgres
 select
-  category,
-  operation_path,
+  category_name,
+  product_name,
   project_id,
-  description,
+  resource_name,
   value
 from
   scaleway_billing_consumption;
@@ -31,10 +31,10 @@ from
 
 ```sql+sqlite
 select
-  category,
-  operation_path,
+  category_name,
+  product_name,
   project_id,
-  description,
+  resource_name,
   value
 from
   scaleway_billing_consumption;
@@ -45,22 +45,22 @@ Explore costs by product category of scaleway
 
 ```sql+postgres
 select 
-  category, 
+  category_name, 
   sum((value -> 'units')::float) AS units 
 from 
   scaleway_billing_consumption 
 group by 
-  category
+  category_name
 ```
 
 ```sql+sqlite
 select 
-  category, 
+  category_name, 
   sum((value -> 'units')::float) AS units 
 from 
   scaleway_billing_consumption 
 group by 
-  category
+  category_name
 ```
 
 ### List consumption by project_id

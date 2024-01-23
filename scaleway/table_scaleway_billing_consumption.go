@@ -4,7 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	billing "github.com/scaleway/scaleway-sdk-go/api/billing/v2alpha1"
+	billing "github.com/scaleway/scaleway-sdk-go/api/billing/v2beta1"
+	"github.com/scaleway/scaleway-sdk-go/scw"
 
 	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
@@ -21,20 +22,25 @@ func tableScalewayBillingConsumption(_ context.Context) *plugin.Table {
 			Hydrate: listBillingConsumption,
 			KeyColumns: []*plugin.KeyColumn{
 				{
-					Name:    "category",
+					Name:    "product_name",
 					Require: plugin.Optional,
 				},
 			},
 		},
 		Columns: []*plugin.Column{
 			{
-				Name:        "category",
-				Description: "The ID of the project.",
+				Name:        "category_name",
+				Description: "The CategoryName: name of consumption category.",
 				Type:        proto.ColumnType_STRING,
 			},
 			{
-				Name:        "operation_path",
-				Description: "The unique identifier of the product.",
+				Name:        "product_name",
+				Description: "The product name. For example, VPC Public Gateway S, VPC Public Gateway M for the VPC product.",
+				Type:        proto.ColumnType_STRING,
+			},
+			{
+				Name:        "resource_name",
+				Description: "Identifies the reference based on the category.",
 				Type:        proto.ColumnType_STRING,
 			},
 			{
@@ -44,8 +50,13 @@ func tableScalewayBillingConsumption(_ context.Context) *plugin.Table {
 				Transform:   transform.FromField("ProjectID"),
 			},
 			{
-				Name:        "description",
-				Description: "Description of the consumption.",
+				Name:        "sku",
+				Description: "The unique identifier of the product.",
+				Type:        proto.ColumnType_STRING,
+			},
+			{
+				Name:        "unit",
+				Description: "The unit of consumed quantity.",
 				Type:        proto.ColumnType_STRING,
 			},
 			{
@@ -53,11 +64,16 @@ func tableScalewayBillingConsumption(_ context.Context) *plugin.Table {
 				Description: "Monetary value of the consumption.",
 				Type:        proto.ColumnType_JSON,
 			},
+			{
+				Name:        "billed_quantity",
+				Description: "Consumed quantity.",
+				Type:        proto.ColumnType_JSON,
+			},
 		},
 	}
 }
 
-// // GET FUNCTION
+// // LIST FUNCTION
 func listBillingConsumption(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 
 	// Create client
@@ -78,18 +94,48 @@ func listBillingConsumption(ctx context.Context, d *plugin.QueryData, _ *plugin.
 		return nil, err
 	}
 
-	req := &billing.GetConsumptionRequest{
-		OrganizationID: *organisationId,
+	req := &billing.ListConsumptionsRequest{
+		Page:           scw.Int32Ptr(1),
+		OrganizationID: organisationId,
 	}
 
-	resp, err := billingApi.GetConsumption(req)
-	if err != nil {
-		plugin.Logger(ctx).Error("scaleway_project.listBillingConsumption", "query_error", err)
-		return nil, err
+	// Retrieve the list of consumptions
+	maxResult := int64(100)
+
+	// Reduce the basic request limit down if the user has only requested a small number of rows
+	limit := d.QueryContext.Limit
+	if d.QueryContext.Limit != nil {
+		if *limit < maxResult {
+			maxResult = *limit
+		}
+	}
+	req.PageSize = scw.Uint32Ptr(uint32(maxResult))
+
+	var count int
+
+	for {
+		resp, err := billingApi.ListConsumptions(req)
+		if err != nil {
+			plugin.Logger(ctx).Error("scaleway_project.listBillingConsumption", "query_error", err)
+			return nil, err
+		}
+
+		for _, consumption := range resp.Consumptions {
+			d.StreamListItem(ctx, consumption)
+			// Increase the resource count by 1
+			count++
+
+			// Context can be cancelled due to manual cancellation or the limit has been hit
+			if d.RowsRemaining(ctx) == 0 {
+				return nil, nil
+			}
+		}
+
+		if resp.TotalCount == uint64(count) {
+			break
+		}
+		req.Page = scw.Int32Ptr(*req.Page + 1)
 	}
 
-	for _, consumption := range resp.Consumptions {
-		d.StreamListItem(ctx, consumption)
-	}
 	return nil, nil
 }
