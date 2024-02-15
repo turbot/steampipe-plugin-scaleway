@@ -61,7 +61,7 @@ select
 from 
   scaleway_billing_consumption 
 group by 
-  category_name
+  category_name;
 ```
 
 ### List consumption by project_id
