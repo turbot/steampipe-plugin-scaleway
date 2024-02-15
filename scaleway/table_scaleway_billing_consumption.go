@@ -79,7 +79,7 @@ func listBillingConsumption(ctx context.Context, d *plugin.QueryData, _ *plugin.
 	// Create client
 	client, err := getSessionConfig(ctx, d)
 	if err != nil {
-		plugin.Logger(ctx).Error("scaleway_project.listBillingConsumption", "connection_error", err)
+		plugin.Logger(ctx).Error("scaleway_billing_consumption.listBillingConsumption", "connection_error", err)
 		return nil, err
 	}
 
@@ -90,7 +90,7 @@ func listBillingConsumption(ctx context.Context, d *plugin.QueryData, _ *plugin.
 	organisationId := GetConfig(d.Connection).OrganizationID
 	if organisationId == nil {
 		err := fmt.Errorf("missing organization_id in scaleway.spc")
-		plugin.Logger(ctx).Error("scaleway_project.listBillingConsumption", "query_error", err)
+		plugin.Logger(ctx).Error("scaleway_billing_consumption.listBillingConsumption", "query_error", err)
 		return nil, err
 	}
 
@@ -116,7 +116,7 @@ func listBillingConsumption(ctx context.Context, d *plugin.QueryData, _ *plugin.
 	for {
 		resp, err := billingApi.ListConsumptions(req)
 		if err != nil {
-			plugin.Logger(ctx).Error("scaleway_project.listBillingConsumption", "query_error", err)
+			plugin.Logger(ctx).Error("scaleway_billing_consumption.listBillingConsumption", "query_error", err)
 			return nil, err
 		}
 
