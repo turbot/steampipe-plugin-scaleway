@@ -94,9 +94,16 @@ func listBillingConsumption(ctx context.Context, d *plugin.QueryData, _ *plugin.
 		return nil, err
 	}
 
+	quals := d.EqualsQuals
+
 	req := &billing.ListConsumptionsRequest{
 		Page:           scw.Int32Ptr(1),
 		OrganizationID: organisationId,
+	}
+
+	// Additional filters
+	if quals["category_name"] != nil {
+		req.CategoryName = scw.StringPtr(quals["category_name"].GetStringValue())
 	}
 
 	// Retrieve the list of consumptions
