@@ -1,6 +1,6 @@
 ---
 title: "Steampipe Table: scaleway_billing_consumtion - Query Scaleway Billing comsumption using SQL"
-description: "Allows users to query Scaleway Billing Consumption, specifically providing information about the billing"
+description: "Allows users to query Scaleway Billing Consumption, specifically providing information about the billing."
 ---
 
 # Table: scaleway_billing_consumtion - Query Scaleway Billing comsumption using SQL
