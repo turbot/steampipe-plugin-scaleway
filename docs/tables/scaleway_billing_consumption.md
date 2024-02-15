@@ -64,7 +64,7 @@ group by
   category_name;
 ```
 
-### List consumption by project_id
+### List consumption by Project ID
 Explore costs by product category of scaleway
 
 ```sql+postgres
