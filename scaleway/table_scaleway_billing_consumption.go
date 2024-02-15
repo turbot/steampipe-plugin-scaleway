@@ -17,7 +17,7 @@ import (
 func tableScalewayBillingConsumption(_ context.Context) *plugin.Table {
 	return &plugin.Table{
 		Name:        "scaleway_billing_consumption",
-		Description: "A Scaleway Billing Consumption.",
+		Description: "Scaleway Billing Consumption",
 		List: &plugin.ListConfig{
 			Hydrate: listBillingConsumption,
 			KeyColumns: []*plugin.KeyColumn{
