@@ -5,7 +5,7 @@ description: "Allows users to query Scaleway Billing Consumption, specifically p
 
 # Table: scaleway_billing_consumtion - Query Scaleway Billing comsumption using SQL
 
-A Scaleway Billing Consumption track the costs of various scaleway products such as object_storage, storage, serverless, ect.
+Scaleway Billing Consumption tracks the costs of various scaleway products such as object_storage, storage, serverless, etc.
 
 This table requires an Organization ID to be configured in the scaleway.spc file.
 
