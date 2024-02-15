@@ -51,7 +51,7 @@ select
 from 
   scaleway_billing_consumption 
 group by 
-  category_name
+  category_name;
 ```
 
 ```sql+sqlite
