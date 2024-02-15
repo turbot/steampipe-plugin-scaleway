@@ -74,7 +74,7 @@ select
 from 
   scaleway_billing_consumption 
 group by 
-  project_id
+  project_id;
 ```
 
 ```sql+sqlite
