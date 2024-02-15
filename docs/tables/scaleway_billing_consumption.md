@@ -80,7 +80,7 @@ group by
 ```sql+sqlite
 select 
   project_id, 
-  sum((value -> 'units')::float) AS units 
+  sum((value -> 'units')::float) as units 
 from 
   scaleway_billing_consumption 
 group by 
