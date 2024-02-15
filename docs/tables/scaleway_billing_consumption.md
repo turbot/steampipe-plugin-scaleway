@@ -17,7 +17,7 @@ The `scaleway_billing_consumtion` table offers insights into the Billing Consump
 ## Examples
 
 ### Basic info
-Explore the billing for all scaleway service.
+Explore the billing for all scaleway services.
 
 ```sql+postgres
 select
