@@ -22,7 +22,7 @@ func tableScalewayBillingConsumption(_ context.Context) *plugin.Table {
 			Hydrate: listBillingConsumption,
 			KeyColumns: []*plugin.KeyColumn{
 				{
-					Name:    "product_name",
+					Name:    "category_name",
 					Require: plugin.Optional,
 				},
 			},
