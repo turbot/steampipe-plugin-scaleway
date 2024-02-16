@@ -1,9 +1,9 @@
 ---
-title: "Steampipe Table: scaleway_billing_consumtion - Query Scaleway Billing comsumption using SQL"
+title: "Steampipe Table: scaleway_billing_consumption - Query Scaleway Billing comsumption using SQL"
 description: "Allows users to query Scaleway Billing Consumption, specifically providing information about the billing."
 ---
 
-# Table: scaleway_billing_consumtion - Query Scaleway Billing comsumption using SQL
+# Table: scaleway_billing_consumption - Query Scaleway Billing comsumption using SQL
 
 Scaleway Billing Consumption tracks the costs of various scaleway products such as object_storage, storage, serverless, etc.
 
@@ -12,7 +12,7 @@ Scaleway Billing Consumption tracks the costs of various scaleway products such 
 
 ## Table Usage Guide
 
-The `scaleway_billing_consumtion` table offers insights into the Billing Consumption within Scaleway.
+The `scaleway_billing_consumption` table offers insights into the Billing Consumption within Scaleway.
 
 ## Examples
 
