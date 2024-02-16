@@ -1,3 +1,11 @@
+## v0.11.0 [2024-02-16]
+
+_What's new?_
+
+- New tables added
+  - [scaleway_account_project](https://hub.steampipe.io/plugins/turbot/scaleway/tables/scaleway_account_project) ([#53](https://github.com/turbot/steampipe-plugin-scaleway/pull/53))
+  - [scaleway_billing_consumtion](https://hub.steampipe.io/plugins/turbot/scaleway/tables/scaleway_billing_consumtion) ([#70](https://github.com/turbot/steampipe-plugin-scaleway/pull/70))
+
 ## v0.10.0 [2023-12-12]
 
 _What's new?_
