@@ -1,10 +1,16 @@
+## v0.11.1 [2024-02-16]
+
+_Bug fixes_
+
+- Fixed the typo in the `table_scaleway_billing_consumption` table docs to use `consumption` instead of `consumtion`. ([#10](https://github.com/turbot/steampipe-plugin-scaleway/pull/10))
+
 ## v0.11.0 [2024-02-16]
 
 _What's new?_
 
 - New tables added
   - [scaleway_account_project](https://hub.steampipe.io/plugins/turbot/scaleway/tables/scaleway_account_project) ([#53](https://github.com/turbot/steampipe-plugin-scaleway/pull/53)) (Thanks [@jplanckeel](https://github.com/jplanckeel) for the contribution!)
-  - [scaleway_billing_consumtion](https://hub.steampipe.io/plugins/turbot/scaleway/tables/scaleway_billing_consumtion) ([#70](https://github.com/turbot/steampipe-plugin-scaleway/pull/70)) (Thanks [@jplanckeel ](https://github.com/jplanckeel) for the contribution!)
+  - [scaleway_billing_consumption](https://hub.steampipe.io/plugins/turbot/scaleway/tables/scaleway_billing_consumption) ([#70](https://github.com/turbot/steampipe-plugin-scaleway/pull/70)) (Thanks [@jplanckeel ](https://github.com/jplanckeel) for the contribution!)
 
 ## v0.10.0 [2023-12-12]
 
