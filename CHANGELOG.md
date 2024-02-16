@@ -2,7 +2,7 @@
 
 _Bug fixes_
 
-- Fixed the typo in the `table_scaleway_billing_consumption` table docs to use `consumption` instead of `consumtion`. ([#10](https://github.com/turbot/steampipe-plugin-scaleway/pull/10))
+- Fixed the typo in the `scaleway_billing_consumption` table docs to use `consumption` instead of `consumtion`. ([#80](https://github.com/turbot/steampipe-plugin-scaleway/pull/80))
 
 ## v0.11.0 [2024-02-16]
 
