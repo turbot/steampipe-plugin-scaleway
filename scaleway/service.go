@@ -9,16 +9,35 @@ import (
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/s3"
 	"github.com/scaleway/scaleway-sdk-go/scw"
+	"github.com/turbot/steampipe-plugin-sdk/v5/memoize"
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
 )
 
-// getSessionConfig :: returns Scaleway client to perform API requests
+var getSessionConfigMemoized = plugin.HydrateFunc(getSession).Memoize(memoize.WithCacheKeyFunction(getSessionConfigCacheKey))
+
 func getSessionConfig(ctx context.Context, d *plugin.QueryData) (*scw.Client, error) {
-	// Load clientOptions from cache
-	sessionCacheKey := "scaleway.clientoption"
-	if cachedData, ok := d.ConnectionManager.Cache.Get(sessionCacheKey); ok {
-		return cachedData.(*scw.Client), nil
+	h := &plugin.HydrateData{}
+	cfg, err := getSessionConfigMemoized(ctx, d, h)
+	if err != nil {
+		plugin.Logger(ctx).Error("getSessionConfig", err)
+		return nil, err
 	}
+	config := cfg.(*scw.Client)
+	return config, nil
+}
+
+// Build a cache key for the call to getSessionConfigCacheKey.
+func getSessionConfigCacheKey(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
+	key := "getOrganizationId"
+	return key, nil
+}
+
+func getSession(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
+	return getSessionConfigUncached(ctx, d)
+}
+
+// getSessionConfig :: returns Scaleway client to perform API requests
+func getSessionConfigUncached(ctx context.Context, d *plugin.QueryData) (*scw.Client, error) {
 
 	var accessKey, secretKey string
 
@@ -56,9 +75,6 @@ func getSessionConfig(ctx context.Context, d *plugin.QueryData) (*scw.Client, er
 	if err != nil {
 		return nil, err
 	}
-
-	// save clientOptions in cache
-	d.ConnectionManager.Cache.Set(sessionCacheKey, client)
 
 	return client, nil
 }
