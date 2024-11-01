@@ -31,6 +31,7 @@ func Plugin(ctx context.Context) *plugin.Plugin {
 			"scaleway_instance_server":         tableScalewayInstanceServer(ctx),
 			"scaleway_instance_snapshot":       tableScalewayInstanceSnapshot(ctx),
 			"scaleway_instance_volume":         tableScalewayInstanceVolume(ctx),
+			"scaleway_invoices":                tableScalewayInvoices(ctx),
 			"scaleway_kubernetes_cluster":      tableScalewayKubernetesCluster(ctx),
 			"scaleway_kubernetes_node":         tableScalewayKubernetesNode(ctx),
 			"scaleway_kubernetes_pool":         tableScalewayKubernetesPool(ctx),
