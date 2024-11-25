@@ -89,12 +89,12 @@ func tableScalewayBillingInvoice(ctx context.Context) *plugin.Table {
 			{
 				Name:        "issued_date",
 				Type:        proto.ColumnType_TIMESTAMP,
-				Description: "The date when the invoices was issued.",
+				Description: "The date when the invoices were issued.",
 			},
 			{
 				Name:        "due_date",
 				Type:        proto.ColumnType_TIMESTAMP,
-				Description: "The due date for the invoices payment.",
+				Description: "The due date for the invoice payment.",
 			},
 			{
 				Name:        "total_untaxed_amount",
@@ -213,7 +213,7 @@ func listScalewayInvoices(ctx context.Context, d *plugin.QueryData, _ *plugin.Hy
 			// Increase the resource count by 1
 			count++
 
-			// Context can be cancelled due to manual cancellation or the limit has been hit
+			// Context can be canceled due to manual cancellation or the limit has been hit
 			if d.RowsRemaining(ctx) == 0 {
 				return nil, nil
 			}
@@ -228,7 +228,7 @@ func listScalewayInvoices(ctx context.Context, d *plugin.QueryData, _ *plugin.Hy
 	return nil, nil
 }
 
-//// GYDRATE FUNCTION
+//// HYDRATE FUNCTION
 
 func getScalewayInvoice(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 	// Get client configuration
