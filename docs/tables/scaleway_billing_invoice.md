@@ -11,9 +11,9 @@ Scaleway invoices provide detailed records of charges for using Scaleway's cloud
 
 The `scaleway_billing_invoice` table offers insights into billing information in Scaleway. It allows finance managers or cloud administrators to query invoice-specific details such as total amounts, billing periods, and associated organizations. Use this table to track expenses, verify charges, and manage cloud spending across different projects and timeframes.
 
-### Examples
+## Examples
 
-#### Explore basic details of Scaleway invoices  
+### Explore basic details of Scaleway invoices  
 Retrieve invoice identifiers, associated organizations, and billing periods to track cloud expenses effectively.
 
 ```sql+postgres
@@ -40,7 +40,7 @@ from
   scaleway_billing_invoice;
 ```
 
-#### Get total billed amount for each organization  
+### Get total billed amount for each organization  
 Calculate the total amount billed for each organization to analyze spending across different entities.
 
 ```sql+postgres
@@ -67,7 +67,7 @@ group by
   currency;
 ```
 
-#### Find invoices with high discount amounts  
+### Find invoices with high discount amounts  
 Identify invoices with substantial discounts to understand cost-saving opportunities.
 
 ```sql+postgres
@@ -100,7 +100,7 @@ order by
   total_discount_amount desc;
 ```
 
-#### List invoices within a specific date range  
+### List invoices within a specific date range  
 Retrieve invoices for a defined period to assist with financial reviews or audits.
 
 ```sql+postgres
@@ -133,7 +133,7 @@ order by
   issued_date;
 ```
 
-#### Get the average invoice amount by month  
+### Get the average invoice amount by month  
 Analyze monthly spending patterns by calculating the average invoice amount.
 
 ```sql+postgres
@@ -164,7 +164,7 @@ order by
   month;
 ```
 
-#### Compare total taxed and untaxed amounts  
+### Compare total taxed and untaxed amounts  
 Analyze the tax impact by comparing taxed and untaxed amounts.
 
 ```sql+postgres
@@ -193,7 +193,7 @@ order by
   tax_amount desc;
 ```
 
-#### Examine discounts and their impact  
+### Examine discounts and their impact  
 Evaluate the effect of discounts on invoices by comparing undiscounted and final taxed amounts.
 
 ```sql+postgres
