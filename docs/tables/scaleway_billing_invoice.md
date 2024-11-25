@@ -1,6 +1,6 @@
 ---
-title: Steampipe Table: scaleway_billing_invoice - Query Scaleway Invoices using SQL  
-description: Enables users to query Scaleway invoices, offering comprehensive billing and usage details for Scaleway cloud services.
+title: "Steampipe Table: scaleway_billing_invoice - Query Scaleway Invoices using SQL"
+description: "Enables users to query Scaleway invoices, offering comprehensive billing and usage details for Scaleway cloud services."
 ---
 
 # Table: scaleway_billing_invoice - Query Scaleway invoices using SQL
