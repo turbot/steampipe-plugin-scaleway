@@ -3,10 +3,10 @@ package scaleway
 import (
 	"context"
 	"path"
+	"slices"
 	"strings"
 
 	"github.com/scaleway/scaleway-sdk-go/scw"
-	"github.com/turbot/go-kit/helpers"
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
 )
 
@@ -18,7 +18,6 @@ func Regions() []scw.Region {
 func Zones() []scw.Zone {
 	return scw.AllZones
 }
-
 
 // BuildRegionList :: return a list of matrix items, one per region
 func BuildRegionList(_ context.Context, d *plugin.QueryData) []map[string]interface{} {
@@ -175,7 +174,7 @@ func GetDefaultScalewayRegion(d *plugin.QueryData) string {
 		}
 
 		// https://registry.terraform.io/providers/scaleway/scaleway/latest/docs#arguments-reference
-		if !helpers.StringSliceContains(allRegions, region) {
+		if !slices.Contains(allRegions, region) {
 			regions = []string{"fr-par"}
 		}
 	}
@@ -201,7 +200,7 @@ func GetDefaultScalewayRegion(d *plugin.QueryData) string {
 	}
 
 	// https://registry.terraform.io/providers/scaleway/scaleway/latest/docs#arguments-reference
-	if !helpers.StringSliceContains(allRegions, region) {
+	if !slices.Contains(allRegions, region) {
 		region = "fr-par"
 	}
 
@@ -218,7 +217,7 @@ func getInvalidRegions(regions []string) []string {
 
 	invalidRegions := []string{}
 	for _, region := range regions {
-		if !helpers.StringSliceContains(allRegions, region) {
+		if !slices.Contains(allRegions, region) {
 			invalidRegions = append(invalidRegions, region)
 		}
 	}
