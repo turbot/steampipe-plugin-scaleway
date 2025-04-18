@@ -1,5 +1,10 @@
 ## v1.1.0 [2025-04-17]
 
+_What's new?_
+
+- New tables added
+  - [scaleway_billing_invoice](https://hub.steampipe.io/plugins/turbot/scaleway/tables/scaleway_billing_invoice) ([#122](https://github.com/turbot/steampipe-plugin-scaleway/pull/122)) (Thanks [@tdannenmuller](https://github.com/tdannenmuller) for the contribution!)
+
 _Dependencies_
 
 - Recompiled plugin with Go version `1.23.1`. ([#137](https://github.com/turbot/steampipe-plugin-scaleway/pull/137))
