@@ -9,6 +9,7 @@ Scaleway Billing Consumption tracks the costs of various scaleway products such 
 
 **Important Notes**
 - This table requires an Organization ID to be configured in the `scaleway.spc` file.
+- You can optionally filter by `billing_period` (format: YYYY-MM) to query specific months.
 
 ## Table Usage Guide
 
