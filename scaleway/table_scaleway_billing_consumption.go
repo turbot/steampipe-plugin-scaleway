@@ -36,7 +36,8 @@ func tableScalewayBillingConsumption(_ context.Context) *plugin.Table {
 				Name:        "billing_period",
 				Description: "The billing period for the consumption data (format: YYYY-MM).",
 				Type:        proto.ColumnType_STRING,
-				Transform:   transform.FromQual("billing_period"),
+				Hydrate:     getBillingPeriod,
+				Transform:   transform.FromValue(),
 			},
 			{
 				Name:        "category_name",
@@ -158,5 +159,15 @@ func listBillingConsumption(ctx context.Context, d *plugin.QueryData, _ *plugin.
 		req.Page = scw.Int32Ptr(*req.Page + 1)
 	}
 
+	return nil, nil
+}
+
+//// TRANSFORM FUNCTIONS
+
+func getBillingPeriod(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
+	quals := d.EqualsQuals
+	if quals["billing_period"] != nil {
+		return quals["billing_period"].GetStringValue(), nil
+	}
 	return nil, nil
 }
