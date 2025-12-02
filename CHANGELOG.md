@@ -1,3 +1,9 @@
+## v1.3.0 [2025-12-02]
+
+_Enhancements_
+
+- Added `billing_period` as a column in the `scaleway_billing_consumption` table and enabled it as an optional filter (qual) for queries. ([#154](https://github.com/turbot/steampipe-plugin-scaleway/pull/154))
+
 ## v1.2.0 [2025-10-13]
 
 _Dependencies_
