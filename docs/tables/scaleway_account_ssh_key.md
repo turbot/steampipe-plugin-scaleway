@@ -64,3 +64,30 @@ from
 where
   cast((julianday('now') - julianday(created_at)) as integer) > 90;
 ```
+
+### List disabled SSH keys
+Identify SSH keys that have been disabled. A disabled key is kept on the account but cannot be used to access instances, so reviewing them helps confirm that revoked access has actually been retired.
+
+```sql+postgres
+select
+  name,
+  id,
+  created_at,
+  fingerprint
+from
+  scaleway_account_ssh_key
+where
+  disabled;
+```
+
+```sql+sqlite
+select
+  name,
+  id,
+  created_at,
+  fingerprint
+from
+  scaleway_account_ssh_key
+where
+  disabled = 1;
+```
