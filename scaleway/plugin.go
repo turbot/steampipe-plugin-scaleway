@@ -40,6 +40,7 @@ func Plugin(ctx context.Context) *plugin.Plugin {
 			"scaleway_rdb_instance":            tableScalewayRDBInstance(ctx),
 			"scaleway_registry_image":          tableScalewayRegistryImage(ctx),
 			"scaleway_registry_namespace":      tableScalewayRegistryNamespace(ctx),
+			"scaleway_vpc":                     tableScalewayVPC(ctx),
 			"scaleway_vpc_private_network":     tableScalewayVPCPrivateNetwork(ctx),
 		},
 	}
