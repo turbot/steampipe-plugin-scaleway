@@ -177,7 +177,7 @@ func listBaremetalServers(ctx context.Context, d *plugin.QueryData, _ *plugin.Hy
 		return nil, err
 	}
 
-	var zoneAvailable bool = false
+	zoneAvailable := false
 	for _, v := range baremetalZones {
 		if v == parseZoneData {
 			zoneAvailable = true
