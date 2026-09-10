@@ -6,20 +6,20 @@ import (
 	"github.com/scaleway/scaleway-sdk-go/api/vpc/v2"
 
 	"github.com/scaleway/scaleway-sdk-go/scw"
-	"github.com/turbot/steampipe-plugin-sdk/v6/grpc/proto"
-	"github.com/turbot/steampipe-plugin-sdk/v6/plugin"
-	"github.com/turbot/steampipe-plugin-sdk/v6/plugin/transform"
+	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
+	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
+	"github.com/turbot/steampipe-plugin-sdk/v5/plugin/transform"
 )
 
 //// TABLE DEFINITION
 
-func tableScalewayVPCPrivateNetwork(_ context.Context) *plugin.Table {
+func tableScalewayVPC(_ context.Context) *plugin.Table {
 	return &plugin.Table{
-		Name:              "scaleway_vpc_private_network",
-		Description:       "A VPC private network allows interconnecting your instances in an isolated and private network.",
+		Name:              "scaleway_vpc",
+		Description:       "A VPC is a regional network in which private networks are created.",
 		GetMatrixItemFunc: BuildRegionList,
 		List: &plugin.ListConfig{
-			Hydrate: listVPCPrivateNetworks,
+			Hydrate: listVPCs,
 			KeyColumns: []*plugin.KeyColumn{
 				{
 					Name:    "name",
@@ -30,76 +30,72 @@ func tableScalewayVPCPrivateNetwork(_ context.Context) *plugin.Table {
 					Require: plugin.Optional,
 				},
 				{
-					Name:    "vpc_id",
-					Require: plugin.Optional,
+					Name:      "is_default",
+					Require:   plugin.Optional,
+					Operators: []string{"<>", "="},
 				},
 			},
 		},
 		Get: &plugin.GetConfig{
-			Hydrate:    getVPCPrivateNetwork,
+			Hydrate:    getVPC,
 			KeyColumns: plugin.AllColumns([]string{"id", "region"}),
 		},
 		Columns: []*plugin.Column{
 			{
 				Name:        "name",
-				Description: "The user-defined name of the private network.",
+				Description: "The user-defined name of the VPC.",
 				Type:        proto.ColumnType_STRING,
 			},
 			{
 				Name:        "id",
-				Description: "An unique identifier of the private network.",
+				Description: "An unique identifier of the VPC.",
 				Type:        proto.ColumnType_STRING,
 				Transform:   transform.FromField("ID"),
 			},
 			{
-				Name:        "vpc_id",
-				Description: "The ID of the VPC the private network belongs to.",
-				Type:        proto.ColumnType_STRING,
-				Transform:   transform.FromField("VpcID"),
+				Name:        "is_default",
+				Description: "True if the VPC is the default one of the project.",
+				Type:        proto.ColumnType_BOOL,
+				Transform:   transform.FromField("IsDefault"),
 			},
 			{
-				Name:        "dhcp_enabled",
-				Description: "True if managed DHCP is enabled for the private network.",
-				Type:        proto.ColumnType_BOOL,
-				Transform:   transform.FromField("DHCPEnabled"),
+				Name:        "private_network_count",
+				Description: "The number of private networks within the VPC.",
+				Type:        proto.ColumnType_INT,
+				Transform:   transform.FromField("PrivateNetworkCount"),
 			},
 			{
 				Name:        "created_at",
-				Description: "The time when the private network was created.",
+				Description: "The time when the VPC was created.",
 				Type:        proto.ColumnType_TIMESTAMP,
 			},
 			{
 				Name:        "updated_at",
-				Description: "The time when the private network was last updated.",
+				Description: "The time when the VPC was last updated.",
 				Type:        proto.ColumnType_TIMESTAMP,
 			},
 			{
-				Name:        "subnets",
-				Description: "A list of CIDR subnets attached to the private network.",
-				Type:        proto.ColumnType_JSON,
-			},
-			{
 				Name:        "tags",
-				Description: "A list of tags associated with the private network.",
+				Description: "A list of tags associated with the VPC.",
 				Type:        proto.ColumnType_JSON,
 			},
 
 			// Scaleway standard columns
 			{
 				Name:        "region",
-				Description: "Specifies the region where the private network resides.",
+				Description: "Specifies the region where the VPC resides.",
 				Type:        proto.ColumnType_STRING,
 				Transform:   transform.FromField("Region").Transform(transform.ToString),
 			},
 			{
 				Name:        "project",
-				Description: "The ID of the project where the private network resides.",
+				Description: "The ID of the project where the VPC resides.",
 				Type:        proto.ColumnType_STRING,
 				Transform:   transform.FromField("ProjectID"),
 			},
 			{
 				Name:        "organization",
-				Description: "The ID of the organization where the private network resides.",
+				Description: "The ID of the organization where the VPC resides.",
 				Type:        proto.ColumnType_STRING,
 				Transform:   transform.FromField("OrganizationID"),
 			},
@@ -117,12 +113,12 @@ func tableScalewayVPCPrivateNetwork(_ context.Context) *plugin.Table {
 
 //// LIST FUNCTION
 
-func listVPCPrivateNetworks(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
+func listVPCs(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 	region := d.EqualsQualString("region")
 
 	parseRegionData, err := scw.ParseRegion(region)
 	if err != nil {
-		plugin.Logger(ctx).Error("scaleway_vpc_private_network.listVPCPrivateNetworks", "region_parsing_error", err)
+		plugin.Logger(ctx).Error("scaleway_vpc.listVPCs", "region_parsing_error", err)
 		return nil, err
 	}
 
@@ -134,14 +130,14 @@ func listVPCPrivateNetworks(ctx context.Context, d *plugin.QueryData, _ *plugin.
 	// Create client
 	client, err := getSessionConfig(ctx, d)
 	if err != nil {
-		plugin.Logger(ctx).Error("scaleway_vpc_private_network.listVPCPrivateNetworks", "connection_error", err)
+		plugin.Logger(ctx).Error("scaleway_vpc.listVPCs", "connection_error", err)
 		return nil, err
 	}
 
 	// Create SDK objects for Scaleway VPC product
 	vpcApi := vpc.NewAPI(client)
 
-	req := &vpc.ListPrivateNetworksRequest{
+	req := &vpc.ListVPCsRequest{
 		Region: parseRegionData,
 		Page:   scw.Int32Ptr(1),
 	}
@@ -149,11 +145,21 @@ func listVPCPrivateNetworks(ctx context.Context, d *plugin.QueryData, _ *plugin.
 	if quals["name"] != nil {
 		req.Name = scw.StringPtr(quals["name"].GetStringValue())
 	}
-	if quals["vpc_id"] != nil {
-		req.VpcID = scw.StringPtr(quals["vpc_id"].GetStringValue())
+	if quals["is_default"] != nil {
+		req.IsDefault = scw.BoolPtr(quals["is_default"].GetBoolValue())
 	}
 
-	// Retrieve the list of private networks
+	// Non-Equals Qual Map handling
+	if d.Quals["is_default"] != nil {
+		for _, q := range d.Quals["is_default"].Quals {
+			value := q.Value.GetBoolValue()
+			if q.Operator == "<>" {
+				req.IsDefault = scw.BoolPtr(!value)
+			}
+		}
+	}
+
+	// Retrieve the list of VPCs
 	maxResult := int64(100)
 
 	// Reduce the basic request limit down if the user has only requested a small number of rows
@@ -168,14 +174,14 @@ func listVPCPrivateNetworks(ctx context.Context, d *plugin.QueryData, _ *plugin.
 	var count int
 
 	for {
-		resp, err := vpcApi.ListPrivateNetworks(req)
+		resp, err := vpcApi.ListVPCs(req)
 		if err != nil {
-			plugin.Logger(ctx).Error("scaleway_vpc_private_network.listVPCPrivateNetworks", "query_error", err)
+			plugin.Logger(ctx).Error("scaleway_vpc.listVPCs", "query_error", err)
 			return nil, err
 		}
 
-		for _, network := range resp.PrivateNetworks {
-			d.StreamListItem(ctx, network)
+		for _, v := range resp.Vpcs {
+			d.StreamListItem(ctx, v)
 
 			// Increase the resource count by 1
 			count++
@@ -188,7 +194,7 @@ func listVPCPrivateNetworks(ctx context.Context, d *plugin.QueryData, _ *plugin.
 
 		// Stop when the last page has been read, or when the API returns an empty
 		// page, which would otherwise loop forever if resources went away mid-listing
-		if len(resp.PrivateNetworks) == 0 || uint32(count) >= resp.TotalCount {
+		if len(resp.Vpcs) == 0 || uint32(count) >= resp.TotalCount {
 			break
 		}
 		req.Page = scw.Int32Ptr(*req.Page + 1)
@@ -200,12 +206,12 @@ func listVPCPrivateNetworks(ctx context.Context, d *plugin.QueryData, _ *plugin.
 
 //// HYDRATE FUNCTIONS
 
-func getVPCPrivateNetwork(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
+func getVPC(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 	region := d.EqualsQualString("region")
 
 	parseRegionData, err := scw.ParseRegion(region)
 	if err != nil {
-		plugin.Logger(ctx).Error("scaleway_vpc_private_network.getVPCPrivateNetwork", "region_parsing_error", err)
+		plugin.Logger(ctx).Error("scaleway_vpc.getVPC", "region_parsing_error", err)
 		return nil, err
 	}
 
@@ -216,7 +222,7 @@ func getVPCPrivateNetwork(ctx context.Context, d *plugin.QueryData, h *plugin.Hy
 	// Create client
 	client, err := getSessionConfig(ctx, d)
 	if err != nil {
-		plugin.Logger(ctx).Error("scaleway_vpc_private_network.getVPCPrivateNetwork", "connection_error", err)
+		plugin.Logger(ctx).Error("scaleway_vpc.getVPC", "connection_error", err)
 		return nil, err
 	}
 
@@ -230,12 +236,12 @@ func getVPCPrivateNetwork(ctx context.Context, d *plugin.QueryData, h *plugin.Hy
 		return nil, nil
 	}
 
-	data, err := vpcApi.GetPrivateNetwork(&vpc.GetPrivateNetworkRequest{
-		PrivateNetworkID: id,
-		Region:           parseRegionData,
+	data, err := vpcApi.GetVPC(&vpc.GetVPCRequest{
+		VpcID:  id,
+		Region: parseRegionData,
 	})
 	if err != nil {
-		plugin.Logger(ctx).Error("scaleway_vpc_private_network.getVPCPrivateNetwork", "query_error", err)
+		plugin.Logger(ctx).Error("scaleway_vpc.getVPC", "query_error", err)
 		if is404Error(err) {
 			return nil, nil
 		}
