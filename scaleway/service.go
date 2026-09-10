@@ -49,7 +49,7 @@ func getSessionConfig(ctx context.Context, d *plugin.QueryData) (*scw.Client, er
 		return nil, fmt.Errorf("both access_key and secret_key must be configured")
 	}
 
-	opts = append(opts, scw.WithAuth(*scalewayConfig.AccessKey, *scalewayConfig.SecretKey))
+	opts = append(opts, scw.WithAuth(accessKey, secretKey))
 
 	// Create client
 	client, err := scw.NewClient(opts...)

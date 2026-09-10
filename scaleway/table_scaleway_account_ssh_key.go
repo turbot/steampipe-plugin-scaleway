@@ -133,6 +133,7 @@ func listAccountSSHKeys(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydr
 		resp, err := accountApi.ListSSHKeys(req)
 		if err != nil {
 			plugin.Logger(ctx).Error("scaleway_instance.listAccountSSHKeys", "query_error", err)
+			return nil, err
 		}
 
 		for _, key := range resp.SSHKeys {

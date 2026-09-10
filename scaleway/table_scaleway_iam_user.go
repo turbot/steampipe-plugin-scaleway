@@ -130,6 +130,7 @@ func listIamUsers(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateDat
 		resp, err := iamApi.ListUsers(req)
 		if err != nil {
 			plugin.Logger(ctx).Error("scaleway_iam_user.listIamUsers", "query_error", err)
+			return nil, err
 		}
 
 		for _, key := range resp.Users {

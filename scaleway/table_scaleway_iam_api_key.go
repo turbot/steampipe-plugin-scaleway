@@ -135,6 +135,7 @@ func listIamAPIKeys(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateD
 		resp, err := iamApi.ListAPIKeys(req)
 		if err != nil {
 			plugin.Logger(ctx).Error("scaleway_iam_api_key.listIamAPIKeys", "query_error", err)
+			return nil, err
 		}
 
 		for _, key := range resp.APIKeys {
