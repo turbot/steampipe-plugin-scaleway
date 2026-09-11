@@ -99,7 +99,7 @@ func listAccountSSHKeys(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydr
 	// Create client
 	client, err := getSessionConfig(ctx, d)
 	if err != nil {
-		plugin.Logger(ctx).Error("scaleway_instance.listAccountSSHKeys", "connection_error", err)
+		plugin.Logger(ctx).Error("scaleway_account_ssh_key.listAccountSSHKeys", "connection_error", err)
 		return nil, err
 	}
 
@@ -136,7 +136,7 @@ func listAccountSSHKeys(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydr
 	for {
 		resp, err := iamApi.ListSSHKeys(req)
 		if err != nil {
-			plugin.Logger(ctx).Error("scaleway_instance.listAccountSSHKeys", "query_error", err)
+			plugin.Logger(ctx).Error("scaleway_account_ssh_key.listAccountSSHKeys", "query_error", err)
 			return nil, err
 		}
 
