@@ -1,3 +1,9 @@
+## v2.0.1 [2026-09-11]
+
+_Bug fixes_
+
+- Fixed the plugin module path to include the `/v2` suffix required for v2 releases, which caused the v2.0.0 Steampipe Anywhere (Postgres FDW, SQLite, and export) builds to fail.
+
 ## v2.0.0 [2026-09-11]
 
 Thanks to [@pdecat](https://github.com/pdecat) for contributing all of the table, API, and SDK changes in this release!
