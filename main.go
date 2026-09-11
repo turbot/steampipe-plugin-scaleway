@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/turbot/steampipe-plugin-scaleway/scaleway"
+	"github.com/turbot/steampipe-plugin-scaleway/v2/scaleway"
 	"github.com/turbot/steampipe-plugin-sdk/v6/plugin"
 )
 
