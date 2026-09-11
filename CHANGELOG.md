@@ -1,3 +1,32 @@
+## v2.0.0 [2026-09-11]
+
+Thanks to [@pdecat](https://github.com/pdecat) for contributing all of the table, API, and SDK changes in this release!
+
+_Breaking changes_
+
+- Updated the `scaleway_vpc_private_network` table to use the Scaleway VPC v2 API, in which private networks are regional resources. The `zone` column has been replaced by `region`, and the get key columns are now `id` and `region` instead of `id` and `zone`. The table now iterates over the `regions` connection config argument instead of `zones` and connections that set `zones` without `regions` will only return private networks from the default region until `regions` is added. Queries that filter on or select `zone` must be updated. ([#171](https://github.com/turbot/steampipe-plugin-scaleway/pull/171))
+- Removed the `creation_info` column from the `scaleway_account_ssh_key` table, as it is not returned by the IAM API. ([#170](https://github.com/turbot/steampipe-plugin-scaleway/pull/170))
+
+_What's new?_
+
+- New tables added
+  - [scaleway_vpc](https://hub.steampipe.io/plugins/turbot/scaleway/tables/scaleway_vpc) ([#171](https://github.com/turbot/steampipe-plugin-scaleway/pull/171))
+
+_Enhancements_
+
+- Added `vpc_id`, `dhcp_enabled`, and `subnets` columns to the `scaleway_vpc_private_network` table, with `vpc_id` available as an optional filter. ([#171](https://github.com/turbot/steampipe-plugin-scaleway/pull/171))
+- Updated the `scaleway_account_ssh_key` table to use the Scaleway IAM API, as the Account v2alpha1 SSH key API has been removed and the table no longer returned data. Added the `disabled` column. ([#170](https://github.com/turbot/steampipe-plugin-scaleway/pull/170))
+
+_Bug fixes_
+
+- Fixed the `scaleway_account_ssh_key`, `scaleway_iam_api_key`, and `scaleway_iam_user` tables to return an error instead of causing a plugin panic when the API call fails. ([#169](https://github.com/turbot/steampipe-plugin-scaleway/pull/169))
+- Fixed the plugin to correctly use credentials from the `SCW_ACCESS_KEY` and `SCW_SECRET_KEY` environment variables when `access_key` and `secret_key` are not set in the connection config. ([#169](https://github.com/turbot/steampipe-plugin-scaleway/pull/169))
+
+_Dependencies_
+
+- Recompiled plugin with Go version `1.26`. ([#159](https://github.com/turbot/steampipe-plugin-scaleway/pull/159))
+- Recompiled plugin with [steampipe-plugin-sdk v6.1.0](https://github.com/turbot/steampipe-plugin-sdk/blob/develop/CHANGELOG.md#v610-2026-08-18) that fixes data races in the SDK's in-process execute path.
+
 ## v1.3.0 [2025-12-02]
 
 _Enhancements_
