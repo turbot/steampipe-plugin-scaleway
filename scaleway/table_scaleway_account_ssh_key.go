@@ -3,7 +3,7 @@ package scaleway
 import (
 	"context"
 
-	account "github.com/scaleway/scaleway-sdk-go/api/account/v2alpha1"
+	iam "github.com/scaleway/scaleway-sdk-go/api/iam/v1alpha1"
 
 	"github.com/scaleway/scaleway-sdk-go/scw"
 	"github.com/turbot/steampipe-plugin-sdk/v6/grpc/proto"
@@ -63,9 +63,9 @@ func tableScalewayAccountSSHKey(_ context.Context) *plugin.Table {
 				Type:        proto.ColumnType_TIMESTAMP,
 			},
 			{
-				Name:        "creation_info",
-				Description: "Describes the key creation configuration.",
-				Type:        proto.ColumnType_JSON,
+				Name:        "disabled",
+				Description: "True if the SSH key is disabled.",
+				Type:        proto.ColumnType_BOOL,
 			},
 
 			// Scaleway standard columns
@@ -99,15 +99,19 @@ func listAccountSSHKeys(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydr
 	// Create client
 	client, err := getSessionConfig(ctx, d)
 	if err != nil {
-		plugin.Logger(ctx).Error("scaleway_instance.listAccountSSHKeys", "connection_error", err)
+		plugin.Logger(ctx).Error("scaleway_account_ssh_key.listAccountSSHKeys", "connection_error", err)
 		return nil, err
 	}
 
-	// Create SDK objects for Scaleway Instance product
-	accountApi := account.NewAPI(client)
+	// Create SDK objects for Scaleway IAM product
+	iamApi := iam.NewAPI(client)
 
-	req := &account.ListSSHKeysRequest{
-		Page: scw.Int32Ptr(1),
+	// Get organisationID from config to request IAM API
+	organisationId := GetConfig(d.Connection).OrganizationID
+
+	req := &iam.ListSSHKeysRequest{
+		Page:           scw.Int32Ptr(1),
+		OrganizationID: organisationId,
 	}
 
 	// Additional filter
@@ -130,9 +134,9 @@ func listAccountSSHKeys(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydr
 	var count int
 
 	for {
-		resp, err := accountApi.ListSSHKeys(req)
+		resp, err := iamApi.ListSSHKeys(req)
 		if err != nil {
-			plugin.Logger(ctx).Error("scaleway_instance.listAccountSSHKeys", "query_error", err)
+			plugin.Logger(ctx).Error("scaleway_account_ssh_key.listAccountSSHKeys", "query_error", err)
 			return nil, err
 		}
 
@@ -168,8 +172,8 @@ func getAccountSSHKey(ctx context.Context, d *plugin.QueryData, h *plugin.Hydrat
 		return nil, err
 	}
 
-	// Create SDK objects for Scaleway Instance product
-	accountApi := account.NewAPI(client)
+	// Create SDK objects for Scaleway IAM product
+	iamApi := iam.NewAPI(client)
 
 	id := d.EqualsQuals["id"].GetStringValue()
 
@@ -178,7 +182,7 @@ func getAccountSSHKey(ctx context.Context, d *plugin.QueryData, h *plugin.Hydrat
 		return nil, nil
 	}
 
-	data, err := accountApi.GetSSHKey(&account.GetSSHKeyRequest{
+	data, err := iamApi.GetSSHKey(&iam.GetSSHKeyRequest{
 		SSHKeyID: id,
 	})
 	if err != nil {
