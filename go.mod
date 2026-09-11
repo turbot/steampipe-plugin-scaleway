@@ -6,6 +6,7 @@ require (
 	github.com/aws/aws-sdk-go v1.44.183
 	github.com/scaleway/scaleway-sdk-go v1.0.0-beta.22.0.20240118144829-99a99cc1d1cc
 	github.com/turbot/go-kit v1.3.1
+	github.com/turbot/steampipe-plugin-sdk/v5 v5.14.1
 	github.com/turbot/steampipe-plugin-sdk/v6 v6.0.0
 )
 
@@ -89,7 +90,7 @@ require (
 	go.opentelemetry.io/otel/sdk/metric v1.26.0 // indirect
 	go.opentelemetry.io/otel/trace v1.26.0 // indirect
 	go.opentelemetry.io/proto/otlp v1.2.0 // indirect
-	golang.org/x/crypto v0.51.0 // indirect
+	golang.org/x/crypto v0.52.0 // indirect
 	golang.org/x/exp v0.0.0-20240719175910-8a7402abbf56 // indirect
 	golang.org/x/mod v0.35.0 // indirect
 	golang.org/x/net v0.55.0 // indirect
