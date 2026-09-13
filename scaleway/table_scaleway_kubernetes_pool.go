@@ -78,7 +78,7 @@ func tableScalewayKubernetesPool(_ context.Context) *plugin.Table {
 				Name:        "autoscaling",
 				Description: "The enablement of the autoscaling feature for the pool.",
 				Type:        proto.ColumnType_BOOL,
-				Transform:   transform.FromField("Autoscaling").Transform(transform.ToBool),
+				Transform:   transform.FromField("Autoscaling"),
 			},
 			{
 				Name:        "size",
@@ -99,7 +99,7 @@ func tableScalewayKubernetesPool(_ context.Context) *plugin.Table {
 				Name:        "autohealing",
 				Description: "The enablement of the autohealing feature for the pool.",
 				Type:        proto.ColumnType_BOOL,
-				Transform:   transform.FromField("Autohealing").Transform(transform.ToBool),
+				Transform:   transform.FromField("Autohealing"),
 			},
 			{
 				Name:        "placement_group_id",
