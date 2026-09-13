@@ -144,11 +144,13 @@ func tableScalewayKubernetesCluster(_ context.Context) *plugin.Table {
 				Name:        "project",
 				Description: "The ID of the project where the cluster resides.",
 				Type:        proto.ColumnType_STRING,
+				Transform:   transform.FromField("ProjectID"),
 			},
 			{
 				Name:        "organization",
 				Description: "The ID of the organization where the cluster resides.",
 				Type:        proto.ColumnType_STRING,
+				Transform:   transform.FromField("OrganizationID"),
 			},
 			{
 				Name:        "region",
