@@ -146,6 +146,12 @@ func getIamOrganization(ctx context.Context, d *plugin.QueryData, h *plugin.Hydr
 		return nil, nil
 	}
 
+	// An API key belongs to a single Organization, so skip the API call for any other Organization
+	configOrganizationId := GetConfig(d.Connection).OrganizationID
+	if configOrganizationId != nil && *configOrganizationId != organizationId {
+		return nil, nil
+	}
+
 	data, err := iamApi.GetOrganization(&iam.GetOrganizationRequest{
 		OrganizationID: organizationId,
 	})
