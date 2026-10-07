@@ -25,6 +25,7 @@ func Plugin(ctx context.Context) *plugin.Plugin {
 			"scaleway_billing_consumption":     tableScalewayBillingConsumption(ctx),
 			"scaleway_billing_invoice":         tableScalewayBillingInvoice(ctx),
 			"scaleway_iam_api_key":             tableScalewayIamAPIKey(ctx),
+			"scaleway_iam_organization":        tableScalewayIamOrganization(ctx),
 			"scaleway_iam_user":                tableScalewayIamUser(ctx),
 			"scaleway_instance_image":          tableScalewayInstanceImage(ctx),
 			"scaleway_instance_ip":             tableScalewayInstanceIP(ctx),
