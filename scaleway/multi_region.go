@@ -20,11 +20,11 @@ func Zones() []scw.Zone {
 }
 
 // BuildRegionList :: return a list of matrix items, one per region
-func BuildRegionList(_ context.Context, d *plugin.QueryData) []map[string]interface{} {
+func BuildRegionList(ctx context.Context, d *plugin.QueryData) []map[string]interface{} {
 
 	// cache matrix
 	cacheKey := "RegionListMatrix"
-	if cachedData, ok := d.ConnectionManager.Cache.Get(cacheKey); ok {
+	if cachedData, ok := d.ConnectionCache.Get(ctx, cacheKey); ok {
 		return cachedData.([]map[string]interface{})
 	}
 
@@ -58,29 +58,33 @@ func BuildRegionList(_ context.Context, d *plugin.QueryData) []map[string]interf
 		}
 
 		// set cache
-		d.ConnectionManager.Cache.Set(cacheKey, matrix)
+		if err := d.ConnectionCache.Set(ctx, cacheKey, matrix); err != nil {
+			plugin.Logger(ctx).Warn("scaleway.cache", "cache_key", cacheKey, "error", err)
+		}
 
 		return matrix
 	}
 
 	// Search for region configured using env, or use default region (i.e. fr-par)
-	defaultScalewayRegion := GetDefaultScalewayRegion(d)
+	defaultScalewayRegion := GetDefaultScalewayRegion(ctx, d)
 	matrix := []map[string]interface{}{
 		{"region": defaultScalewayRegion},
 	}
 
 	// set cache
-	d.ConnectionManager.Cache.Set(cacheKey, matrix)
+	if err := d.ConnectionCache.Set(ctx, cacheKey, matrix); err != nil {
+		plugin.Logger(ctx).Warn("scaleway.cache", "cache_key", cacheKey, "error", err)
+	}
 
 	return matrix
 }
 
 // BuildZoneList :: return a list of matrix items, one per zone
-func BuildZoneList(_ context.Context, d *plugin.QueryData) []map[string]interface{} {
+func BuildZoneList(ctx context.Context, d *plugin.QueryData) []map[string]interface{} {
 
 	// cache matrix
 	cacheKey := "ZoneListMatrix"
-	if cachedData, ok := d.ConnectionManager.Cache.Get(cacheKey); ok {
+	if cachedData, ok := d.ConnectionCache.Get(ctx, cacheKey); ok {
 		return cachedData.([]map[string]interface{})
 	}
 
@@ -100,7 +104,7 @@ func BuildZoneList(_ context.Context, d *plugin.QueryData) []map[string]interfac
 	}
 
 	// Get default region
-	defaultRegion := GetDefaultScalewayRegion(d)
+	defaultRegion := GetDefaultScalewayRegion(ctx, d)
 	allRegions = append(allRegions, defaultRegion)
 
 	// Build regions matrix using config regions
@@ -124,7 +128,9 @@ func BuildZoneList(_ context.Context, d *plugin.QueryData) []map[string]interfac
 		}
 
 		// set cache
-		d.ConnectionManager.Cache.Set(cacheKey, matrix)
+		if err := d.ConnectionCache.Set(ctx, cacheKey, matrix); err != nil {
+			plugin.Logger(ctx).Warn("scaleway.cache", "cache_key", cacheKey, "error", err)
+		}
 
 		return matrix
 	}
@@ -135,16 +141,18 @@ func BuildZoneList(_ context.Context, d *plugin.QueryData) []map[string]interfac
 	}
 
 	// set cache
-	d.ConnectionManager.Cache.Set(cacheKey, matrix)
+	if err := d.ConnectionCache.Set(ctx, cacheKey, matrix); err != nil {
+		plugin.Logger(ctx).Warn("scaleway.cache", "cache_key", cacheKey, "error", err)
+	}
 
 	return matrix
 }
 
 // GetDefaultScalewayRegion returns the default region for Scaleway project
-func GetDefaultScalewayRegion(d *plugin.QueryData) string {
+func GetDefaultScalewayRegion(ctx context.Context, d *plugin.QueryData) string {
 	// have we already created and cached the service?
 	serviceCacheKey := "GetDefaultScalewayRegion"
-	if cachedData, ok := d.ConnectionManager.Cache.Get(serviceCacheKey); ok {
+	if cachedData, ok := d.ConnectionCache.Get(ctx, serviceCacheKey); ok {
 		return cachedData.(string)
 	}
 	var allRegions []string
@@ -204,7 +212,9 @@ func GetDefaultScalewayRegion(d *plugin.QueryData) string {
 		region = "fr-par"
 	}
 
-	d.ConnectionManager.Cache.Set(serviceCacheKey, region)
+	if err := d.ConnectionCache.Set(ctx, serviceCacheKey, region); err != nil {
+		plugin.Logger(ctx).Warn("scaleway.cache", "cache_key", serviceCacheKey, "error", err)
+	}
 	return region
 }
 

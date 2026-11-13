@@ -16,7 +16,7 @@ import (
 func getSessionConfig(ctx context.Context, d *plugin.QueryData) (*scw.Client, error) {
 	// Load clientOptions from cache
 	sessionCacheKey := "scaleway.clientoption"
-	if cachedData, ok := d.ConnectionManager.Cache.Get(sessionCacheKey); ok {
+	if cachedData, ok := d.ConnectionCache.Get(ctx, sessionCacheKey); ok {
 		return cachedData.(*scw.Client), nil
 	}
 
@@ -58,7 +58,9 @@ func getSessionConfig(ctx context.Context, d *plugin.QueryData) (*scw.Client, er
 	}
 
 	// save clientOptions in cache
-	d.ConnectionManager.Cache.Set(sessionCacheKey, client)
+	if err := d.ConnectionCache.Set(ctx, sessionCacheKey, client); err != nil {
+		plugin.Logger(ctx).Warn("scaleway.cache", "cache_key", sessionCacheKey, "error", err)
+	}
 
 	return client, nil
 }
@@ -67,7 +69,7 @@ func getSessionConfig(ctx context.Context, d *plugin.QueryData) (*scw.Client, er
 func getObjectSessionConfig(ctx context.Context, d *plugin.QueryData, region string) (*s3.S3, error) {
 	// Load clientOptions from cache
 	sessionCacheKey := "scaleway.objectclient-" + region
-	if cachedData, ok := d.ConnectionManager.Cache.Get(sessionCacheKey); ok {
+	if cachedData, ok := d.ConnectionCache.Get(ctx, sessionCacheKey); ok {
 		return cachedData.(*s3.S3), nil
 	}
 
@@ -114,7 +116,9 @@ func getObjectSessionConfig(ctx context.Context, d *plugin.QueryData, region str
 	client := s3.New(s)
 
 	// save clientOptions in cache
-	d.ConnectionManager.Cache.Set(sessionCacheKey, client)
+	if err := d.ConnectionCache.Set(ctx, sessionCacheKey, client); err != nil {
+		plugin.Logger(ctx).Warn("scaleway.cache", "cache_key", sessionCacheKey, "error", err)
+	}
 
 	return client, nil
 }
