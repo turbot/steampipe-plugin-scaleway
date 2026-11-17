@@ -250,7 +250,7 @@ func listKubernetesClusters(ctx context.Context, d *plugin.QueryData, _ *plugin.
 			}
 		}
 
-		if resp.TotalCount == uint32(count) {
+		if resp.TotalCount == uint64(count) {
 			break
 		}
 		req.Page = scw.Int32Ptr(*req.Page + 1)

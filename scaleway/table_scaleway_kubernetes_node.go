@@ -219,7 +219,7 @@ func listKubernetesNodes(ctx context.Context, d *plugin.QueryData, h *plugin.Hyd
 			}
 		}
 
-		if resp.TotalCount == uint32(count) {
+		if resp.TotalCount == uint64(count) {
 			break
 		}
 		req.Page = scw.Int32Ptr(*req.Page + 1)
