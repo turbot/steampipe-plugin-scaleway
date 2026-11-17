@@ -4,7 +4,7 @@ go 1.26.0
 
 require (
 	github.com/aws/aws-sdk-go v1.44.183
-	github.com/scaleway/scaleway-sdk-go v1.0.0-beta.37
+	github.com/scaleway/scaleway-sdk-go v1.39.0
 	github.com/turbot/go-kit v1.3.1
 	github.com/turbot/steampipe-plugin-sdk/v6 v6.2.1
 )
