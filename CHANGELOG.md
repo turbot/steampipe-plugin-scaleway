@@ -1,3 +1,22 @@
+## v2.1.0 [2026-11-17]
+
+_What's new?_
+
+- New tables added
+  - [scaleway_iam_organization](https://hub.steampipe.io/plugins/turbot/scaleway/tables/scaleway_iam_organization) ([#179](https://github.com/turbot/steampipe-plugin-scaleway/pull/179)) (Thanks [@pdecat](https://github.com/pdecat) for the contribution!)
+
+_Enhancements_
+
+- Added support for the `it-mil` region and its `it-mil-1`, `it-mil-2`, and `it-mil-3` zones. Connections with `regions = ["*"]` now also query Milan. ([#179](https://github.com/turbot/steampipe-plugin-scaleway/pull/179))
+
+_Bug fixes_
+
+- Fixed the `scaleway_baremetal_server` table to also return servers in the `pl-waw-2` and `pl-waw-3` zones. ([#179](https://github.com/turbot/steampipe-plugin-scaleway/pull/179))
+
+_Dependencies_
+
+- Updated `scaleway-sdk-go` to v1.39.0. ([#179](https://github.com/turbot/steampipe-plugin-scaleway/pull/179))
+
 ## v2.0.3 [2026-11-13]
 
 _Dependencies_
