@@ -67,6 +67,7 @@ func tableScalewayRDBInstance(_ context.Context) *plugin.Table {
 				Name:        "is_has_cluster",
 				Description: "Indicates whether High-Availability is enabled, or not.",
 				Type:        proto.ColumnType_BOOL,
+				Transform:   transform.FromField("IsHaCluster"),
 			},
 			{
 				Name:        "node_type",
