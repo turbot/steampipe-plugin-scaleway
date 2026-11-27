@@ -67,6 +67,13 @@ func tableScalewayRDBInstance(_ context.Context) *plugin.Table {
 				Name:        "is_has_cluster",
 				Description: "Indicates whether High-Availability is enabled, or not.",
 				Type:        proto.ColumnType_BOOL,
+				Transform:   transform.FromField("IsHaCluster"),
+			},
+			{
+				Name:        "high_availability_mode",
+				Description: "The High-Availability mode of the instance.",
+				Type:        proto.ColumnType_STRING,
+				Transform:   transform.FromField("HighAvailabilityMode").Transform(transform.ToString),
 			},
 			{
 				Name:        "node_type",
@@ -79,8 +86,23 @@ func tableScalewayRDBInstance(_ context.Context) *plugin.Table {
 				Type:        proto.ColumnType_JSON,
 			},
 			{
+				Name:        "backup_same_region",
+				Description: "True if the automated backups of the instance are stored in its own region rather than in another one.",
+				Type:        proto.ColumnType_BOOL,
+			},
+			{
+				Name:        "encryption",
+				Description: "Describes the encryption at rest of the instance's volume.",
+				Type:        proto.ColumnType_JSON,
+			},
+			{
 				Name:        "endpoint",
 				Description: "Describes the endpoint of the instance.",
+				Type:        proto.ColumnType_JSON,
+			},
+			{
+				Name:        "endpoints",
+				Description: "A list of the endpoints of the instance, each on a Private Network or behind a public load balancer.",
 				Type:        proto.ColumnType_JSON,
 			},
 			{
@@ -97,6 +119,13 @@ func tableScalewayRDBInstance(_ context.Context) *plugin.Table {
 				Name:        "settings",
 				Description: "A list of advanced settings of the instance.",
 				Type:        proto.ColumnType_JSON,
+			},
+			{
+				Name:        "acl_rules",
+				Description: "The ACL rules of the instance, i.e. the IP ranges allowed to reach its public endpoint.",
+				Type:        proto.ColumnType_JSON,
+				Hydrate:     listRDBInstanceACLRules,
+				Transform:   transform.FromValue(),
 			},
 			{
 				Name:        "volume",
@@ -264,4 +293,47 @@ func getRDBInstance(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateD
 	}
 
 	return data, nil
+}
+
+func listRDBInstanceACLRules(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
+	instance := h.Item.(*rdb.Instance)
+
+	// Create client
+	client, err := getSessionConfig(ctx, d)
+	if err != nil {
+		plugin.Logger(ctx).Error("scaleway_rdb_instance.listRDBInstanceACLRules", "connection_error", err)
+		return nil, err
+	}
+
+	// Create SDK objects for Scaleway Database product
+	rdbApi := rdb.NewAPI(client)
+
+	req := &rdb.ListInstanceACLRulesRequest{
+		Region:     instance.Region,
+		InstanceID: instance.ID,
+		Page:       scw.Int32Ptr(1),
+		PageSize:   scw.Uint32Ptr(100),
+	}
+
+	rules := []*rdb.ACLRule{}
+	for {
+		resp, err := rdbApi.ListInstanceACLRules(req)
+		if err != nil {
+			plugin.Logger(ctx).Error("scaleway_rdb_instance.listRDBInstanceACLRules", "query_error", err)
+			if is404Error(err) {
+				return nil, nil
+			}
+			return nil, err
+		}
+		rules = append(rules, resp.Rules...)
+
+		// Stop when the last page has been read, or when the API returns an empty
+		// page, which would otherwise loop forever if rules went away mid-listing
+		if len(resp.Rules) == 0 || uint32(len(rules)) >= resp.TotalCount {
+			break
+		}
+		req.Page = scw.Int32Ptr(*req.Page + 1)
+	}
+
+	return rules, nil
 }
