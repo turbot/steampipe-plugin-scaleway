@@ -3,6 +3,8 @@ package scaleway
 import (
 	"context"
 	"fmt"
+	"net/http"
+	"time"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/credentials"
@@ -50,6 +52,16 @@ func getSessionConfig(ctx context.Context, d *plugin.QueryData) (*scw.Client, er
 	}
 
 	opts = append(opts, scw.WithAuth(accessKey, secretKey))
+
+	// Retry the requests the API rejects with 429 Too Many Requests, see rateLimitRetryTransport.
+	// The client timeout bounds a request and its retries together, so it is raised from the
+	// SDK's 30s default, which now bounds each attempt's wait for response headers instead.
+	transport := http.DefaultTransport.(*http.Transport).Clone()
+	transport.ResponseHeaderTimeout = 30 * time.Second
+	opts = append(opts, scw.WithHTTPClient(&http.Client{
+		Timeout:   2 * time.Minute,
+		Transport: newRateLimitRetryTransport(transport),
+	}))
 
 	// Create client
 	client, err := scw.NewClient(opts...)
