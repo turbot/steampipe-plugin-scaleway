@@ -183,3 +183,34 @@ select
 from
   scaleway_rdb_instance;
 ```
+
+### List instances reachable from any IP
+Identify instances whose ACL rules let any address reach their public endpoint.
+
+```sql+postgres
+select
+  name,
+  id,
+  rule ->> 'ip' as ip,
+  rule ->> 'description' as description,
+  region
+from
+  scaleway_rdb_instance,
+  jsonb_array_elements(acl_rules) as rule
+where
+  rule ->> 'ip' = '0.0.0.0/0';
+```
+
+```sql+sqlite
+select
+  name,
+  id,
+  json_extract(rule.value, '$.ip') as ip,
+  json_extract(rule.value, '$.description') as description,
+  region
+from
+  scaleway_rdb_instance,
+  json_each(acl_rules) as rule
+where
+  json_extract(rule.value, '$.ip') = '0.0.0.0/0';
+```
