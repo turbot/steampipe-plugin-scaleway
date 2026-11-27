@@ -70,6 +70,12 @@ func tableScalewayRDBInstance(_ context.Context) *plugin.Table {
 				Transform:   transform.FromField("IsHaCluster"),
 			},
 			{
+				Name:        "high_availability_mode",
+				Description: "The High-Availability mode of the instance.",
+				Type:        proto.ColumnType_STRING,
+				Transform:   transform.FromField("HighAvailabilityMode").Transform(transform.ToString),
+			},
+			{
 				Name:        "node_type",
 				Description: "The node type of the instance.",
 				Type:        proto.ColumnType_STRING,
@@ -80,8 +86,23 @@ func tableScalewayRDBInstance(_ context.Context) *plugin.Table {
 				Type:        proto.ColumnType_JSON,
 			},
 			{
+				Name:        "backup_same_region",
+				Description: "True if the automated backups of the instance are stored in its own region rather than in another one.",
+				Type:        proto.ColumnType_BOOL,
+			},
+			{
+				Name:        "encryption",
+				Description: "Describes the encryption at rest of the instance's volume.",
+				Type:        proto.ColumnType_JSON,
+			},
+			{
 				Name:        "endpoint",
 				Description: "Describes the endpoint of the instance.",
+				Type:        proto.ColumnType_JSON,
+			},
+			{
+				Name:        "endpoints",
+				Description: "A list of the endpoints of the instance, each on a Private Network or behind a public load balancer.",
 				Type:        proto.ColumnType_JSON,
 			},
 			{
